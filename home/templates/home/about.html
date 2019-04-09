@@ -1,0 +1,51 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} About {% endblock %} {% block content %} {% load static %}
+
+<body>
+    <!-- Start about Area -->
+    <section class="section-gap info-area" id="about">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="menu-content pb-40 col-lg-8">
+                    <div class="title text-center">
+                        <h1 class="mb-10">Zihuang Su</h1>
+                        <p>Love traveling, reading and programming.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="single-info row mt-40">
+                <div class="col-lg-6 col-md-12 mt-120 text-center no-padding info-left">
+                    <div class="info-thumb">
+                        <img src="{% static 'img/about-img.jpg' %}" class="img-fluid" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 no-padding info-rigth">
+                    <div class="info-content">
+                        <h2 class="pb-30">Personal information <br/></h2>
+                        <p>
+                            From Shantou City, Guangdong Province, China
+                            <br/> Student of Sun Yat-sen University.
+                            <br/> Major in computer science
+                        </p>
+
+                        <p>
+                            <br/> E-mail: suzh9@mail2.sysu.edu.cn
+                            <br/> <a href="https://www.github.com/Schnee-Cy">Github: Schnee-Cy</a> &&
+                            <a href="https://www.schnee.pro/blog">Blog: Schnee's Blog</a>
+                        </p>
+                        <br/>
+                        <p>Used to be shy, but now become more outgoing and hope to make friends.</p>
+                        <p>Like cycling, once spent two weeks to travel around Hainan's East and midline, with a total mileage of 717km.</p>
+                        <p>Like reading, especially novels. Recently reading the light novel <i>" wolf and spice "</i>.</p>
+                        <p>Like programming, hope to share what I learn with you on this website.</p>
+                        <br/>
+                        <p>←This isn 't me ^ ~ ^</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End about Area -->
+
+    <hr/>
+</body>
+{% endblock content %}
