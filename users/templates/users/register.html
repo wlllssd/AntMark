@@ -1,0 +1,35 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load widget_tweaks %} {% block content %} {% load static %}
+
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+<body>
+    <div class="section-top-border">
+        <form class="form-users" method="post" enctype="multipart/form-data" action="{% url 'users:register' %}">
+            {% csrf_token %}
+            <center>
+                <h2>Register</h2>
+            </center>
+            <hr>
+            <div class="form-group form-register">
+                {% for field in user_form %}
+                <div class="form-group">
+                    <span> {{ field.label }} </span> {{ field | add_class:"form-control"}}
+                </div>
+                {% endfor %} {{ user_form.media }}
+                <div style="text-align: center">
+                    <p style="color: red"> {{ response_data.message }} </p>
+                </div>
+            </div>
+            <br/>
+            <div style="text-align: center">
+                <button name="submit" class="btn btn-primary">Register</button>
+                <a class="btn btn-outline-primary" href="/">Go Back</a>
+            </div>
+            <input type="hidden" name="next" value="{% url 'home:index' %}" />
+        </form>
+        <div style="text-align: center">
+            <p>Have an account? <a href="{% url 'users:login' %}">Click</a> to log in.</p>
+        </div>
+    </div>
+</body>
+{% endblock content %}
