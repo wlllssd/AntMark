@@ -1,0 +1,68 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load widget_tweaks %} {% block content %} {% load static %}
+
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+
+<!-- <script>
+    function delFriendConfirm() {
+        event.returnValue = confirm("Are you sure to delete this friend?")
+    }
+</script> -->
+
+<body>
+    <div class="section-top-border">
+        <h2>设置</h2>
+        <div class="col-md-9" style="float:left">
+            <form action="{% url 'users:settings' %}" enctype="multipart/form-data" method='post' novalidate class="myforms">
+                {% csrf_token %}
+                <hr/> {% for field in info_form %}
+                <div class="form-group">
+                    <span>
+                    {{ field.label }}
+                </span> {{ field | add_class:"form-control"}}
+                    <p class="error-message text-danger">
+                        {% for error in field.errors %} {{ error }} {% endfor %}
+                    </p>
+                </div>
+                {% endfor %} {{ info_form.media }}
+
+                <div class="form-group">
+                    <span>Profile Photo(Only support english filename)</span>
+                    <input type="file" name="profile" class="form-control" />
+                </div>
+
+                <div style="text-align: center">
+                    <button name="submit" class="btn btn-primary">Submit</button>
+                    <a class="btn btn-outline-primary" href="/">Go Back</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-3" style="float:left; padding:0 0 0 60px;">
+            <div style="margin:0 90px 0 0px;">
+                <img class="img-circle" style="width:150px; height:150px; overflow:hidden;" src="/media/{{info.profile}}" alt="">
+            </div>
+        </div>
+        <div class="col-md-3" style="float:left; padding:0px; margin-top: 50px">
+            <div class="settings-border">
+                <div class="settings-title" style="padding: 10px; margin: 0px">
+                    <span class="lnr lnr-cog"></span> 功能
+                    <hr/ style="margin: 5px">
+                </div>
+                <div class="function-item">
+                    <a href="{% url 'users:reset_pwd' %}">修改密码</a>
+                </div>
+                <div class="function-item">
+                    <a href="{% url 'users:view_notice' %}">查看公告</a>
+                </div>
+                <div class="function-item">
+                    <a href="{% url 'users:call_admin' %}">联系管理员</a>
+                </div>
+                <div class="function-item">
+                    <a href="{% url 'users:start_chat' 3 %}">与1194聊天</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endblock content %}

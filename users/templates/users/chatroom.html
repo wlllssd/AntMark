@@ -1,0 +1,43 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+
+<meta http-equiv="refresh" content="10">
+
+<script>
+    //clear input box
+    function clear_input_box() {
+        var input = document.getElementsByName("text");
+        input.value = ''
+    }
+</script>
+
+<body>
+    <div class="section-top-border">
+        <h1>Chatroom</h1>
+        {% ifequal room.talker1 request.user %}
+        <h4>{{ room.talker2|getUserNickname }}</h4>
+        {% else %}
+        <h4>{{ room.talker1|getUserNickname }}</h4>
+        {% endifequal %}
+        <br/>
+
+        <div class="section">
+            {% for msg in room.id|get_msgs %}
+            <li>
+                {{ msg.date_added }} {{ msg.sender | getUserNickname }} : {{ msg }}
+            </li>
+            {% endfor %}
+        </div>
+        <hr/>
+        <div class="section">
+            <form action="{% url 'users:chatting' room.id %}" method="POST" class="form">{% csrf_token %}
+                <div class="form-group">
+                    <!-- <label for="text">text</label> -->
+                    <input type="text" class="form-control" name="text" id="text">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="clear_input_box()">Send</button>
+                <a class="btn btn-outline-primary" href="javascript:history.go(-1)">Go Back</a>
+            </form>{{ form.media }}
+        </div>
+    </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+
+<body>
+    <div class="section-top-border">
+        <h1>Chatroom List</h1>
+        <br/>
+        <div class="section">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rooms</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in rooms %}
+                    <tr class="table-info">
+                        {% ifequal room.talker1 request.user %}
+                        <td>{{ room.talker2|getUserNickname }}</td>
+                        {% else %}
+                        <td>{{ room.talker1|getUserNickname }}</td>
+                        {% endifequal %}
+                        <td>
+                            <a href="{% url 'users:chatting' room.id %}">点击进入聊天</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>No Chat Room.</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+{% endblock content %}

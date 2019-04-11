@@ -15,12 +15,18 @@ urlpatterns = [
 
     path('settings/', views.user_settings, name = 'settings'),
 
-    # path('notice/', views.notice, name = 'notice'),
+    path('reset_pwd/', views.reset_password, name = 'reset_pwd'),
 
-    # path('reset_password/', views.reset_password, name = 'reset_password'),
+    path('view_notice/', views.view_notice, name = 'view_notice'),
 
-	# path('reset_done/', views.reset_done, name = 'reset_done'),
+    path('call_admin/', views.call_admin, name = 'call_admin'),
 
-    
+    # 聊天室列表
+    path('notice/', views.notice, name = 'notice'),
+
+    path('start_chat/<int:user_id>', views.start_chat, name = 'start_chat'),
+
+    path('chatting/<int:room_id>', views.chatting, name = 'chatting'),
+
 ]
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html> {% load bootstrap4 %} {% load staticfiles %}
+<!DOCTYPE html> {% load bootstrap4 %} {% load staticfiles %} {% load base %}
 <html lang="en">
 
 <head>
@@ -15,7 +15,7 @@
     <!-- meta character set -->
     <meta charset="UTF-8">
     <!-- Site Title -->
-    <title>Schnee</title>
+    <title>AntMark</title>
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
@@ -48,13 +48,14 @@
                             <ul class="navbar-nav">
                                 <li><a href="{% url 'home:index' %}">Home</a></li>
 
+                                <li><a href="{% url 'users:notice' %}">Notice</a></li>
                                 <!-- Dropdown -->
                                 {% if user.is_authenticated %}
                                 <li class="dropdown">
-                                    <a class="dropdown-toggle" href="" id="navbardrop" data-toggle="dropdown"> {{user.username}}
+                                    <a class="dropdown-toggle" href="" id="navbardrop" data-toggle="dropdown"> {{ user|getUserNickname }}
                                         <span class="caret"></span></a>
                                     <div class="dropdown-menu">
-                                        <!-- <a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a> -->
+                                        <a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a>
                                         <a class="dropdown-item" href="{% url 'users:logout' %}">Log out</a>
                                     </div>
                                 </li>
