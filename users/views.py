@@ -1,20 +1,25 @@
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives, send_mail
-from django.contrib.auth.hashers import make_password, check_password
-from django.template import Context, loader 
+
+from django.db.models import Q
 
 from helper.crypto import encrypt, decrypt
 from django.conf import settings
 
-import re, time
+from users.models import UserInfo, Chatroom, Message
+from users.forms import InfoForm
+
+import re, time, json
 
 def login_view(request):
     """ 用户登录 """
@@ -71,12 +76,12 @@ def user_reg(request):
                 raise Exception('邮箱或密码为空')
             
             #匹配邮箱格式
-            pattern = re.compile('^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$')
+            pattern = re.compile(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$')
             match = pattern.match(reg_name)
             if not match:
                 raise Exception('邮箱格式错误')
 
-            pattern = re.compile('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$')
+            pattern = re.compile(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$')
             match = pattern.match(reg_pwd1)
             if not match:
                 raise Exception('密码必须包含大小写字母和数字的组合，可以使用特殊字符，长度在8-16之间')
@@ -119,19 +124,20 @@ def user_reg(request):
     }
     return render(request, 'users/register.html' , context)
 
+
 def user_active(request, active_code):
     """ 激活用户 """
     # 加错误处理，避免出错。出错认为激活链接失效
     # 解密激活链接
-    key, context = 9, {}
+    key, response_data = 9, {}
     try:
         decrypt_str = decrypt(key,active_code)
         decrypt_data = decrypt_str.split('|')
-        email = decrypt_data[0]                                   #邮箱
-        create_date = time.strptime(decrypt_data[1], "%Y-%m-%d")  #激活链接创建日期
-        create_date = time.mktime(create_date)            #struct_time 转成浮点型的时间戳
+        email = decrypt_data[0]                                     #邮箱
+        create_date = time.strptime(decrypt_data[1], "%Y-%m-%d")    #激活链接创建日期
+        create_date = time.mktime(create_date)                      #struct_time 转成浮点型的时间戳
  
-        day = int((time.time()-create_date)/(24*60*60))     #得到日期差
+        day = int((time.time()-create_date)/(24*60*60))             #得到日期差
         if day > 7:
             raise Exception(u'激活链接过期')
  
@@ -149,23 +155,115 @@ def user_active(request, active_code):
             user.is_active = True
             user.save()
  
-        context['goto_page'] = True
-        context['message'] = '激活成功，欢迎加入AntMark！'
+        response_data['goto_page'] = True
+        response_data['message'] = '激活成功，欢迎加入AntMark！'
 
     except IndexError as e:
-        context['goto_page'] = False
-        context['message'] = '激活链接无效'
+        response_data['goto_page'] = False
+        response_data['message'] = '激活链接无效'
     
     except Exception as e:
-        context['goto_page'] = False
-        context['message'] = e
+        response_data['goto_page'] = False
+        response_data['message'] = str(e)
     
     finally:
         #激活成功就跳转到首页(message页面有自动跳转功能)
-        context['goto_url'] = settings.CUR_HOST
-        context['goto_time'] = 3000
+        response_data['goto_url'] = settings.CUR_HOST + 'users/login'
+        response_data['goto_time'] = 5
 
-        return render(request, 'users/message.html' , context)
+        return render(request, 'users/message.html' , response_data)
 
+
+@login_required
 def user_settings(request):
-    pass
+    if request.method != 'POST':
+        try:
+            info = UserInfo.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            info = UserInfo.objects.create(user=request.user)
+        info_form = InfoForm(instance=info)
+        context = {
+            'info_form': info_form,
+            'info': info,
+        }
+        return render(request, 'users/settings.html' , context)
+    else:
+        info_form = InfoForm(data=request.POST)
+        if info_form.is_valid():
+            try:
+                info = UserInfo.objects.get(user=request.user)
+            except ObjectDoesNotExist:
+                info = UserInfo.objects.create(user=request.user)
+        info.nickname = info_form.cleaned_data["nickname"]
+        info.gender = info_form.cleaned_data["gender"]
+        info.intro = info_form.cleaned_data["intro"]
+        myprofile = request.FILES.get('profile', None)
+        if myprofile:
+            if info.profile.name != 'user/img/default.jpg' :
+                info.profile.delete()
+            info.profile = myprofile
+        info.save()
+        return HttpResponseRedirect(reverse('home:index'))
+
+
+@login_required
+def reset_password(request):
+    form = PasswordChangeForm(user=request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+
+            response_data = {}
+            response_data['message'] = '密码修改成功，返回主页面'
+            response_data['goto_url'] = settings.CUR_HOST
+            response_data['goto_time'] = 3
+
+            return render(request, 'users/message.html' , response_data)
+
+    context = { 'form': form }
+    return render(request, 'users/reset_pwd.html', context)
+
+
+def view_notice(request):
+    """ 用户查看公告 """
+    return render(request, 'home/developing.html')
+
+
+def call_admin(request):
+    """ 用户发送消息联系管理员 """
+    return render(request, 'home/developing.html')
+
+
+@login_required
+def notice(request):
+    rooms = Chatroom.objects.filter(Q(talker1=request.user)|Q(talker2=request.user))
+    context = { 'rooms': rooms }
+    return render(request, 'users/notice.html', context)
+
+# def start_chat(request, user_id, commodity_id=0):
+@login_required
+def start_chat(request, user_id):
+    talker2 = User.objects.get(id=user_id)
+    try:
+        room = Chatroom.objects.get(talker1=request.user, talker2=talker2)
+    except:
+        room = Chatroom.objects.create(talker1=request.user, talker2=talker2)
+    context = { 'room' : room }
+    return render(request, 'users/chatroom.html', context)
+
+@login_required
+def chatting(request, room_id):
+    room = Chatroom.objects.get(id=room_id)
+    if request.user != room.talker1 and request.user != room.talker2:
+        raise Http404
+
+    if request.method == 'POST':
+        text = request.POST['text']
+        if text.strip() != '':
+            Message.objects.create(belong_to=room, sender=request.user, content=text)
+
+    context = { 'room': room }
+    return render(request, 'users/chatroom.html', context)
+

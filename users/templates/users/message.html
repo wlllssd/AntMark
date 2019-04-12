@@ -1,4 +1,4 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} AntMark {% endblock %} {% load static %} {% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} AntMark {% endblock %} {% load static %} {% load base %} {% block content %}
 
 <html lang="zxx" class="no-js">
 
@@ -11,7 +11,7 @@
                     <div class="title text-center">
                         <h2 style="line-height:300%;">{{ message|safe }}</h2>
                         <p>
-                            <input type="text" style="border:none; width:1em" readonly="true" value="5" id="time"> 秒后跳转到主页。
+                            <input type="text" style="border:none; width:1em" readonly="true" value="5" id="time"> 秒后跳转到下一页面。
                         </p>
                     </div>
                 </div>
@@ -21,14 +21,15 @@
 </body>
 
 <script language="javascript">
-    var t = 6;
+    var t = {{ goto_time }};
     var time = document.getElementById("time");
 
     function fun() {
         t--;
         time.value = t;
         if (t <= 0) {
-            location.href = 'http://127.0.0.1:8000/'
+            // location.href = 'http://127.0.0.1:8000';
+            location.href = "{{ goto_url }}"
             clearInterval(inter);
         }
     }
@@ -38,4 +39,4 @@
 </html>
 
 
-{% endblock content %}【
+{% endblock content %}

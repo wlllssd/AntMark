@@ -19,3 +19,18 @@
     font-weight: bold;
     color: #4682b4
 }
+
+.setting-left-item {
+    float: left;
+}
+
+.setting-right-item {
+    float: left;
+    padding: 0px;
+    margin-top: 50px;
+}
+
+.function-item {
+    padding: 5px 0 5px 20px;
+    margin: 0px
+}
