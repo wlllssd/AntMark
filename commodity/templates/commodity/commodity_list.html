@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #test1{
+        display: inline-block;
+        border: 1px solid pink;
+        margin: 20px 10px;
+        padding: 0px 10px;
+        width: 250px;
+        height: 350px;
+    }
+</style>
+
+<div>
+    <h1>Commodities</h1>
+    {% for commodity in commodities %}
+    <div id = "test1">
+        <h3><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h3>
+        <a href="#"><img src="{{commodity.image.url}}" height="200px" ></a>
+        <p>出售人：{{commodity.author}}</p>
+        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>价格：￥{{commodity.price}}</p>
+    </div>
+    {% empty %}
+    {% endfor %}
+    {% include 'paginator.html' %}
+</div>
+{% endblock %}
