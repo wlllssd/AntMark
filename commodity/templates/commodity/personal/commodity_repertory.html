@@ -1,0 +1,39 @@
+{% extends 'commodity/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #test1{
+        display: inline-block;
+        border: 1px solid pink;
+        margin: 20px 10px;
+        padding: 0px 10px;
+        width: 250px;
+        height: 400px;
+    }
+</style>
+
+<div>
+    <h1>我的商品库</h1>
+    <hr>
+    {% for commodity in commodities %}
+    <div id = "test1">
+        <h4>{{commodity.title}}</h4>
+        <img src="{{commodity.image.url}}" height="200px" >
+        <p>待售：{{commodity.for_sale}}</p>
+        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>价格：￥{{commodity.price}}</p>
+        <p>数量：{{commodity.amount}}</p>
+        <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
+            <span class = "glyphicon glyphicon-pencil"></span>
+        </a>
+        <a name = "delete" href = "javascript:" onclick="del_commodity(this, {{commodity.id}})">
+            <span class = "glyphicon glyphicon-trash" style="margin-left:20px"></span>
+        </a>
+    </div>
+    {% empty %}
+    {% endfor %}
+    {% include 'paginator.html' %}
+</div>
+{% endblock %}
+
+<!-- 写js函数del_commodity()完成删除功能 -->

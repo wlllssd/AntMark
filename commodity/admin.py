@@ -6,5 +6,5 @@ class CommodityTagAdmin(admin.ModelAdmin):
 admin.site.register(CommodityTag, CommodityTagAdmin)
 
 class CommodityAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'price', 'created')
+    list_display = ('title', 'author', 'price', 'amount','for_sale', 'created')
 admin.site.register(Commodity, CommodityAdmin)

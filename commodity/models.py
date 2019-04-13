@@ -15,6 +15,8 @@ class Commodity(models.Model):
 	body = models.TextField()
 	price = models.DecimalField(max_digits=7, decimal_places=2)
 	image = models.ImageField(upload_to = 'images/%Y/%m/%d')
+	amount = models.IntegerField(blank = False, default = 1)
+	for_sale = models.BooleanField(default = True)
 	created = models.DateTimeField(default = timezone.now)
 	updated = models.DateTimeField(auto_now = True)
 

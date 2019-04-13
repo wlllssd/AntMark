@@ -1,0 +1,58 @@
+{% extends 'commodity/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}"> 
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
+
+<div>
+    <h1>新建商品</h1>
+    <hr>
+    <div style="margin-left:10px">
+        <form class="form-horizontal" action="." method="post">{% csrf_token %} 
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品名称:</span></div>
+                <div class="col-md-10 text-left">{{commodity_form.title}}</div> 
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-2 text-right"><span>商品标签:</span></div>
+                <div class="col-md-10 text-left">
+                    {% for tag in tags %}
+                    <label class="checkebox-inline">
+                        <input class="tagcheckbox" type="checkbox" id="{{tag.id}}" name="tag" value="{{tag.tag}}">{{tag.tag}}
+                    </label>
+                    {% empty %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品描述:</span></div>
+                
+                <div id="editormd" class="col-md-10 text-left">
+                    <textarea  id="id_body"></textarea>
+                </div> 
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品价格:</span></div>
+                <div class="col-md-10 text-left">{{commodity_form.price}}</div> 
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品数量:</span></div>
+                <div class="col-md-10 text-left">{{commodity_form.amount}}</div> 
+            </div>  
+            <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品图片:</span></div>
+                    <p>请上传商品图片信息</p>
+                </div>                       
+            <div class="row">
+                <input type="button" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- 
+    写js函数create_commodity()实现提交表单功能，上面出现的所有字段都要提交
+ -->
+
