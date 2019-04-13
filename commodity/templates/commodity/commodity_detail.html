@@ -1,7 +1,42 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block content %}
-<div>
-    <p>hello world</p>
+
+<style>
+    #test1{
+        border: 1px solid grey;
+        margin: 0px;
+        padding: 10px;
+        width:100%;
+        height: 200px;
+    }
+    #test2{
+        margin: 10px 50px 10px 0px;
+        width:150px; 
+        height: 40px;
+        background-color: rgb(240, 96, 168);
+        color: aliceblue;
+        font-size: 1.2em;
+    }
+    
+</style>
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="{{commodity.image.url}}" height="400px">
+    </div>
+    <div class="col-md-5">
+        <h2>{{commodity.title}}</h2>
+        <p>价格：￥{{commodity.price}}</p>
+        <p>出售人：<a href = "#"">{{commodity.author}}</a></p>
+        <p>描述：</p>
+        <p id = "test1">{{commodity.body}}</p>
+        <button type="button" id="test2">我要下单</button>
+        <button type="button" id="test2">联系卖家</button>
+    </div>
+    <div class="col-md-2">
+        <h2>你可能喜欢</h2>
+        <hr>
+    </div>
 </div>
 {% endblock %}
