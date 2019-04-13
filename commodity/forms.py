@@ -10,4 +10,4 @@ class CommodityTagForm(forms.ModelForm):
 class CommodityForm(forms.ModelForm):
     class Meta:
         model = Commodity
-        fields = ('title', 'author', 'body', 'price', 'image')
+        fields = ('title', 'author', 'body', 'price', 'image', 'amount')
