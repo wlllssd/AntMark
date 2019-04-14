@@ -1,4 +1,5 @@
 {% extends 'commodity/base.html' %}
+{% load staticfiles %}
 {% block content %}
 <style>
     #test1{
@@ -32,9 +33,27 @@
     {% endfor %}
     {% include 'paginator.html' %}
 </div>
-{% endblock %}
-
-
 <!-- 
     写js函数put_off()实现下架商品功能， 下架之后commodity.for_sale = False, commodity.amount = 0
-->
+-->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+function put_off(the, commodity_id){
+    $.ajax({
+        url: "{% url 'commodity:put_off_commodity' %}",
+        type: "POST",
+        data: {"commodity_id":commodity_id },
+        success: function(e){
+            if(e=="1"){
+                layer.msg("successful");
+                location.href = "{% url 'commodity:commodity_list' %}";
+            }else{
+                layer.msg("sorry.") ;
+            }
+        },
+    });
+}
+</script>
+{% endblock %}

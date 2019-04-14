@@ -26,7 +26,7 @@
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品描述:</span></div>
-                
+
                 <div id="editormd" class="col-md-10 text-left">
                     <textarea  id="id_body"></textarea>
                 </div> 
@@ -41,8 +41,9 @@
             </div>  
             <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品图片:</span></div>
-                    <p>请上传商品图片信息</p>
-                </div>                       
+                    <div class="col-md-2 text-left"><p>请上传商品图片信息 </p></div>   
+                    <div class="col-md-8 text-left"><input type="file" name="image" id="id_image"></div>
+            </div>                       
             <div class="row">
                 <input type="button" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
             </div>
@@ -50,9 +51,44 @@
     </div>
 </div>
 
-{% endblock %}
-
 <!-- 
     写js函数create_commodity()实现提交表单功能，上面出现的所有字段都要提交
  -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script language="javascript">
+function create_commodity(){
+    var title = $("#id_title").val();
+    var body = $("#id_body").val();
+    var price = $("#id_price").val();
+    var amount = $("#id_amount").val();
+    var image = $("#id_image")[0].files[0];
+    var tags = [];
+    $.each($("input[name='tag']:checked"), function(){tags.push($(this).val());});
+    console.log(title);
+    console.log(body);
+    console.log(price);
+    console.log(amount);
+    console.log(image);
+    console.log(tags);
+    $.ajax({
+        url: "{% url 'commodity:create_commodity' %}",
+        type: "POST",
+        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags), "image":image},
+        success: function(e){
+            if(e=="1"){
+                layer.msg("successful");
+                location.href = "{% url 'commodity:commodity_list' %}";
+            }else if(e=="2"){
+                layer.msg("sorry.") ;
+            }else{
+                layer.msg("商品名称必须写，不能空。");
+            }
+        },
+    });
+}   
+</script>
+{% endblock %}
+
 
