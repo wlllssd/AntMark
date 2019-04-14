@@ -34,6 +34,35 @@
     {% endfor %}
     {% include 'paginator.html' %}
 </div>
-{% endblock %}
-
 <!-- 写js函数del_commodity()完成删除功能 -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+    function del_commodity(the, commodity_id){
+        var commodity_name = $(the).parents("div").children("h4").text(); 
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除《'+commodity_name+'》</p> </div>',
+            btn:['确定', '取消'], yes: function(){
+                $.ajax({
+                    url: '{% url "commodity:del_commodity" %}', 
+                    type:"POST",
+                    data: {"commodity_id":commodity_id}, 
+                    success: function(e){
+                        if(e=="1"){ 
+                            parent.location.reload(); 
+                            layer.msg("has been deleted.");
+                        }else{ 
+                            layer.msg("删除失败");
+                        }
+                    }, 
+                })
+            }, 
+        });
+    } 
+</script>
+{% endblock %}
