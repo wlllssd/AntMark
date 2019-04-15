@@ -2157,12 +2157,14 @@ h6 {
 }
 
 .dropdown-menu {
-    background: #708090;
+    background: #10101063;
     border-radius: 0;
     margin-top: 10px;
     border: none;
 }
-
+.dropdown-menu>li>a {
+    color: rgb(255, 255, 255);
+}
 .dropdown-menu a {
     padding: 5px 15px;
 }
