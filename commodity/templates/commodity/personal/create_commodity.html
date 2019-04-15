@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}"> 
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 
-<div>
+<!-- <div>
     <h1>新建商品</h1>
     <hr>
     <div style="margin-left:10px">
@@ -41,11 +41,55 @@
             </div>  
             <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品图片:</span></div>
-                    <div class="col-md-2 text-left"><p>请上传商品图片信息 </p></div>   
-                    <div class="col-md-8 text-left"><input type="file" name="image" id="id_image"></div>
+                    <div class="col-md-10 text-left"><input type="file" name="image" id="id_image"></div>
             </div>                       
             <div class="row">
                 <input type="button" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<div>
+    <h1>新建商品</h1>
+    <hr>
+    <div style="margin-left:10px">
+        <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'commodity:create_commodity' %}" method="post">{% csrf_token %} 
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品名称:</span></div>
+                <div class="col-md-10 text-left"><input type="text" name="title" required></div> 
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-2 text-right"><span>商品标签:</span></div>
+                <div class="col-md-10 text-left">
+                    {% for tag in tags %}
+                    <label class="checkebox-inline">
+                        <input class="tagcheckbox" type="checkbox" id="{{tag.id}}" name="tag" value="{{tag.tag}}">{{tag.tag}}
+                    </label>
+                    {% empty %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品描述:</span></div>
+                <div id="editormd" class="col-md-10 text-left">
+                    <textarea id="id_body" cols="25" rows="10" name="body" required></textarea>
+                </div> 
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品价格:</span></div>
+                <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" required></div> 
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品数量:</span></div>
+                <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" required></div> 
+            </div>  
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"><span>商品图片:</span></div>
+                <div class="col-md-10 text-left"><input type="file" name="image" required></div>
+            </div>                       
+            <div class="row">
+                <input type="submit" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
             </div>
         </form>
     </div>
