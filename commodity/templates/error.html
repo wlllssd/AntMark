@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/app1/fm/" method="POST">
+        {% csrf_token %}
+        <p>{{ form.title }}{{ form.errors.title.0 }}</p>   <!-- 获取第一个错误 -->
+        <p>{{ form.body }}{{ form.errors.body.0 }}</p>
+        <p>{{ form.price }}{{ form.errors.price.0 }}</p>
+        <p>{{ form.amount }}{{ form.errors.amount.0 }}</p>
+        <p>{{ form.image }}{{ form.errors.image.0 }}</p>
+        <input type="submit" value="提交" />
+    </form>
+</body>
+</html>

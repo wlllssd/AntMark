@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import CommodityTag, Commodity
 
 class CommodityTagForm(forms.ModelForm):
@@ -10,7 +11,7 @@ class CommodityTagForm(forms.ModelForm):
 class CommodityForm(forms.ModelForm):
     class Meta:
         model = Commodity
-        fields = ('title', 'body', 'price', 'image', 'amount')
+        fields = ('title', 'body', 'price', 'amount')
 
 class EditCommodityForm(forms.ModelForm):
     class Meta:

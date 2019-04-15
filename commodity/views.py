@@ -17,6 +17,7 @@ def tag_list(request):
 @csrf_exempt
 def commodity_list(request):
     commodity_list = Commodity.objects.all()
+    print(commodity_list)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -54,6 +55,7 @@ def commodity_repertory(request):
         commodities = current_page.object_list
     return render(request, 'commodity/personal/commodity_repertory.html', {'commodities':commodities, 'page':current_page})
 
+
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def create_commodity(request):
@@ -62,10 +64,21 @@ def create_commodity(request):
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
-                new_commodity = cd.save(commit = False)
-                new_commodity.author = request.user
-                new_commodity.save()
-                return HttpResponse("1")
+                commodity = Commodity.objects.create(author=request.user)
+                commodity.title = cd['title']
+                commodity.body = cd['body']
+
+                tagList = request.POST.getlist('tag', None)
+                tags = CommodityTag.objects.filter(tag__in = tagList)
+                commodity.commodity_tag.set(tags)
+                
+                commodity.price = cd['price']
+                commodity.amount = cd['amount']
+                commodity.for_sale = False
+                commodity.image = request.FILES.get('image', None)
+                commodity.save()
+                print("1")
+                return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
             except:
                 return HttpResponse("2")
         else:
