@@ -1,0 +1,63 @@
+{% extends 'commodity/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #test1{
+        display: inline-block;
+        border: 1px solid pink;
+        margin: 20px 10px;
+        padding: 0px 10px;
+        width: 250px;
+        height: 350px;
+    }
+</style>
+
+<div>
+    <h1>请选择上架商品</h1>
+    <hr>
+    {% for commodity in commodities %}
+    <div id = "test1">
+        <h4>{{commodity.title}}</h4>
+        <img src="{{commodity.image.url}}" height="200px" >
+        <p>待售：{{commodity.for_sale}}</p>
+        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>价格：￥{{commodity.price}}</p>
+        <p>数量：{{commodity.amount}}</p>
+        <!-- <input type="button" href = "javascript:" class="btn btn-primary btn-lg" value="上架" onclick="put_on(this, {{commodity.id}})"> -->
+        <a name = "put_on" href = "javascript:" onclick="put_on(this, {{commodity.id}})">
+            <p>上架</p>
+        </a>
+    </div>
+    {% empty %}
+    <p>您所有的商品已经上架了哦~</p>
+    {% endfor %}
+    {% include 'paginator.html' %}
+</div>
+<!-- 
+    写js函数put_on()实现上架商品功能， 上架之后commodity_form.amount = 1，commodity.for_sale = True
+-->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+function put_on(the, commodity_id){
+    $.ajax({
+        url: "{% url 'commodity:put_on_commodity' %}",
+        type: "POST",
+        data: {"commodity_id":commodity_id },
+        success: function(e){
+            if(e=="1"){
+                layer.msg("successful");
+                location.href = "{% url 'commodity:commodity_list' %}";
+            }else{
+                layer.msg("sorry.") ;
+            }
+        },
+    });
+}
+</script>
+{% endblock %}
+
+
+
+

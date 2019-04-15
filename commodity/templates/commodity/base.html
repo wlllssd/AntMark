@@ -1,0 +1,31 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang = 'zh-cn'>
+	<head>
+		<meta http-equiv="X-UA-Compatible" content = 'IE=Edge'>
+		<meta charset="utf-8">
+		<meta name = "viewport" content="width = device-width, initial-scale = 1">
+		{% block head %}<link rel="icon" type="image/x-icon" href="{% static 'images/head.png' %}">{% endblock %}
+		<title>{% block title %}AntMark{% endblock %}</title>
+		<link rel = "stylesheet" href = "{% static 'css/bootstrap.css' %}">
+	</head>
+	<body style="background-image: url({% static 'images/background1.png' %});background-size:100% 150%;">
+		
+		<div class = "container" style="background-image: url({% static 'images/background2.png' %});background-size:100% 150%;">	
+			{% include 'header.html' %}	
+			<div>
+				<div class = 'col-md-2'>
+					{% include 'commodity/leftslider.html' %}
+				</div>
+				<div class = 'col-md-10'>
+					{% block content %}
+					{% endblock %}		
+				</div>
+            </div>
+            &nbsp;
+			{% include 'footer.html' %}
+		</div>
+		
+	</body>
+</html>

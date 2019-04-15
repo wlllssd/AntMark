@@ -1,0 +1,78 @@
+{% extends "commodity/base.html" %}
+{% load staticfiles %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}"> 
+<div class="container">
+<div class="col-md-10">
+<div style="margin-left:10px">
+    <h1>修改商品信息</h1>
+    <hr>
+    <form class="form-horizontal" action="." method="post">{% csrf_token %} 
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品名称:</span></div>
+            <div class="col-md-10 text-left">{{commodity.title}}</div> 
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品图片:</span></div>
+            <div class="col-md-10 text-left"><img src="{{commodity.image.url}}" height="200px"></div> 
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品标签:</span></div>
+            <div class="col-md-10 text-left">{{commodity.commodity_tag.all|join:","}}</div> 
+        </div>       
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品描述:</span></div> 
+            <div id="editormd" class="col-md-10 text-left">
+                <textarea id="id_body"></textarea>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品数量:</span></div> 
+            <div class="col-md-10 text-left">{{commodity_form.amount}}</div> 
+        </div> 
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-md-2 text-right"><span>商品价格:</span></div> 
+            <div class="col-md-10 text-left">{{commodity_form.price}}</div> 
+        </div>                
+        <div class="row">
+            <input type="button" class="btn btn-primary btn-lg" value="完成" onclick="edit_commodity()">
+        </div>
+    </form>
+</div>
+</div>
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript"> 
+$(function() {
+    var editor = editormd("editormd", { 
+        width : "100%",
+        height : 640,
+        //syncScrolling : "single",
+        path : "{% static 'editor/lib/' %}", 
+    });
+}); 
+
+function edit_commodity(){
+    var body = $("#id_body").val();
+    var amount = $("#id_amount").val();
+    var price = $("#id_price").val();
+    $.ajax({
+        url: "{% url 'commodity:edit_commodity' commodity.id %}", 
+        type: "POST",
+        data: {"body":body, "amount":amount, "price":price}, 
+        success: function(e){
+            if(e=="1"){ 
+                layer.msg("successful");
+                location.href = "{% url 'commodity:commodity_list' %}"; 
+            }else{
+                layer.msg("sorry."); 
+            }
+        }, 
+    });
+} </script>
+
+{% endblock %}

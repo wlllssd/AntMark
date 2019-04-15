@@ -1,0 +1,68 @@
+{% extends 'commodity/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #test1{
+        display: inline-block;
+        border: 1px solid pink;
+        margin: 20px 10px;
+        padding: 0px 10px;
+        width: 250px;
+        height: 400px;
+    }
+</style>
+
+<div>
+    <h1>我的商品库</h1>
+    <hr>
+    {% for commodity in commodities %}
+    <div id = "test1">
+        <h4>{{commodity.title}}</h4>
+        <img src="{{commodity.image.url}}" height="200px" >
+        <p>待售：{{commodity.for_sale}}</p>
+        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>价格：￥{{commodity.price}}</p>
+        <p>数量：{{commodity.amount}}</p>
+        <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
+            <span class = "glyphicon glyphicon-pencil"></span>
+        </a>
+        <a name = "delete" href = "javascript:" onclick="del_commodity(this, {{commodity.id}})">
+            <span class = "glyphicon glyphicon-trash" style="margin-left:20px"></span>
+        </a>
+    </div>
+    {% empty %}
+    {% endfor %}
+    {% include 'paginator.html' %}
+</div>
+<!-- 写js函数del_commodity()完成删除功能 -->
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+    function del_commodity(the, commodity_id){
+        var commodity_name = $(the).parents("div").children("h4").text(); 
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除《'+commodity_name+'》</p> </div>',
+            btn:['确定', '取消'], yes: function(){
+                $.ajax({
+                    url: '{% url "commodity:del_commodity" %}', 
+                    type:"POST",
+                    data: {"commodity_id":commodity_id}, 
+                    success: function(e){
+                        if(e=="1"){ 
+                            parent.location.reload(); 
+                            layer.msg("has been deleted.");
+                        }else{ 
+                            layer.msg("删除失败");
+                        }
+                    }, 
+                })
+            }, 
+        });
+    } 
+</script>
+{% endblock %}

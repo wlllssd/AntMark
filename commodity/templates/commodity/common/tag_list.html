@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div>
+    {% for tag in tags %}
+    <li>{{tag.tag}}</li>
+    {% empty %}
+    <p>No tag.</p>
+    {% endfor %}
+    
+</div>
+{% endblock %}
