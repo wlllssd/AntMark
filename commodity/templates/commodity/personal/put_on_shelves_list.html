@@ -8,7 +8,15 @@
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
-        height: 350px;
+        height: 370px;
+    }
+    #test2{
+        margin: 10px 50px 10px -10px;
+        width:100px; 
+        height: 40px;
+        background-color: rgb(240, 96, 168);
+        color: aliceblue;
+        font-size: 1.4em;
     }
 </style>
 
@@ -21,41 +29,36 @@
         <img src="{{commodity.image.url}}" height="200px" >
         <p>待售：{{commodity.for_sale}}</p>
         <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>货源：{{commodity.commodity_source.all|join:","}}</p>
         <p>价格：￥{{commodity.price}}</p>
         <p>数量：{{commodity.amount}}</p>
-        <!-- <input type="button" href = "javascript:" class="btn btn-primary btn-lg" value="上架" onclick="put_on(this, {{commodity.id}})"> -->
-        <a name = "put_on" href = "javascript:" onclick="put_on(this, {{commodity.id}})">
-            <p>上架</p>
-        </a>
+        <input type="button" href = "javascript:" id="test2" value="上架" onclick="put_on(this, {{commodity.id}})">
     </div>
     {% empty %}
     <p>您所有的商品已经上架了哦~</p>
     {% endfor %}
-    {% include 'paginator.html' %}
 </div>
-<!-- 
-    写js函数put_on()实现上架商品功能， 上架之后commodity_form.amount = 1，commodity.for_sale = True
--->
+
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
 <script type="text/javascript">
-function put_on(the, commodity_id){
-    $.ajax({
-        url: "{% url 'commodity:put_on_commodity' %}",
-        type: "POST",
-        data: {"commodity_id":commodity_id },
-        success: function(e){
-            if(e=="1"){
-                layer.msg("successful");
-                location.href = "{% url 'commodity:commodity_list' %}";
-            }else{
-                layer.msg("sorry.") ;
-            }
-        },
-    });
-}
-</script>
+    function put_on(the, commodity_id){
+        $.ajax({
+            url: '{% url "commodity:put_on_commodity" %}', 
+            type:"POST",
+            data: {"commodity_id":commodity_id}, 
+            success: function(e){
+                if(e=="1"){ 
+                    layer.msg("上架完成");
+                    location.href = "{% url 'commodity:put_on_shelves_list' %}";
+                }else{ 
+                    layer.msg("上架失败");
+                }
+            }, 
+        })
+    }
+    </script>
 {% endblock %}
 
 

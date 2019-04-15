@@ -4,6 +4,7 @@ from . import views
 app_name = "commodity"
 urlpatterns = [
     path('tag-list/', views.tag_list, name = "tag_list"),
+    path('source-list/', views.source_list, name = "source_list"),
     path('commodity-list/', views.commodity_list, name = "commodity_list"),
     path('commodity-detail/<int:id>/', views.commodity_detail, name = "commodity_detail"),
     path('commodity-repertory/', views.commodity_repertory, name = "commodity_repertory"),

@@ -3,45 +3,100 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}"> 
+<!-- <div class="container">
+    <div class="col-md-10">
+        <div style="margin-left:10px">
+            <h1>修改商品信息</h1>
+            <hr>
+            <form class="form-horizontal" action="." method="post">{% csrf_token %} 
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品名称:</span></div>
+                    <div class="col-md-10 text-left">{{commodity.title}}</div> 
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品图片:</span></div>
+                    <div class="col-md-10 text-left"><img src="{{commodity.image.url}}" height="200px"></div> 
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品标签:</span></div>
+                    <div class="col-md-10 text-left">{{commodity.commodity_tag.all|join:","}}</div> 
+                </div>       
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品描述:</span></div> 
+                    <div id="editormd" class="col-md-10 text-left">
+                        <textarea id="id_body" cols="25" rows="10"></textarea>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品数量:</span></div> 
+                    <div class="col-md-10 text-left">{{commodity_form.amount}}</div> 
+                </div> 
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品价格:</span></div> 
+                    <div class="col-md-10 text-left">{{commodity_form.price}}</div> 
+                </div> 
+                    
+                <div class="row">
+                    <input type="button" class="btn btn-primary btn-lg" value="完成" onclick="edit_commodity()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+
 <div class="container">
-<div class="col-md-10">
-<div style="margin-left:10px">
-    <h1>修改商品信息</h1>
-    <hr>
-    <form class="form-horizontal" action="." method="post">{% csrf_token %} 
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品名称:</span></div>
-            <div class="col-md-10 text-left">{{commodity.title}}</div> 
+    <div class="col-md-10">
+        <div style="margin-left:10px">
+            <h1>修改商品信息</h1>
+            <hr>
+            <form class="form-horizontal" action="{% url 'commodity:edit_commodity' commodity.id %}" method="post">{% csrf_token %} 
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品名称:</span></div>
+                    <div class="col-md-10 text-left"><input type="text" value="{{commodity.title}}" name="title" readonly></div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品图片:</span></div>
+                    <div class="col-md-10 text-left"><img src="{{commodity.image.url}}" width="200px"></div> 
+                </div>
+                
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品标签:</span></div>
+                    <div class="col-md-10 text-left"><input type="text" value="{{commodity.commodity_tag.all|join:','}}" name="commodity_tag" readonly></div> 
+                </div>      
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品货源:</span></div>
+                    <div class="col-md-10 text-left">
+                        {% for source in sources %}
+                        <label class="checkebox-inline">
+                            <input class="tagcheckbox" type="checkbox" id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}
+                        </label>
+                        {% empty %}
+                        {% endfor %}
+                    </div>
+                </div> 
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品描述:</span></div> 
+                    <div id="editormd" class="col-md-10 text-left">
+                        <textarea id="id_body" cols="25" rows="10" name="body" required>{{commodity.body}}</textarea>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品数量:</span></div> 
+                    <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" value="{{commodity.amount}}" required></div> 
+                </div> 
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品价格:</span></div> 
+                    <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" value="{{commodity.price}}" required></div> 
+                </div>    
+                <div class="row">
+                    <input type="submit" class="btn btn-primary btn-lg" value="完成">
+                </div>
+            </form>
         </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品图片:</span></div>
-            <div class="col-md-10 text-left"><img src="{{commodity.image.url}}" height="200px"></div> 
-        </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品标签:</span></div>
-            <div class="col-md-10 text-left">{{commodity.commodity_tag.all|join:","}}</div> 
-        </div>       
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品描述:</span></div> 
-            <div id="editormd" class="col-md-10 text-left">
-                <textarea id="id_body"></textarea>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品数量:</span></div> 
-            <div class="col-md-10 text-left">{{commodity_form.amount}}</div> 
-        </div> 
-        <div class="row" style="margin-top: 10px;">
-            <div class="col-md-2 text-right"><span>商品价格:</span></div> 
-            <div class="col-md-10 text-left">{{commodity_form.price}}</div> 
-        </div>                
-        <div class="row">
-            <input type="button" class="btn btn-primary btn-lg" value="完成" onclick="edit_commodity()">
-        </div>
-    </form>
+    </div>
 </div>
-</div>
-</div>
+
+
 
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>
@@ -57,9 +112,6 @@ $(function() {
 }); 
 
 function edit_commodity(){
-    var body = $("#id_body").val();
-    var amount = $("#id_amount").val();
-    var price = $("#id_price").val();
     $.ajax({
         url: "{% url 'commodity:edit_commodity' commodity.id %}", 
         type: "POST",

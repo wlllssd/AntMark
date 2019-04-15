@@ -8,7 +8,7 @@
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
-        height: 350px;
+        height: 380px;
     }
 </style>
 
@@ -16,17 +16,17 @@
     <h1>所有商品</h1>
     <hr>
     {% for commodity in commodities %}
-    <!-- 
-        这里加一个判断条件：commodity.amount > 0 并且 commodity.for_sale == True的时候才显示商品 
-    -->
+    {% if commodity.for_sale and commodity.amount %}
     <div id = "test1">
         <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
         <a href="{% url 'commodity:commodity_detail' commodity.id %}"><img src="{{commodity.image.url}}" height="200px" ></a>
         <p>出售人：{{commodity.author}}</p>
-        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>标签：{{commodity.commodity_tag.all|join:", "}}</p>
+        <p>货源：{{commodity.commodity_source.all|join:", "}}</p>
         <p>价格：￥{{commodity.price}}</p>
         <p>数量：{{commodity.amount}}</p>
     </div>
+    {% endif %}
     {% empty %}
     {% endfor %}
     {% include 'paginator.html' %}
