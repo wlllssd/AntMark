@@ -6,13 +6,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 
-from .models import CommodityTag, Commodity
-from .forms import CommodityTagForm, CommodityForm
+from .models import CommodityTag, Commodity, CommoditySource
+from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
 
 # 显示所有商品标签，暂无作用
 def tag_list(request):
     tags = CommodityTag.objects.all()
     return render(request, 'commodity/common/tag_list.html', {'tags':tags})
+
+def source_list(request):
+    sources = CommoditySource.objects.all()
+    return render(request, 'commodity/common/source_list.html', {'sources':sources})
 
 # 显示所有商品
 @login_required(login_url = '/users/login')
@@ -76,6 +80,11 @@ def create_commodity(request):
                 tags = CommodityTag.objects.filter(tag__in = tagList)
                 commodity.commodity_tag.set(tags)
 
+                # 获取商品货源（多对多）
+                sourceList = request.POST.getlist('source', None)
+                sources = CommoditySource.objects.filter(source__in = sourceList)
+                commodity.commodity_source.set(sources)
+
                 commodity.price = cd['price']
                 commodity.amount = cd['amount']
                 commodity.for_sale = False
@@ -91,7 +100,8 @@ def create_commodity(request):
     else:
         commodity_form = CommodityForm()
         tags = CommodityTag.objects.all()
-        return render(request, 'commodity/personal/create_commodity.html', {'commodity_form':commodity_form, 'tags':tags})
+        sources = CommoditySource.objects.all()
+        return render(request, 'commodity/personal/create_commodity.html', {'commodity_form':commodity_form, 'tags':tags, 'sources':sources})
 
 # 编辑商品信息
 @login_required(login_url = '/users/login')
@@ -100,7 +110,8 @@ def edit_commodity(request, id):
     commodity = get_object_or_404(Commodity, id = id)
     if request.method == 'GET':
         commodity_form = CommodityForm()
-        return render(request, 'commodity/personal/edit_commodity.html', {'commodity':commodity, 'commodity_form':commodity_form})
+        sources = CommoditySource.objects.all()
+        return render(request, 'commodity/personal/edit_commodity.html', {'commodity':commodity, 'commodity_form':commodity_form, 'sources':sources})
     else:
         commodity_form = CommodityForm(data = request.POST)
         if commodity_form.is_valid():
@@ -109,6 +120,12 @@ def edit_commodity(request, id):
                 commodity.amount = cd['amount']
                 commodity.price = cd['price']
                 commodity.body = cd['body']
+
+                # 获取商品货源（多对多）
+                sourceList = request.POST.getlist('source', None)
+                sources = CommoditySource.objects.filter(source__in = sourceList)
+                commodity.commodity_source.set(sources)
+
                 commodity.save()
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
             except:

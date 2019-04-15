@@ -8,7 +8,7 @@
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
-        height: 400px;
+        height: 420px;
     }
 </style>
 
@@ -21,6 +21,7 @@
         <img src="{{commodity.image.url}}" height="200px" >
         <p>待售：{{commodity.for_sale}}</p>
         <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
+        <p>货源：{{commodity.commodity_source.all|join:","}}</p>
         <p>价格：￥{{commodity.price}}</p>
         <p>数量：{{commodity.amount}}</p>
         <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">

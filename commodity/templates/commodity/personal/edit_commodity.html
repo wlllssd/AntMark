@@ -62,7 +62,18 @@
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品标签:</span></div>
                     <div class="col-md-10 text-left"><input type="text" value="{{commodity.commodity_tag.all|join:','}}" name="commodity_tag" readonly></div> 
-                </div>       
+                </div>      
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-right"><span>商品货源:</span></div>
+                    <div class="col-md-10 text-left">
+                        {% for source in sources %}
+                        <label class="checkebox-inline">
+                            <input class="tagcheckbox" type="checkbox" id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}
+                        </label>
+                        {% empty %}
+                        {% endfor %}
+                    </div>
+                </div> 
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品描述:</span></div> 
                     <div id="editormd" class="col-md-10 text-left">
