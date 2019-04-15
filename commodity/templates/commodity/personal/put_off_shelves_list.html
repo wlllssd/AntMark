@@ -10,6 +10,14 @@
         width: 250px;
         height: 350px;
     }
+    #test2{
+        margin: 10px 30px 10px -10px;
+        width:100px; 
+        height: 40px;
+        background-color: rgb(240, 96, 168);
+        color: aliceblue;
+        font-size: 1.4em;
+    }
 </style>
 
 <div>
@@ -23,19 +31,13 @@
         <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
         <p>价格：￥{{commodity.price}}</p>
         <p>数量：{{commodity.amount}}</p>
-        <!-- <input type="button" href = "javascript:" class="btn btn-primary btn-lg" value="下架" onclick="put_off(this, {{commodity.id}})"> -->
-        <a name = "put_off" href = "javascript:" onclick="put_off(this, {{commodity.id}})">
-            <p>下架</p>
-        </a>
+        <input type="button" href = "javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
     </div>
     {% empty %}
     <p>您所有的商品已经下架了哦~</p>
     {% endfor %}
-    {% include 'paginator.html' %}
 </div>
-<!-- 
-    写js函数put_off()实现下架商品功能， 下架之后commodity.for_sale = False, commodity.amount = 0
--->
+
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
@@ -48,9 +50,9 @@ function put_off(the, commodity_id){
         success: function(e){
             if(e=="1"){
                 layer.msg("successful");
-                location.href = "{% url 'commodity:commodity_list' %}";
+                location.href = "{% url 'commodity:put_off_shelves_list' %}";
             }else{
-                layer.msg("sorry.") ;
+                layer.msg("下架失败.") ;
             }
         },
     });

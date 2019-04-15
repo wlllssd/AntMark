@@ -12,8 +12,3 @@ class CommodityForm(forms.ModelForm):
     class Meta:
         model = Commodity
         fields = ('title', 'body', 'price', 'amount')
-
-class EditCommodityForm(forms.ModelForm):
-    class Meta:
-        model = Commodity
-        fields = ('title', 'body', 'price', 'amount')
