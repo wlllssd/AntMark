@@ -4,13 +4,24 @@
 <style>
     #test1{
         display: inline-block;
-        border: 1px solid pink;
+        border: 1px solid #ddd;
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
         height: 380px;
+        border-radius: 4px;
+        margin-right: 10px;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+    #line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 200px;
     }
 </style>
+<<<<<<< HEAD
 
 
 <div id="search" class="col-md-12 column">
@@ -23,22 +34,69 @@
 </div>
 
 <div>
+=======
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+<div id="search" class="col-md-12 column">
+    <form class="navbar-form navbar-left" role="search" action=".">
+        <div class="form-group">
+            <input type="text" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
+<div class="container">
+>>>>>>> cf88be1cdd09daf60c799211ab656f0e67bfe98f
     <h1>所有商品</h1>
     <hr>
-    {% for commodity in commodities %}
-    {% if commodity.for_sale and commodity.amount %}
-    <div id = "test1">
-        <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
-        <a href="{% url 'commodity:commodity_detail' commodity.id %}"><img src="{{commodity.image.url}}" height="200px" ></a>
-        <p>出售人：{{commodity.author}}</p>
-        <p>标签：{{commodity.commodity_tag.all|join:", "}}</p>
-        <p>货源：{{commodity.commodity_source.all|join:", "}}</p>
-        <p>价格：￥{{commodity.price}}</p>
-        <p>数量：{{commodity.amount}}</p>
+    <div class="row clearfix">
+        {% for commodity in commodities %}
+        {% if commodity.for_sale and commodity.amount %}
+        <div class="col-md-3 column">
+            <!--<div class="thumbnail">-->
+            <!--<a href="{% url 'commodity:commodity_detail' commodity.id %}">-->
+            <!--<img src="{{commodity.image.url}}" alt="image" height="300px">-->
+            <!--</a>-->
+            <!--<div class="caption">-->
+            <!--<p id="line-limit-length">出售人：{{commodity.author}}</p>-->
+            <!--<p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>-->
+            <!--<p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>-->
+            <!--<p id="line-limit-length">价格：￥{{commodity.price}}</p>-->
+            <!--<p id="line-limit-length">数量：{{commodity.amount}}</p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div id="test1">-->
+            <!--<h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>-->
+            <!--<a href="{% url 'commodity:commodity_detail' commodity.id %}">-->
+            <!--<img src="{{commodity.image.url}}" height="200px">-->
+            <!--</a>-->
+            <!--<p id="line-limit-length">出售人：{{commodity.author}}</p>-->
+            <!--<p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>-->
+            <!--<p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>-->
+            <!--<p id="line-limit-length">价格：￥{{commodity.price}}</p>-->
+            <!--<p id="line-limit-length">数量：{{commodity.amount}}</p>-->
+            <!--</div>-->
+            <div class="single-feature mb-30">
+                <a href="{% url 'commodity:commodity_detail' commodity.id %}">
+                    <img src="{{commodity.image.url}}" height="200px">
+                </a>
+                <div class="title d-flex flex-row pb-20">
+                    <span class="glyphicon glyphicon-gift"></span>
+                    <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+                </div>
+                <p id="line-limit-length">出售人：{{commodity.author}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
+                <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+                <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <div align="right">
+                    <a></a><span class="glyphicon glyphicon-menu-right"></span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        {% endfor %}
     </div>
-    {% endif %}
-    {% empty %}
-    {% endfor %}
     {% include 'paginator.html' %}
 </div>
 {% endblock %}
