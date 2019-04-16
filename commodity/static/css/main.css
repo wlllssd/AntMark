@@ -2000,9 +2000,9 @@ h6 {
 .video-area .overlay-bg,
 .single-footer-widget .click-btn,
 .generic-banner {
-    background-image: -moz-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
-    background-image: -webkit-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
-    background-image: -ms-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
+    background-image: -moz-linear-gradient(0deg, #ffff 0%, #ffff 100%);
+    background-image: -webkit-linear-gradient(0deg, #ffff 0%, #ffff 100%);
+    background-image: -ms-linear-gradient(0deg, #ffff 0%, #ffff 100%);
 }
 
 .p1-gradient-color,
@@ -2412,6 +2412,7 @@ h6 {
 
 .single-feature {
     background-color: #f9f9ff;
+    border: 2px solid #ddd;
     padding: 30px 30px 15px 30px;
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
@@ -2424,13 +2425,14 @@ h6 {
 }
 
 .single-feature:hover {
-    cursor: pointer;
-    color: #fff;
+    //cursor: pointer;
+    color: #000000;
+    border: 2px solid #fb0000;
 }
 
 .single-feature:hover a,
 .single-feature:hover .title .lnr {
-    color: #fff;
+    color: #000000;
 }
 
 .single-feature .title .lnr {

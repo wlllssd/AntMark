@@ -4,32 +4,49 @@
 <style>
     #test1{
         display: inline-block;
-        border: 1px solid pink;
+        border: 1px solid #ddd;
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
-        height: 420px;
+        height: 380px;
+        border-radius: 4px;
+        margin-right: 10px;
+        background-color: #fff;
+        margin-bottom: 10px;
+    }
+    #line-limit-length {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 200px;
     }
 </style>
-
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div>
     <h1>我的商品库</h1>
     <hr>
     {% for commodity in commodities %}
-    <div id = "test1">
-        <h4>{{commodity.title}}</h4>
-        <img src="{{commodity.image.url}}" height="200px" >
-        <p>待售：{{commodity.for_sale}}</p>
-        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
-        <p>货源：{{commodity.commodity_source.all|join:","}}</p>
-        <p>价格：￥{{commodity.price}}</p>
-        <p>数量：{{commodity.amount}}</p>
-        <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
-            <span class = "glyphicon glyphicon-pencil"></span>
-        </a>
-        <a name = "delete" href = "javascript:" onclick="del_commodity(this, {{commodity.id}})">
-            <span class = "glyphicon glyphicon-trash" style="margin-left:20px"></span>
-        </a>
+    <div class="col-md-4 column">
+        <div class="single-feature mb-30">
+           <a href="{% url 'commodity:commodity_detail' commodity.id %}">
+                    <img src="{{commodity.image.url}}" height="200px">
+                </a>
+            <div class="title d-flex flex-row pb-20">
+                <span class="glyphicon glyphicon-gift"></span>
+                <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+            </div>
+            <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
+            <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
+            <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
+            <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+            <p id="line-limit-length">数量：{{commodity.amount}}</p>
+            <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
+                <span class = "glyphicon glyphicon-pencil"></span>
+            </a>
+            <a name = "delete" href = "javascript:" onclick="del_commodity(this, {{commodity.id}})">
+                <span class = "glyphicon glyphicon-trash" style="margin-left:20px"></span>
+            </a>
+        </div>
     </div>
     {% empty %}
     {% endfor %}
