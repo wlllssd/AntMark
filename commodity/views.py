@@ -34,7 +34,9 @@ def commodity_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
-    return render(request, 'commodity/common/commodity_list.html', {'commodities':commodities, 'page':current_page})
+    tags = CommodityTag.objects.all()
+    sources = CommoditySource.objects.all()   
+    return render(request, 'commodity/common/commodity_list.html', {'commodities':commodities, 'page':current_page, 'tags':tags, 'sources':sources})
 
 # 显示商品详情
 @login_required(login_url = '/users/login')
@@ -233,3 +235,9 @@ def search_commodity(request):
         return render(request, 'commodity/common/search_commodity.html', {'commodities':commodities, 'page':current_page})    
     else:
         return HttpResponseRedirect(reverse('commodity:commodity_list'))
+
+# 筛选商品
+@login_required(login_url = "/users/login")
+@csrf_exempt
+def commodity_filter(request):
+    pass

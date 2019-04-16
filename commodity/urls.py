@@ -16,4 +16,5 @@ urlpatterns = [
     path('put-off-commodity/', views.put_off_commodity, name = "put_off_commodity"),
     path('put-on-commodity/', views.put_on_commodity, name = "put_on_commodity"),
     path('search-commodity/', views.search_commodity, name = "search_commodity"),
+    path('commodity-filter/', views.commodity_filter, name = "commodity_filter")
 ]
