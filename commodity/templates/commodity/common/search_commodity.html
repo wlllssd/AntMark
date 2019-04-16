@@ -23,7 +23,7 @@
 </div>
 
 <div>
-    <h1>所有商品</h1>
+    <h1>搜索结果</h1>
     <hr>
     {% for commodity in commodities %}
     {% if commodity.for_sale and commodity.amount %}
@@ -36,8 +36,9 @@
         <p>价格：￥{{commodity.price}}</p>
         <p>数量：{{commodity.amount}}</p>
     </div>
-    {% endif %}
+    <!-- {% endif %} -->
     {% empty %}
+    <h1>No</h1>
     {% endfor %}
     {% include 'paginator.html' %}
 </div>
