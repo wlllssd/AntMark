@@ -48,7 +48,7 @@ def commodity_detail(request, id):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def commodity_repertory(request):
-    commodity_list = Commodity.objects.filter(author = request.user)
+    commodity_list = Commodity.objects.filter(owner = request.user)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -71,7 +71,7 @@ def create_commodity(request):
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
-                commodity = Commodity.objects.create(author=request.user)
+                commodity = Commodity.objects.create(owner=request.user)
                 commodity.title = cd['title']
                 commodity.body = cd['body']
                 
@@ -150,7 +150,7 @@ def del_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def put_on_shelves_list(request):
-    commodity_list = Commodity.objects.filter(author = request.user, for_sale = False)
+    commodity_list = Commodity.objects.filter(owner = request.user, for_sale = False)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -183,7 +183,7 @@ def put_on_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def put_off_shelves_list(request):
-    commodity_list = Commodity.objects.filter(author = request.user, for_sale = True)
+    commodity_list = Commodity.objects.filter(owner = request.user, for_sale = True)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -212,70 +212,10 @@ def put_off_commodity(request):
     except:
         return HttpResponse('2')
 
-
-# 搜索商品
-# @login_required(login_url = '/users/login')
-# @csrf_exempt
-# def search_commodity(request):
-#     keyword = request.POST.get('keyword')
-#     if keyword != "":
-#         commodity_list = Commodity.objects.filter(title__icontains = keyword)
-#         paginator = Paginator(commodity_list, 10)
-#         page = request.GET.get('page')
-#         try:
-#             current_page = paginator.page(page)
-#             commodities = current_page.object_list
-#         except PageNotAnInteger:
-#             current_page = paginator.page(1)
-#             commodities = current_page.object_list
-#         except EmptyPage:
-#             current_page = paginator.page(1)
-#             commodities = current_page.object_list
-#         tags = CommodityTag.objects.all()
-#         sources = CommoditySource.objects.all()   
-#         return render(request, 'commodity/common/search_commodity.html', {'commodities':commodities, 'page':current_page, 'tags':tags, 'sources':sources})    
-#     else:
-#         return HttpResponseRedirect(reverse('commodity:commodity_list'))
-
-# 筛选商品
-# @login_required(login_url = "/users/login")
-# @csrf_exempt
-# def commodity_filter(request):
-#     try:
-#         condition = {}
-#         tagChoice = request.POST.get('tag', None)
-#         if tagChoice is not None and tagChoice != "0":
-#             tag = CommodityTag.objects.get(tag = tagChoice)
-#             condition['commodity_tag'] = tag.id
-        
-#         sourceChoice = request.POST.get('source', None)
-#         if sourceChoice is not None and sourceChoice != "0": 
-#             source = CommoditySource.objects.get(source = sourceChoice)
-#             condition['commodity_source'] = source.id
-#         commodity_list = Commodity.objects.filter(**condition)
-#         paginator = Paginator(commodity_list, 10)
-#         page = request.GET.get('page')
-#         # print(condition)
-#         # print(commodity_list)
-#         try:
-#             current_page = paginator.page(page)
-#             commodities = current_page.object_list
-#         except PageNotAnInteger:
-#             current_page = paginator.page(1)
-#             commodities = current_page.object_list
-#         except EmptyPage:
-#             current_page = paginator.page(1)
-#             commodities = current_page.object_list
-#         # return render(request, 'commodity/common/commodity_filter.html', {'commodities':commodities, 'page':current_page})
-#         tags = CommodityTag.objects.all()
-#         sources = CommoditySource.objects.all()   
-#         return render(request, 'commodity/common/search_commodity.html', {'commodities':commodities, 'page':current_page, 'tags':tags, 'sources':sources})    
-#     except:
-#         return HttpResponse("2")
-
+# 搜索和筛选商品
 @login_required(login_url = "/users/login")
 @csrf_exempt
-def search_and_filter_commodity(request):
+def search_commodity(request):
     keyword = request.POST.get('keyword')
     if keyword != "":
         condition = {}
