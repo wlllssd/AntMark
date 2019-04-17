@@ -28,7 +28,7 @@
 <div class="container">
  
     <div id="search" class="col-md-12 column">
-        <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_and_filter_commodity' %}" method="POST">{% csrf_token %}
+        <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
             <div class="form-group">
                 <input type="text" class="form-control" name="keyword" value="{{ keyword }}"/>
             </div>
@@ -38,7 +38,7 @@
     
     <div class="col-md-12">
         <div style="margin-left:10px">
-            <form class="form-horizontal" action="{% url 'commodity:search_and_filter_commodity' %}" method="post">{% csrf_token %}
+            <form class="form-horizontal" action="{% url 'commodity:search_commodity' %}" method="post">{% csrf_token %}
                 <div class="row" style="margin-top: 10px">
                     <input name="keyword" type="hidden" value="{{ keyword }}">
                 </div>                
@@ -87,7 +87,7 @@
                     <span class="glyphicon glyphicon-gift"></span>
                     <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
                 </div>
-                <p id="line-limit-length">出售人：{{commodity.author}}</p>
+                <p id="line-limit-length">出售人：{{commodity.owner}}</p>
                 <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>

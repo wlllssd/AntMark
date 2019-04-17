@@ -19,7 +19,7 @@ class CommoditySource(models.Model):
 # 商品
 class Commodity(models.Model):
 	title = models.CharField(max_length = 300)
-	author = models.ForeignKey(User, related_name = "commodity", on_delete = models.CASCADE)
+	owner = models.ForeignKey(User, related_name = "commodity", on_delete = models.CASCADE)
 	commodity_tag = models.ManyToManyField(CommodityTag, related_name = "commodity_tag", blank = False)
 	commodity_source = models.ManyToManyField(CommoditySource, related_name = "commodity_source", blank = False)
 	body = models.TextField()
