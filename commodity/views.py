@@ -23,7 +23,6 @@ def source_list(request):
 @csrf_exempt
 def commodity_list(request):
     commodity_list = Commodity.objects.all()
-    print(commodity_list)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -211,3 +210,26 @@ def put_off_commodity(request):
         return HttpResponse("1")
     except:
         return HttpResponse('2')
+
+
+# 搜索商品
+@login_required(login_url = '/users/login')
+@csrf_exempt
+def search_commodity(request):
+    keyword = request.POST.get('keyword')
+    if keyword != "":
+        commodity_list = Commodity.objects.filter(title__icontains = keyword)
+        paginator = Paginator(commodity_list, 10)
+        page = request.GET.get('page')
+        try:
+            current_page = paginator.page(page)
+            commodities = current_page.object_list
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+            commodities = current_page.object_list
+        except EmptyPage:
+            current_page = paginator.page(1)
+            commodities = current_page.object_list
+        return render(request, 'commodity/common/search_commodity.html', {'commodities':commodities, 'page':current_page})    
+    else:
+        return HttpResponseRedirect(reverse('commodity:commodity_list'))
