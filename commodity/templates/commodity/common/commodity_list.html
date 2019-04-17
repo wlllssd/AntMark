@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 <style>
-    #test1{
+    #test1 {
         display: inline-block;
         border: 1px solid #ddd;
         margin: 20px 10px;
@@ -14,14 +14,28 @@
         background-color: #fff;
         margin-bottom: 10px;
     }
+
     #line-limit-length {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
     }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+<<<<<<< HEAD
+=======
+<div id="search" class="col-md-12 column">
+    <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" class="form-control" name="keyword" />
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+    </form>
+</div>
+
+>>>>>>> a0bc252bbbe2a08b0dc080f89b35cbeb80315951
 <div class="container">
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_and_filter_commodity' %}" method="POST">{% csrf_token %}
@@ -63,4 +77,3 @@
     {% include 'paginator.html' %}
 </div>
 {% endblock %}
-

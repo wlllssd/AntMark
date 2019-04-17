@@ -2000,9 +2000,9 @@ h6 {
 .video-area .overlay-bg,
 .single-footer-widget .click-btn,
 .generic-banner {
+    background-image: -ms-linear-gradient(0deg, #ffff 0%, #ffff 100%);
     background-image: -moz-linear-gradient(0deg, #ffff 0%, #ffff 100%);
     background-image: -webkit-linear-gradient(0deg, #ffff 0%, #ffff 100%);
-    background-image: -ms-linear-gradient(0deg, #ffff 0%, #ffff 100%);
 }
 
 .p1-gradient-color,
