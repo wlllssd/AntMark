@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 <style>
-    #test1{
+    #test1 {
         display: inline-block;
         border: 1px solid #ddd;
         margin: 20px 10px;
@@ -14,42 +14,45 @@
         background-color: #fff;
         margin-bottom: 10px;
     }
+
     #line-limit-length {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
     }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-<div>
-    <h1>我的商品库</h1>
+<div class='container'>
+    <h1 style="font-family: 'SimSun'; height:20px ">我的商品库</h1>
     <hr>
-    {% for commodity in commodities %}
-    <div class="col-md-4 column">
-        <div class="single-feature mb-30">
-           <a href="{% url 'commodity:commodity_detail' commodity.id %}">
+    <div class="row clearfix">
+        {% for commodity in commodities %}
+        <div class="col-md-3 column">
+            <div class="single-feature mb-30">
+                <a href="{% url 'commodity:commodity_detail' commodity.id %}">
                     <img src="{{commodity.image.url}}" height="200px">
                 </a>
-            <div class="title d-flex flex-row pb-20">
-                <span class="glyphicon glyphicon-gift"></span>
-                <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+                <div class="title d-flex flex-row pb-20">
+                    <!-- <span class="glyphicon glyphicon-gift"></span> -->
+                    <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+                </div>
+                <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
+                <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+                <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <a name="edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a name="delete" href="javascript:" onclick="del_commodity(this, {{commodity.id}})">
+                    <span class="glyphicon glyphicon-trash" style="margin-left:20px"></span>
+                </a>
             </div>
-            <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
-            <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
-            <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
-            <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-            <p id="line-limit-length">数量：{{commodity.amount}}</p>
-            <a name = "edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
-                <span class = "glyphicon glyphicon-pencil"></span>
-            </a>
-            <a name = "delete" href = "javascript:" onclick="del_commodity(this, {{commodity.id}})">
-                <span class = "glyphicon glyphicon-trash" style="margin-left:20px"></span>
-            </a>
         </div>
+        {% empty %}
+        {% endfor %}
     </div>
-    {% empty %}
-    {% endfor %}
     {% include 'paginator.html' %}
 </div>
 
@@ -57,30 +60,39 @@
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
 <script type="text/javascript">
-    function del_commodity(the, commodity_id){
-        var commodity_name = $(the).parents("div").children("h4").text(); 
+    function del_commodity(the, commodity_id) {
+        var commodity_name = $(the).parents("div").children("div").children("h4").text();
+        // var commodity_name = $(the).parents("div").children("h4").text();
         layer.open({
             type: 1,
             skin: "layui-layer-rim",
             area: ["400px", "200px"],
-            title: "删除文章",
-            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除《'+commodity_name+'》</p> </div>',
-            btn:['确定', '取消'], yes: function(){
+            title: "删除商品",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除商品：' + commodity_name +
+                '</p> </div>',
+            btn: ['确定', '取消'],
+            yes: function () {
                 $.ajax({
-                    url: '{% url "commodity:del_commodity" %}', 
-                    type:"POST",
-                    data: {"commodity_id":commodity_id}, 
-                    success: function(e){
-                        if(e=="1"){ 
-                            parent.location.reload(); 
+                    url: '{% url "commodity:del_commodity" %}',
+                    type: "POST",
+                    data: {
+                        "commodity_id": commodity_id
+                    },
+                    success: function (e) {
+                        if (e == "1") {
+                            parent.location.reload();
                             layer.msg("has been deleted.");
-                        }else{ 
+                        } else {
                             layer.msg("删除失败");
                         }
-                    }, 
+                    },
                 })
-            }, 
+            },
         });
-    } 
+    }
+</script>
+<script>
+    var temp = document.getElementById("upslider1");
+    temp.classList.add("active");
 </script>
 {% endblock %}

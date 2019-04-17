@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <div class="span6">
+            <ul class="nav nav-tabs upslider">
+                <p><h3>商品管理</h3></p>
+                <li id = "upslider1"><a href="{% url 'commodity:commodity_repertory' %}">商品仓库</a></li>
+                <li id = "upslider2"><a href="{% url 'commodity:create_commodity' %}">新建商品</a></li>
+                <li id = "upslider3"><a href="{% url 'commodity:put_on_shelves_list' %}">上架商品</a></li>
+                <li id = "upslider4"><a href="{% url 'commodity:put_off_shelves_list' %}">下架商品</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    var arr = document.getElementsByClassName("upslider");
+    for (let index = 0; index < arr.length; index++) {
+        arr[index].classList.remove("active");
+    }
+</script>
