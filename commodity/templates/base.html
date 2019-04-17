@@ -13,14 +13,16 @@
 	<title>{% block title %}AntMark{% endblock %}</title>
 	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
+
 {% include 'header.html' %}
-<body style="background-image: url({% static 'images/background1.png' %});background-size:100% 150%;">
-	<div class = "container" style="background-image: url({% static 'images/background2.png' %});background-size:100% 150%;">
+<body style="background-image: url({% static 'img/background2.png' %});background-size:100% 150%;">
+	<div class="container" style="background-image: url({% static 'img/background2.png' %});background-size:100% 150%;">
 		
 		{% block content %}{% endblock %}
 		{% include 'footer.html' %}
 	</div>
 	{% block javascript %}{% endblock %}
 </body>
+
 
 </html>

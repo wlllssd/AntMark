@@ -2,65 +2,75 @@
 {% load staticfiles %}
 {% block content %}
 <style>
-    #test1{
+    #test1 {
         display: inline-block;
-        border: 1px solid pink;
+        border: 1px solid #ddd;
         margin: 20px 10px;
         padding: 0px 10px;
         width: 250px;
-        height: 370px;
+        height: 380px;
+        border-radius: 4px;
+        margin-right: 10px;
+        background-color: #fff;
+        margin-bottom: 10px;
     }
-    #test2{
-        margin: 10px 50px 10px -10px;
-        width:100px; 
-        height: 40px;
-        background-color: rgb(240, 96, 168);
-        color: aliceblue;
-        font-size: 1.4em;
+
+    #line-limit-length {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
     }
 </style>
+<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 
-<div>
+<div class='container'>
     <h1>请选择上架商品</h1>
     <hr>
-    {% for commodity in commodities %}
-    <div id = "test1">
-        <h4>{{commodity.title}}</h4>
-        <img src="{{commodity.image.url}}" height="200px" >
-        <p>待售：{{commodity.for_sale}}</p>
-        <p>标签：{{commodity.commodity_tag.all|join:","}}</p>
-        <p>货源：{{commodity.commodity_source.all|join:","}}</p>
-        <p>价格：￥{{commodity.price}}</p>
-        <p>数量：{{commodity.amount}}</p>
-        <input type="button" href = "javascript:" id="test2" value="上架" onclick="put_on(this, {{commodity.id}})">
-    </div>
-    {% empty %}
-    <p>您所有的商品已经上架了哦~</p>
-    {% endfor %}
-</div>
+    <div class="row clearfix">
+        {% for commodity in commodities %}
 
+        <div class="col-md-3 column">
+            <div class="single-feature mb-30">
+                <h4>{{commodity.title}}</h4>
+                <img src="{{commodity.image.url}}" height="200px">
+                <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
+                <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+                <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <input type="button" href="javascript:" id="test2" value="上架" onclick="put_on(this, {{commodity.id}})">
+            </div>
+        </div>
+        {% empty %}
+        <p>您所有的商品已经上架了哦~</p>
+        {% endfor %}
+    </div>
+</div>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
 <script type="text/javascript">
-    function put_on(the, commodity_id){
+    function put_on(the, commodity_id) {
         $.ajax({
-            url: '{% url "commodity:put_on_commodity" %}', 
-            type:"POST",
-            data: {"commodity_id":commodity_id}, 
-            success: function(e){
-                if(e=="1"){ 
-                    layer.msg("上架完成");
+            url: '{% url "commodity:put_on_commodity" %}',
+            type: "POST",
+            data: {
+                "commodity_id": commodity_id
+            },
+            success: function (e) {
+                if (e == "1") {
+                    layer.msg("上架成功");
                     location.href = "{% url 'commodity:put_on_shelves_list' %}";
-                }else{ 
+                } else {
                     layer.msg("上架失败");
                 }
-            }, 
+            },
         })
     }
-    </script>
+</script>
+<script>
+    var temp = document.getElementById("upslider3");
+    temp.classList.add("active");
+</script>
 {% endblock %}
-
-
-
-
