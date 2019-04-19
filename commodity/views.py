@@ -34,6 +34,7 @@ def commodity_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
+
     return render(request, 'commodity/common/commodity_list.html', {'commodities':commodities, 'page':current_page})
 
 # 显示商品详情
@@ -211,16 +212,25 @@ def put_off_commodity(request):
     except:
         return HttpResponse('2')
 
-
-# 搜索商品
-@login_required(login_url = '/users/login')
+# 搜索和筛选商品
+@login_required(login_url = "/users/login")
 @csrf_exempt
 def search_commodity(request):
     keyword = request.POST.get('keyword')
     if keyword != "":
-        commodity_list = Commodity.objects.filter(title__icontains = keyword)
+        condition = {}
+        tagChoice = request.POST.get('tag', None)
+        if tagChoice is not None and tagChoice != "0":
+            tag = CommodityTag.objects.get(tag = tagChoice)
+            condition['commodity_tag'] = tag.id
+        
+        sourceChoice = request.POST.get('source', None)
+        if sourceChoice is not None and sourceChoice != "0": 
+            source = CommoditySource.objects.get(source = sourceChoice)
+            condition['commodity_source'] = source.id
+        commodity_list = Commodity.objects.filter(title__icontains = keyword, **condition)
         paginator = Paginator(commodity_list, 10)
-        page = request.GET.get('page')
+        page = request.GET.get('page')        
         try:
             current_page = paginator.page(page)
             commodities = current_page.object_list
@@ -230,6 +240,11 @@ def search_commodity(request):
         except EmptyPage:
             current_page = paginator.page(1)
             commodities = current_page.object_list
-        return render(request, 'commodity/common/search_commodity.html', {'commodities':commodities, 'page':current_page})    
+        tags = CommodityTag.objects.all()
+        sources = CommoditySource.objects.all()   
+        context = {
+            'commodities':commodities, 'keyword':keyword, 'page':current_page, 'tags':tags, 'sources':sources
+        }
+        return render(request, 'commodity/common/search_commodity.html', context)    
     else:
-        return HttpResponseRedirect(reverse('commodity:commodity_list'))
+        return HttpResponseRedirect(reverse('commodity:commodity_list'))    

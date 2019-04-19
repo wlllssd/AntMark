@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 app_name = "commodity"
@@ -15,5 +15,5 @@ urlpatterns = [
     path('put-off-shelves_list/', views.put_off_shelves_list, name = "put_off_shelves_list"),
     path('put-off-commodity/', views.put_off_commodity, name = "put_off_commodity"),
     path('put-on-commodity/', views.put_on_commodity, name = "put_on_commodity"),
-    path('search-commodity/', views.search_commodity, name = "search_commodity"),
+    path('search-commodity/', views.search_commodity, name = "search_commodity")
 ]
