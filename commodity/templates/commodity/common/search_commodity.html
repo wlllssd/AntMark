@@ -1,8 +1,6 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block content %}
+{% extends 'base.html' %} {% load staticfiles %} {% block content %}
 <style>
-    #test1{
+    #test1 {
         display: inline-block;
         border: 1px solid #ddd;
         margin: 20px 10px;
@@ -14,11 +12,12 @@
         background-color: #fff;
         margin-bottom: 10px;
     }
+    
     #line-limit-length {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
     }
 </style>
 
@@ -36,8 +35,7 @@
     <h1>搜索结果</h1>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %}
-        {% if commodity.for_sale and commodity.amount %}
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
@@ -47,7 +45,7 @@
                     <span class="glyphicon glyphicon-gift"></span>
                     <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
                 </div>
-                <p id="line-limit-length">出售人：{{commodity.author}}</p>
+                <p id="line-limit-length">出售人：{{commodity.owner}}</p>
                 <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
@@ -57,11 +55,8 @@
                 </div>
             </div>
         </div>
-        {% endif %}
-        {% empty %}
-        {% endfor %}
+        {% endif %} {% empty %} {% endfor %}
     </div>
     {% include 'paginator.html' %}
 </div>
 {% endblock %}
-

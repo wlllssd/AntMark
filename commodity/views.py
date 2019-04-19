@@ -47,7 +47,7 @@ def commodity_detail(request, id):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def commodity_repertory(request):
-    commodity_list = Commodity.objects.filter(author = request.user)
+    commodity_list = Commodity.objects.filter(owner = request.user)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -70,7 +70,7 @@ def create_commodity(request):
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
-                commodity = Commodity.objects.create(author=request.user)
+                commodity = Commodity.objects.create(owner=request.user)
                 commodity.title = cd['title']
                 commodity.body = cd['body']
                 
@@ -149,7 +149,7 @@ def del_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def put_on_shelves_list(request):
-    commodity_list = Commodity.objects.filter(author = request.user, for_sale = False)
+    commodity_list = Commodity.objects.filter(owner = request.user, for_sale = False)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
@@ -182,7 +182,7 @@ def put_on_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def put_off_shelves_list(request):
-    commodity_list = Commodity.objects.filter(author = request.user, for_sale = True)
+    commodity_list = Commodity.objects.filter(owner = request.user, for_sale = True)
     paginator = Paginator(commodity_list, 10)
     page = request.GET.get('page')
     try:
