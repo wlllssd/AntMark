@@ -1,3 +1,6 @@
+.nav>li>a:hover {
+    background-color: #ffffff29
+}
 ::-moz-selection {
     /* Code for Firefox */
     background-color: #87CEFA;
@@ -2157,7 +2160,7 @@ h6 {
 }
 
 .dropdown-menu {
-    background: #10101063;
+    background: #337ab7c7;
     border-radius: 0;
     margin-top: 10px;
     border: none;
