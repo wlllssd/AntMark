@@ -1,0 +1,112 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+
+<html lang="zxx" class="no-js">
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/room_detail.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript">
+        var update_chat = function() {
+            var last_msg_id = $('#display_block > .message_block').last().data('id');
+            $.ajax({
+                url: "{% url 'chatroom:get_messages' room.id %}",
+                data: {
+                    last: last_msg_id
+                },
+                success: function(data) {
+                    console.log(data)
+                    $('#display_block').append(data);
+                    $('#display_block').scrollTop($('#display_block')[0].scrollHeight);
+                }
+            });
+        };
+
+        $(function() {
+            setInterval(update_chat, 2000);
+            $('textarea').on('keydown', function(event) {
+                if (event.keyCode == 13) {
+                    if (!event.shiftKey) {
+                        $('#create_message').submit();
+                    };
+                };
+            });
+            $('#display_block').scrollTop($('#display_block')[0].scrollHeight);
+            $('#create_message').on('submit', post_message);
+            $('#id_content').focus();
+        });
+    </script>
+</head>
+
+<body>
+    <div>
+
+        <br/> {% ifequal room.member1 request.user %}
+        <h4>{{ room.member2|getUserNickname }}</h4>
+        {% else %}
+        <h4>{{ room.member1|getUserNickname }}</h4>
+        {% endifequal %}
+
+        <div class="display_block" id="display_block">
+            {% for msg in messages %}
+            <div class="message_block" id="{{ msg.id }}" data-id='{{ msg.id }}' name="message_block">
+                {% ifequal msg.sender request.user %}
+                <div class="message_right">
+                    <br/>
+                    <p> {{ msg.timestamp }} </p>
+                    <p> {{ msg.sender|getUserNickname }} </p>
+                    <div class="message_content">
+                        {% ifnotequal msg.content "" %}
+                        <p>{{ msg.content }}</p>
+                        {% endifnotequal %} {% ifnotequal msg.image "" %}
+                        <img style="width:280px; overflow:hidden;" src="/media/{{msg.image}}"> {% endifnotequal %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="message_left">
+                    <br/>
+                    <p> {{ msg.timestamp }} </p>
+                    <p> {{ msg.sender|getUserNickname }} </p>
+                    <div class="message_content">
+                        {% ifnotequal msg.content "" %}
+                        <p>{{ msg.content }}</p>
+                        {% endifnotequal %} {% ifnotequal msg.image "" %}
+                        <img style="width:280px; overflow:hidden;" src="/media/{{msg.image}}"> {% endifnotequal %}
+                    </div>
+                </div>
+                {% endifequal %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="commodity_detail">
+        <h4>正在咨询商品：{{ room.commodity.title}}</h4>
+        <br/>
+        <img src="{{ room.commodity.image.url }}" height="320px">
+        <p>待售：{{ room.commodity.for_sale }}</p>
+        <p>标签：{{ room.commodity.commodity_tag.all|join:"," }}</p>
+        <p>货源：{{ room.commodity.commodity_source.all|join:"," }}</p>
+        <p>价格：￥{{ room.commodity.price }}</p>
+        <p>数量：{{ room.commodity.amount }}</p>
+    </div>
+    <div class="input_field">
+        <form id="chatForm" class="form" method="post" enctype="multipart/form-data" action="{% url 'chatroom:room_detail' room.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="text" id="text" class="form-control" />
+                <span>Image(Only support english filename)</span>
+                <input type="file" name="image" id="image" class="form-control" />
+                <input type="hidden" name="post_type" value="send_chat" />
+            </div>
+            <div style="float:right">
+                <button type="submit" class="btn btn-primary">Send</button>
+                <a class="btn btn-outline-primary" href="javascript:history.go(-1)">Go Back</a>
+            </div>
+            <div class="clear"></div>
+        </form>{{ form.media }}
+    </div>
+
+</body>
+
+</html>
+
+{% endblock content %}

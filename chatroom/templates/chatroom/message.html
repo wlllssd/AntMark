@@ -1,0 +1,29 @@
+{% load base %} {% for msg in messages %}
+<div class="message_block" id="{{ msg.id }}" data-id='{{ msg.id }}' name="message_block">
+    {% ifequal msg.sender request.user %}
+    <div class="message_right">
+        <br/>
+        <p> {{ msg.timestamp }} </p>
+        <p> {{ msg.sender|getUserNickname }} </p>
+        <div class="message_content">
+            {% ifnotequal msg.content "" %}
+            <p>{{ msg.content }}</p>
+            {% endifnotequal %} {% ifnotequal msg.image "" %}
+            <img style="width:280px; overflow:hidden;" src="/media/{{msg.image}}"> {% endifnotequal %}
+        </div>
+    </div>
+    {% else %}
+    <div class="message_left">
+        <br/>
+        <p> {{ msg.timestamp }} </p>
+        <p> {{ msg.sender|getUserNickname }} </p>
+        <div class="message_content">
+            {% ifnotequal msg.content "" %}
+            <p>{{ msg.content }}</p>
+            {% endifnotequal %} {% ifnotequal msg.image "" %}
+            <img style="width:280px; overflow:hidden;" src="/media/{{msg.image}}"> {% endifnotequal %}
+        </div>
+    </div>
+    {% endifequal %}
+</div>
+{% endfor %}

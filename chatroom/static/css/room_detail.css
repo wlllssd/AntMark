@@ -1,0 +1,46 @@
+.display_block {
+    float: left;
+    margin: 30px auto 30px 0px;
+    width: 60%;
+    height: 550px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px #ccc solid;
+    border-radius: 6px;
+    padding: 10px 10px 10px 10px;
+}
+
+.message_left {
+    margin: 0px auto 5px 0px;
+    width: 300px;
+}
+
+.message_right {
+    margin: 0px 0px 5px auto;
+    padding: 5px 5px 5px 5px;
+    width: 300px;
+}
+
+.message_content {
+    border: 1px solid;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    table-layout: fixed;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.input_field {
+    width: 60%;
+    height: 100px;
+}
+
+.commodity_detail {
+    width: 35%;
+    height: 550px;
+    float: left;
+    margin: 30px auto 0px 20px;
+    padding: 10px 0px 0px 20px;
+    border: 1px #ccc solid;
+    border-radius: 6px;
+}

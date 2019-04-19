@@ -16,8 +16,9 @@ from django.db.models import Q
 from helper.crypto import encrypt, decrypt
 from django.conf import settings
 
-from users.models import UserInfo, Chatroom, Message
+from users.models import UserInfo
 from users.forms import InfoForm
+from commodity.models import Commodity
 
 import re, time, json
 
@@ -197,6 +198,9 @@ def user_settings(request):
         info.nickname = info_form.cleaned_data["nickname"]
         info.gender = info_form.cleaned_data["gender"]
         info.intro = info_form.cleaned_data["intro"]
+        info.phone = info_form.cleaned_data['phone']
+        info.wechat = info_form.cleaned_data['wechat']
+        info.qq = info_form.cleaned_data['qq']
         myprofile = request.FILES.get('profile', None)
         if myprofile:
             if info.profile.name != 'user/img/default.jpg' :
@@ -225,6 +229,17 @@ def reset_password(request):
     context = { 'form': form }
     return render(request, 'users/reset_pwd.html', context)
 
+@login_required
+def personal_index(request, user_id):
+    cur_user = User.objects.get(id=user_id)
+    cur_info = UserInfo.objects.get(user=cur_user)
+    comms = Commodity.objects.filter(owner=cur_user)
+    context = {
+        'cur_user': cur_user,
+        'cur_info': cur_info,
+        'comms': comms,
+    }
+    return render(request, 'users/personal_index.html', context)
 
 def view_notice(request):
     """ 用户查看公告 """
@@ -235,35 +250,4 @@ def call_admin(request):
     """ 用户发送消息联系管理员 """
     return render(request, 'home/developing.html')
 
-
-@login_required
-def notice(request):
-    rooms = Chatroom.objects.filter(Q(talker1=request.user)|Q(talker2=request.user))
-    context = { 'rooms': rooms }
-    return render(request, 'users/notice.html', context)
-
-# def start_chat(request, user_id, commodity_id=0):
-@login_required
-def start_chat(request, user_id):
-    talker2 = User.objects.get(id=user_id)
-    try:
-        room = Chatroom.objects.get(talker1=request.user, talker2=talker2)
-    except:
-        room = Chatroom.objects.create(talker1=request.user, talker2=talker2)
-    context = { 'room' : room }
-    return render(request, 'users/chatroom.html', context)
-
-@login_required
-def chatting(request, room_id):
-    room = Chatroom.objects.get(id=room_id)
-    if request.user != room.talker1 and request.user != room.talker2:
-        raise Http404
-
-    if request.method == 'POST':
-        text = request.POST['text']
-        if text.strip() != '':
-            Message.objects.create(belong_to=room, sender=request.user, content=text)
-
-    context = { 'room': room }
-    return render(request, 'users/chatroom.html', context)
 

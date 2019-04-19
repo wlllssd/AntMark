@@ -1,8 +1,10 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} AntMark {% endblock %} {% load static %} {% load base %} {% block content %}
+
+<html lang="zxx" class="no-js">
 
 <body>
     <div class="section-top-border">
-        <h1>Chatroom List</h1>
+        <h1>聊天列表</h1>
         <br/>
         <div class="section">
             <table class="table table-hover">
@@ -15,13 +17,13 @@
                 <tbody>
                     {% for room in rooms %}
                     <tr class="table-info">
-                        {% ifequal room.talker1 request.user %}
-                        <td>{{ room.talker2|getUserNickname }}</td>
+                        {% ifequal room.member1 request.user %}
+                        <td>{{ room.member2|getUserNickname }}</td>
                         {% else %}
-                        <td>{{ room.talker1|getUserNickname }}</td>
+                        <td>{{ room.member1|getUserNickname }}</td>
                         {% endifequal %}
                         <td>
-                            <a href="{% url 'users:chatting' room.id %}">点击进入聊天</a>
+                            <a href="{% url 'chatroom:room_detail' room.id %}">点击进入聊天</a>
                         </td>
                     </tr>
                     {% empty %}
@@ -35,4 +37,11 @@
         </div>
     </div>
 </body>
+
+<script language="javascript">
+</script>
+
+</html>
+
+
 {% endblock content %}
