@@ -1,8 +1,6 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block content %}
+{% extends 'base.html' %} {% load staticfiles %} {% block content %}
 <style>
-    #test1{
+    #test1 {
         display: inline-block;
         border: 1px solid #ddd;
         margin: 20px 10px;
@@ -14,11 +12,12 @@
         background-color: #fff;
         margin-bottom: 10px;
     }
+    
     #line-limit-length {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
     }
 </style>
 
@@ -76,8 +75,7 @@
     <h1>搜索结果</h1>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %}
-        {% if commodity.for_sale and commodity.amount %}
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
@@ -97,11 +95,8 @@
                 </div>
             </div>
         </div>
-        {% endif %}
-        {% empty %}
-        {% endfor %}
+        {% endif %} {% empty %} {% endfor %}
     </div>
     {% include 'paginator.html' %}
 </div>
 {% endblock %}
-

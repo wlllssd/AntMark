@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-{% block content %}
+{% extends 'base.html' %} {% load staticfiles %} {% block content %}
 <style>
     #test1 {
         display: inline-block;
@@ -14,7 +12,7 @@
         background-color: #fff;
         margin-bottom: 10px;
     }
-
+    
     #line-limit-length {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -36,8 +34,7 @@
     <h1>所有商品</h1>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %}
-        {% if commodity.for_sale and commodity.amount %}
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
@@ -57,9 +54,7 @@
                 </div>
             </div>
         </div>
-        {% endif %}
-        {% empty %}
-        {% endfor %}
+        {% endif %} {% empty %} {% endfor %}
     </div>
     {% include 'paginator.html' %}
 </div>

@@ -13,10 +13,15 @@ class InfoForm(forms.ModelForm):
             'nickname',
             'gender',
             'intro',
-        
+            'phone',
+            'wechat',
+            'qq',
         ]
         labels = {
             'nickname': 'Nickname',
             'gender': 'Gender',
             'intro': 'User introduce',
+            'phone': 'Phone',
+            'wechat': 'Wechat',
+            'qq': 'QQ',
         }
