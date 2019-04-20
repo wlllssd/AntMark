@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="{% static 'css/typicons.min.css' %}">
 </head>
 
-<body class = "container">
+<body class="container">
     <!-- start banner Area -->
     <section class="banner-area" id="home">
         <!-- Start Header Area -->
@@ -38,19 +38,18 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <a class="navbar-brand" href="{% url 'home:index' %}">
-                    <img src="/static/img/logo_schnee.png" alt="">
+                    <img src="/static/img/logo_antmark.png" alt="">
                 </a>
-                <a class="navbar-brand" href="{% url 'home:index' %}" style='margin-left:-30px;color:whitesmoke'>LOGO旁边的字</a>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{% url 'home:index' %}">主页</a></li>
-                    <li><a href="{% url 'users:notice' %}">公告</a></li>
                     <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
+                    <li><a href="{% url 'chatroom:room_list' %}">聊天列表</a></li>
                 </ul>
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav nav-tabs navbar-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            {{user.username}}
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}">
+                            {{ user|getUserNickname }}
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>

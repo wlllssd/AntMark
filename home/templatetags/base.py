@@ -1,13 +1,28 @@
 # -*- coding: utf-8 -*-
+import markdown
+import markdownx
+
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 
-from users.models import UserInfo, Chatroom, Message
+from users.models import UserInfo
 
 register = template.Library()
+
+@register.filter(is_safe = True)
+@stringfilter
+def custom_markdown(value):
+    return mark_safe(markdown.markdown(value,
+                              extensions = ['markdown.extensions.extra',
+                                            'markdown.extensions.toc',
+                                            'markdown.extensions.sane_lists',
+                                            'markdown.extensions.nl2br',
+                                            'markdown.extensions.codehilite',],
+                              safe_mode = True,
+                              enable_attributes = False))
 
 @register.filter
 def getUserNickname(user):
@@ -18,19 +33,11 @@ def getUserNickname(user):
     else:
         return info.nickname
 
-
 @register.filter
-@stringfilter
-def get_msgs(room_id):
-    room = Chatroom.objects.get(id=room_id)
-    msgs = Message.objects.filter(belong_to=room)
-    return msgs
-
-# @register.filter
-# def get_room_name(room_id, user_id):
-#     room = Chatroom.objects.get(id=room_id)
-#     user = User.objects.get(id=user_id)
-#     if user == room.talker1:
-#         return getUserNickname(room.talker2)
-#     else:
-#         return getUserNickname(room.talker1)
+def is_del(room, user):
+    if room.member1 == user and room.mem1_del:
+        return False
+    if room.member2 == user and room.mem2_del:
+        return False
+    return True
+    
