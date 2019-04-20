@@ -47,8 +47,27 @@ def commodity_list(request):
 @csrf_exempt
 def commodity_detail(request, id):
     commodity = get_object_or_404(Commodity, id = id)
-    context = {"commodity":commodity}
+    commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
+    similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
+    similar_commodities = similar_commodities[:4]
+    context = {"commodity":commodity, "similar_commodities":similar_commodities}
     return render(request, "commodity/common/commodity_detail.html", context)
+
+# def article_detail(request, id):
+#     article = get_object_or_404(ArticlePost, id=id)
+    
+#     if request.method == "POST":
+#         comment_form = CommentForm(data=request.POST) 
+#         if comment_form.is_valid():
+#             new_comment = comment_form.save(commit=False) 
+#             new_comment.article = article 
+#             new_comment.save()
+#     else:
+#         comment_form = CommentForm()
+#     article_tags_ids = article.article_tag.values_list("id", flat=True)
+#     similar_articles = ArticlePost.objects.filter(article_tag__in=article_tags_ids).exclude(id=article.id)
+#     similar_articles = similar_articles.annotate(same_tags=Count("article_tag")).order_by('-same_tags', '-created')[:4]
+#     return render(request, "article/list/article_content.html", {"article":article, "comment_form":comment_form, "similar_articles":similar_articles})
 
 # 个人商品库
 @login_required(login_url = '/users/login')

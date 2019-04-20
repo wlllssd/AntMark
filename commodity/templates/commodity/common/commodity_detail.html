@@ -58,6 +58,15 @@
     <div class="col-md-2 ">
         <h2>你可能喜欢</h2>
         <hr>
+        {% for similar_commodity in similar_commodities %}
+        <div style="margin:30px 0px">
+            <a href="{% url 'commodity:commodity_detail' similar_commodity.id %}"><img src="{{similar_commodity.image.url}}" width="150px"></a>
+            <a href="{% url 'commodity:commodity_detail' similar_commodity.id %}">
+                <p style="text-align:center">{{similar_commodity.title}}</p>
+            </a>
+        </div>
+        {% empty %}
+        {% endfor %}
     </div>
 </div> 
 {% endblock %}
