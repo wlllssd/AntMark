@@ -23,4 +23,6 @@ urlpatterns = [
     path('', include('home.urls', namespace = 'home')), 
     path('users/', include('users.urls', namespace = 'users')),
     path('commodity/', include('commodity.urls', namespace = "commodity")),
+    # path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('ueditor/',include('DjangoUeditor.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\

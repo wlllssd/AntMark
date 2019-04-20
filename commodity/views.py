@@ -7,16 +7,19 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 
 from .models import CommodityTag, Commodity, CommoditySource
-from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
+from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm, UEditorForm
 
 # 显示所有商品标签，暂无作用
 def tag_list(request):
     tags = CommodityTag.objects.all()
-    return render(request, 'commodity/common/tag_list.html', {'tags':tags})
+    context = {'tags':tags}
+    return render(request, 'commodity/common/tag_list.html', context)
 
+# 显示所有商品货源，暂无作用
 def source_list(request):
     sources = CommoditySource.objects.all()
-    return render(request, 'commodity/common/source_list.html', {'sources':sources})
+    context = {'sources':sources}
+    return render(request, 'commodity/common/source_list.html', context)
 
 # 显示所有商品
 @login_required(login_url = '/users/login')
@@ -34,15 +37,16 @@ def commodity_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
-
-    return render(request, 'commodity/common/commodity_list.html', {'commodities':commodities, 'page':current_page})
+    context = {'commodities':commodities, 'page':current_page}
+    return render(request, 'commodity/common/commodity_list.html', context)
 
 # 显示商品详情
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def commodity_detail(request, id):
     commodity = get_object_or_404(Commodity, id = id)
-    return render(request, "commodity/common/commodity_detail.html", {"commodity":commodity})
+    context = {"commodity":commodity}
+    return render(request, "commodity/common/commodity_detail.html", context)
 
 # 个人商品库
 @login_required(login_url = '/users/login')
@@ -60,7 +64,8 @@ def commodity_repertory(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
-    return render(request, 'commodity/personal/commodity_repertory.html', {'commodities':commodities, 'page':current_page})
+    context = {'commodities':commodities, 'page':current_page}
+    return render(request, 'commodity/personal/commodity_repertory.html', context)
 
 # 创建商品
 @login_required(login_url = '/users/login')
@@ -68,9 +73,10 @@ def commodity_repertory(request):
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
+        # ueditor_form = UEditorForm(data = )
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
-            try:
+            if True:
                 commodity = Commodity.objects.create(owner=request.user)
                 commodity.title = cd['title']
                 commodity.body = cd['body']
@@ -93,15 +99,17 @@ def create_commodity(request):
                 print("1")
                 # 重定向
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
-            except:
-                return HttpResponse("2")
+            # except:
+            #     return HttpResponse("2")
         else:
             return HttpResponse("3")
     else:
         commodity_form = CommodityForm()
         tags = CommodityTag.objects.all()
         sources = CommoditySource.objects.all()
-        return render(request, 'commodity/personal/create_commodity.html', {'commodity_form':commodity_form, 'tags':tags, 'sources':sources})
+        # ueditor_form = UEditorForm()
+        context = {'commodity_form':commodity_form, 'tags':tags, 'sources':sources}
+        return render(request, 'commodity/personal/create_commodity.html', context)
 
 # 编辑商品信息
 @login_required(login_url = '/users/login')
@@ -111,7 +119,8 @@ def edit_commodity(request, id):
     if request.method == 'GET':
         commodity_form = CommodityForm()
         sources = CommoditySource.objects.all()
-        return render(request, 'commodity/personal/edit_commodity.html', {'commodity':commodity, 'commodity_form':commodity_form, 'sources':sources})
+        context = {'commodity':commodity, 'commodity_form':commodity_form, 'sources':sources}
+        return render(request, 'commodity/personal/edit_commodity.html', context)
     else:
         commodity_form = CommodityForm(data = request.POST)
         if commodity_form.is_valid():
@@ -162,7 +171,8 @@ def put_on_shelves_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list    
-    return render(request, 'commodity/personal/put_on_shelves_list.html', {'commodities':commodities, 'page':current_page})
+    context = {'commodities':commodities, 'page':current_page}
+    return render(request, 'commodity/personal/put_on_shelves_list.html', context)
 
 # 将商品库的商品上架
 @login_required(login_url = '/users/login')
@@ -195,7 +205,8 @@ def put_off_shelves_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
-    return render(request, 'commodity/personal/put_off_shelves_list.html', {'commodities':commodities, 'page':current_page})
+    context = {'commodities':commodities, 'page':current_page}
+    return render(request, 'commodity/personal/put_off_shelves_list.html', context)
 
 # 将商品下架
 @login_required(login_url = '/users/login')
@@ -242,9 +253,7 @@ def search_commodity(request):
             commodities = current_page.object_list
         tags = CommodityTag.objects.all()
         sources = CommoditySource.objects.all()   
-        context = {
-            'commodities':commodities, 'keyword':keyword, 'page':current_page, 'tags':tags, 'sources':sources
-        }
+        context = {'commodities':commodities, 'keyword':keyword, 'page':current_page, 'tags':tags, 'sources':sources}
         return render(request, 'commodity/common/search_commodity.html', context)    
     else:
         return HttpResponseRedirect(reverse('commodity:commodity_list'))    

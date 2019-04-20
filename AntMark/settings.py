@@ -123,6 +123,7 @@ INSTALLED_APPS = [
     'home',
     'users',
     'commodity',
+    'DjangoUeditor',
 ]
 
 MIDDLEWARE = [
@@ -217,6 +218,8 @@ STATICFILES_DIRS = [
 # upload folder
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 
 SIMDITOR_UPLOAD_PATH = '/media/uploads/'
 SIMDITOR_IMAGE_BACKEND = 'pillow'
