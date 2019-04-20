@@ -171,6 +171,7 @@ def user_active(request, active_code):
         #激活成功就跳转到首页(message页面有自动跳转功能)
         response_data['goto_url'] = settings.CUR_HOST + 'users/login'
         response_data['goto_time'] = 5
+        response_data['next_page'] = "用户登录界面"
 
         return render(request, 'users/message.html' , response_data)
 

@@ -31,6 +31,7 @@
 }
 
 .input_field {
+    float: left;
     width: 60%;
     height: 100px;
 }
@@ -43,4 +44,28 @@
     padding: 10px 0px 0px 20px;
     border: 1px #ccc solid;
     border-radius: 6px;
+}
+
+.function_block {
+    width: 35%;
+    height: 88px;
+    margin: 0px auto 0px 20px;
+    padding: 5px 0px 0px 5px;
+    border: 1px #ccc solid;
+    border-radius: 6px;
+    float: left;
+}
+
+.function_button {
+    margin: 3px;
+}
+
+.img_min {
+    width: 280px;
+    overflow: hidden;
+}
+
+.img_max {
+    width: 100%;
+    overflow: hidden;
 }

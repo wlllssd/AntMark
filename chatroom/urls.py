@@ -13,4 +13,8 @@ urlpatterns = [
     path('room_detail/<int:room_id>', views.room_detail, name = 'room_detail'),
 
     path('get_messages/<int:room_id>', views.get_messages, name = 'get_messages'),
+
+    path('del_room/<int:room_id>/<int:mem_id>', views.del_room, name = 'del_room'),
+
+    path('chat_intro/', views.chat_intro, name = 'chat_intro'),
 ]
