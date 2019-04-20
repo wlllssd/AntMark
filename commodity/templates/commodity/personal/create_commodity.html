@@ -5,8 +5,9 @@
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
 
 <div>
-    <h1>新建商品</h1>
-    <hr>
+    <!-- <h1>新建商品</h1> -->
+    <!-- <hr> -->
+    <br>
     <div style="margin-left:10px">
         <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'commodity:create_commodity' %}" method="post">{% csrf_token %} 
             <div class="row" style="margin-top: 10px;">
