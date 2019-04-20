@@ -124,6 +124,7 @@ INSTALLED_APPS = [
     'users',
     'commodity',
     'DjangoUeditor',
+    'chatroom',
 ]
 
 MIDDLEWARE = [

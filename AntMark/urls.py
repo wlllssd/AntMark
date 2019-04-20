@@ -25,4 +25,5 @@ urlpatterns = [
     path('commodity/', include('commodity.urls', namespace = "commodity")),
     # path('ckeditor/', include('ckeditor_uploader.urls')),
     path('ueditor/',include('DjangoUeditor.urls')),
+    path('chatroom/',include('chatroom.urls', namespace = "chatroom"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
