@@ -1,0 +1,46 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
+
+<html lang="zxx" class="no-js">
+
+<body>
+
+
+    <section class="project-area section-gap" id="project" style="padding-top: 30px">
+        <div class="section_title">
+            <h2>聊天系统使用说明书</h2>
+        </div>
+        <div class="container">
+            <div class="title text-center">
+                <div>
+                    <div style="margin-top: 40px">
+                        <h3>聊天列表</h3>
+                        <br/>
+                        <img src="{% static 'img/room_list_intro.png' %}" />
+                        <br/>
+                    </div>
+                    <div style="margin-top: 40px">
+                        <h3>聊天室说明</h3>
+                        <br/>
+                        <img src="{% static 'img/room_detail_intro1.png' %}" />
+                        <br/>
+                    </div>
+                    <div style="margin-top: 40px">
+                        <h3>聊天室辅助功能说明</h3>
+                        <br/>
+                        <img src="{% static 'img/room_detail_intro2.png' %}" />
+                        <br/>
+                    </div>
+                </div>
+                <hr>
+                <center>
+                    <a href="javascript:history.go(-1);" class="btn btn-success">确认</a>
+                    <a href="{% url 'home:index' %}" class="btn btn-info">返回主页</a>
+                </center>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+
+{% endblock content %}

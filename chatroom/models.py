@@ -10,9 +10,13 @@ class Chatroom(models.Model):
     member1 = models.ForeignKey(User, related_name="mem1", on_delete=models.CASCADE)
     member2 = models.ForeignKey(User, related_name="mem2", on_delete=models.CASCADE)
     date_add = models.DateTimeField(auto_now_add=True)
+    mem1_del = models.BooleanField(default=False)
+    mem2_del = models.BooleanField(default=False)
+    mem1_read = models.BooleanField(default=False)
+    mem2_read = models.BooleanField(default=False)
 
     def __str__(self):
-        return "Chatroom " + str(self.member1) + " - " + str(self.member2)
+        return "Chatroom " + str(self.member1) + " - " + str(self.member2) + " - " + str(self.commodity)
 
 
 class Chatmsg(models.Model):
