@@ -1,18 +1,5 @@
 {% extends 'base.html' %} {% load staticfiles %} {% block content %}
 <style>
-    #test1 {
-        display: inline-block;
-        border: 1px solid #ddd;
-        margin: 20px 10px;
-        padding: 0px 10px;
-        width: 250px;
-        height: 380px;
-        border-radius: 4px;
-        margin-right: 10px;
-        background-color: #fff;
-        margin-bottom: 10px;
-    }
-    
     #line-limit-length {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -25,9 +12,9 @@
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
             <div class="form-group">
-                <input type="text" class="form-control" name="keyword" />
+                <input type="text" class="form-control" name="keyword" style="width:400px; margin-left: 250px;"/>
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
+            <button type="submit" class="btn btn-default" style="">搜索</button>
         </form>
     </div>
 

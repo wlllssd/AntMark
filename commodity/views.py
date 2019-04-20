@@ -7,7 +7,9 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 
 from .models import CommodityTag, Commodity, CommoditySource
-from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm, UEditorForm
+from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
+
+from django import forms
 
 # 显示所有商品标签，暂无作用
 def tag_list(request):
@@ -107,7 +109,6 @@ def create_commodity(request):
         commodity_form = CommodityForm()
         tags = CommodityTag.objects.all()
         sources = CommoditySource.objects.all()
-        # ueditor_form = UEditorForm()
         context = {'commodity_form':commodity_form, 'tags':tags, 'sources':sources}
         return render(request, 'commodity/personal/create_commodity.html', context)
 

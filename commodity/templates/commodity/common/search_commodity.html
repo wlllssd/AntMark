@@ -29,21 +29,21 @@
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
             <div class="form-group">
-                <input type="text" class="form-control" name="keyword" value="{{ keyword }}"/>
+                <input type="text" class="form-control" name="keyword" value="{{ keyword }}" style="width:400px; margin-left: 250px;"/>
             </div>
             <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
     
     <div class="col-md-12">
-        <div style="margin-left:10px">
+        <div>
             <form class="form-horizontal" action="{% url 'commodity:search_commodity' %}" method="post">{% csrf_token %}
                 <div class="row" style="margin-top: 10px">
                     <input name="keyword" type="hidden" value="{{ keyword }}">
                 </div>                
-                <div class="row" style="margin-top: 10px">
-                    <div class="col-md-2 text-right"><span>商品标签:</span></div>
-                    <div class="col-md-10 text-left">
+                <div class="row" style="margin-top: 10px" >
+                    <div class="col-md-1 text-left"><span>商品标签:</span></div>
+                    <div class="col-md-11 text-left">
                         <label class="checkebox-inline">
                             <input class="tagcheckbox" type="radio" id="0" name="tag" value="0">全部
                             {% for tag in tags %}
@@ -54,8 +54,8 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px">
-                    <div class="col-md-2 text-right"><span>商品货源:</span></div>
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-1 text-left"><span>商品货源:</span></div>
+                    <div class="col-md-11 text-left">
                         <label class="checkebox-inline">
                             <input class="tagcheckbox" type="radio" id="0" name="source" value="0">全部
                             {% for source in sources %}
@@ -65,8 +65,8 @@
                         </label>                
                     </div>
                 </div>
-                <div class="row" style="margin-top: 10px">
-                    <input type="submit" class="btn btn-primary btn-lg" value="筛选">
+                <div class="row" style="margin-top: 10px; margin-left: 0px;">
+                    <input type="submit" class="btn btn-primary btn-default" value="筛选">
                 </div>
             </form>
         </div>

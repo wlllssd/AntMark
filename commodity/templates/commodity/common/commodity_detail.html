@@ -1,14 +1,6 @@
 {% extends "base.html" %} {% load staticfiles %} {% block content %}
 
-<style>
-    #test1 {
-        border: 1px solid grey;
-        margin: 20px;
-        padding: 10px;
-        width: 100%;
-        height: 220px;
-    }
-    
+<style>    
     #test2 {
         margin: 10px 50px 10px 0px;
         width: 150px;
@@ -20,29 +12,46 @@
 </style>
 
 <div class="row">
+    <hr>
     <div class="col-md-10">
         <div class="row">
             <div class="col-md-5">
                 <img src="{{commodity.image.url}}" height="400px">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-7">
                 <h2>{{commodity.title}}</h2>
-                <hr>
-                <p>价格：￥{{commodity.price}}</p>
-                <p>出售人：<a href = "#">{{commodity.owner}}</a></p>
-                <p>货源：{{commodity.commodity_source.all|join:", "}}</p>
-                <p>数量：{{commodity.amount}}</p>
+                <br>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-left">价格：</div>
+                    <div class="col-md-10 text-left">￥{{commodity.price}}</div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-left">卖家：</div>
+                    <div class="col-md-10 text-left"><a href = "#">{{commodity.owner}}</a></div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-left">货源：</div>
+                    <div class="col-md-10 text-left">{{commodity.commodity_source.all|join:", "}}</div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-md-2 text-left">数量：</div>
+                    <div class="col-md-10 text-left">{{commodity.amount}}</div>
+                </div>
                 <button type="button" id="test2">联系卖家</button>
             </div>     
         </div>
-        <br><br>
+        <br>
+        <hr>
         <div class="row">
             <div class="col-md-3"></div>
-            <div class="col-md-7">
-                <p>商品详情</p>
-                {% autoescape off %}
-                {{commodity.body}}
-                {% endautoescape %}
+            <div class="col-md-9">
+                <h4>商品详情</h4>
+                <div style="border:1px solid rgb(230, 230, 230); padding: 10px;">
+                    {% autoescape off %}
+                    {{commodity.body}}
+                    {% endautoescape %}
+                </div>
+
             </div>
         </div>
     </div>
