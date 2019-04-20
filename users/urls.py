@@ -17,16 +17,10 @@ urlpatterns = [
 
     path('reset_pwd/', views.reset_password, name = 'reset_pwd'),
 
+    path('personal_index/<int:user_id>', views.personal_index, name = 'personal_index'),
+
     path('view_notice/', views.view_notice, name = 'view_notice'),
 
     path('call_admin/', views.call_admin, name = 'call_admin'),
-
-    # 聊天室列表
-    path('notice/', views.notice, name = 'notice'),
-
-    path('start_chat/<int:user_id>', views.start_chat, name = 'start_chat'),
-
-    path('chatting/<int:room_id>', views.chatting, name = 'chatting'),
-
 ]
 

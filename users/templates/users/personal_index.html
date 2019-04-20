@@ -1,0 +1,64 @@
+{% extends "home/base.html" %} {% block content %} {% load static %} {% load bootstrap4 %} {% load base %}
+
+<link rel="stylesheet" href="{% static 'css/personal_index.css' %}">
+
+<body>
+    <section class="section-gap info-area">
+        <div class="container">
+            <div class="col-md-3" style="float:left;">
+                <div class="profile_border">
+                    <img class="img-circle" id="personal_profile" src="/media/{{cur_info.profile}}" alt="">
+                </div>
+                <div class="info">
+                    <h3>{{ cur_info.nickname }} {% ifequal cur_info.gender 'M' %}
+                        <span style="color: #87CEFA">♂</span> {% else %}
+                        <span style="color: #FFB6C1">♀</span> {% endifequal %}
+                    </h3>
+                    <p>{{ cur_user.username }}</p>
+                    <br/>
+                    <p>{{ cur_info.intro }}</p>
+                    <p>电话：{{ cur_info.phone }}</p>
+                    <p>微信：{{ cur_info.wechat }}</p>
+                    <p>QQ： {{ cur_info.qq }}</p>
+                </div>
+
+            </div>
+            <div class="col-md-9" style="float:left">
+                <div class="info-border">
+                    <div class="panel-body">
+                        {% ifequal cur_user request.user %}
+                        <h1>你的商品库</h1>
+                        {% else %}
+                        <h1>TA的商品库</h1>
+                        {% endifequal %}
+                        <hr> {% for comm in comms %}
+                        <div class="comms">
+                            <h4>{{comm.title}}</h4>
+                            <img src="{{ comm.image.url }}" height="200px" width="220px">
+                            <p>待售：{{comm.for_sale}}</p>
+                            <p>标签：{{comm.commodity_tag.all|join:","}}</p>
+                            <p>货源：{{comm.commodity_source.all|join:","}}</p>
+                            <p>价格：￥{{comm.price}}</p>
+                            <p>数量：{{comm.amount}}</p>
+                            {% ifequal cur_user request.user %}
+                            <a name="edit" href="{% url 'commodity:edit_commodity' comm.id %}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                            <a name="delete" href="javascript:" onclick="del_commodity(this, {{comm.id}})">
+                                <span class="glyphicon glyphicon-trash" style="margin-left:20px"></span>
+                            </a>
+                            {% endifequal %}
+                        </div>
+                        {% empty %} {% endfor %}
+                    </div>
+                    <hr/>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+    </section>
+    <br/>
+</body>
+{% endblock content %}
