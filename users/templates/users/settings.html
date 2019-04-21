@@ -2,12 +2,6 @@
 
 <link rel="stylesheet" href="{% static 'css/settings.css' %}">
 
-<!-- <script>
-    function delFriendConfirm() {
-        event.returnValue = confirm("Are you sure to delete this friend?")
-    }
-</script> -->
-
 <body>
     <div class="section-top-border">
         <h2>设置</h2>
@@ -57,6 +51,11 @@
                 <div class="function-item">
                     <a href="{% url 'users:call_admin' %}">联系管理员</a>
                 </div>
+                {% if info.is_verify == False %}
+                <div class="function-item">
+                    <a href="{% url 'users:stu_verify' %}" class="btn btn-success">用户学生认证</a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

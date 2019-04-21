@@ -16,7 +16,7 @@ from django.db.models import Q
 from helper.crypto import encrypt, decrypt
 from django.conf import settings
 
-from users.models import UserInfo
+from users.models import UserInfo, Message
 from users.forms import InfoForm
 from commodity.models import Commodity
 
@@ -155,6 +155,9 @@ def user_active(request, active_code):
         else:
             user.is_active = True
             user.save()
+            # 在确认用户账号激活成功后及时创建用户信息表
+            Userinfo.objects.create(user=user)
+            
  
         response_data['goto_page'] = True
         response_data['message'] = '激活成功，欢迎加入AntMark！'
@@ -250,5 +253,29 @@ def view_notice(request):
 def call_admin(request):
     """ 用户发送消息联系管理员 """
     return render(request, 'home/developing.html')
+
+
+@login_required
+def stu_verify(request):
+    """ 用户提交校园卡照片，后台审核 """
+    info = UserInfo.objects.get(user=request.user)
+    if info.is_verify:
+        response_data = {
+            'message': "你已经完成学生认证啦，不用重复认证",
+            'next_page': "用户设置页面",
+            'goto_url': settings.CUR_HOST + 'users/settings/', 
+            'goto_time': 5,
+        }
+        return render(request, 'users/message.html' , response_data)
+
+    if request.method == 'POST':
+        stu_card_photo = request.FILES.get('stu_card_photo', None)
+        if stu_card_photo:
+            info.stuCardPhoto = stu_card_photo
+        info.save()
+        return HttpResponseRedirect(reverse('users:settings'))
+
+    return render(request, 'users/student_verify.html')
+
 
 

@@ -9,10 +9,11 @@
             <div style="width: 650px; margin: 0 auto">
                 <div class="title text-center">
                     <h2 style="line-height:300%;">{{ message|safe }}</h2>
+                    <br/>
                     <p>
-                        <input type="text" style="border:none; width:1em" readonly="true" value="5" id="time"> 秒后跳转到 {{ next_page }}。
+                        <input type="text" style="border:none; width:1.5em" readonly="true" value="{{ goto_time }}" id="time">  秒后跳转到 {{ next_page }}。
                     </p>
-                </div>
+                </div
             </div>
         </div>
     </section>
