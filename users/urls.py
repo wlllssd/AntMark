@@ -22,5 +22,7 @@ urlpatterns = [
     path('view_notice/', views.view_notice, name = 'view_notice'),
 
     path('call_admin/', views.call_admin, name = 'call_admin'),
+
+    path('stu_verify/', views.stu_verify, name = 'stu_verify')
 ]
 
