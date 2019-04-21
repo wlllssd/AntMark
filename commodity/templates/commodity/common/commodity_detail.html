@@ -27,7 +27,7 @@
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-left">卖家：</div>
-                    <div class="col-md-10 text-left"><a href = "#">{{commodity.owner}}</a></div>
+                    <div class="col-md-10 text-left"><a href = "{% url 'users:personal_index' commodity.owner.id %}">{{commodity.owner}}</a></div>
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-left">货源：</div>
@@ -37,7 +37,7 @@
                     <div class="col-md-2 text-left">数量：</div>
                     <div class="col-md-10 text-left">{{commodity.amount}}</div>
                 </div>
-                <button type="button" id="test2">联系卖家</button>
+                <a href="{% url 'chatroom:start_chat' commodity.owner.id commodity.id %}" class="btn btn-info">联系卖家</a>
             </div>     
         </div>
         <br>

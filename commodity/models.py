@@ -23,8 +23,8 @@ class Commodity(models.Model):
 	owner = models.ForeignKey(User, related_name = "commodity", on_delete = models.CASCADE)
 	commodity_tag = models.ManyToManyField(CommodityTag, related_name = "commodity_tag", blank = False)
 	commodity_source = models.ManyToManyField(CommoditySource, related_name = "commodity_source", blank = False)
-	body = UEditorField(verbose_name = "commodity_descriprion",imagePath="ueditorImages/", 
-			width=700, height=600, filePath='ueditorFiles/', toolbars="full", 
+	body = UEditorField(verbose_name = "commodity_descriprion",imagePath="ueditorImages/%Y/%m/%d", 
+			width=700, height=600, filePath='ueditorFiles/%Y/%m/%d', toolbars="full", 
 			upload_settings={"imageMaxSize":1204000})
 	price = models.DecimalField(max_digits=7, decimal_places=2, default = 0.00)
 	image = models.ImageField(upload_to = 'images/%Y/%m/%d')
