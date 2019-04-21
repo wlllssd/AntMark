@@ -1,0 +1,33 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load widget_tweaks %} {% block content %} {% load static %}
+
+<body>
+    <div class="section-top-border">
+        <div style="margin-left: 100px">
+            <h2>学生身份认证</h2>
+            <br/>
+            <p>Q：为什么我们需要学生身份认证？</p>
+            <p>A：本闲置物品交易平台主要面向的对象是在校大学生，我们要确认用户的学生身份。</p>
+            <p>Q：没有进行学生身份认证的影响？</p>
+            <p>A：因无法确认学生身份，你将无法进入商品，聊天等系统。</p>
+            <p>Q：如何进行学生身份认证？</p>
+            <p>A：请在此处提交清晰的校园卡正面照片，后台审核通过后将会以站内邮件的形式通知你。</p>
+            <p>O：更多疑问请 <a href="{% url 'users:call_admin' %}">【联系管理员】</a> </p>
+            <br/>
+            <div class="col-md-9" style="float:left">
+                <form action="{% url 'users:stu_verify' %}" enctype="multipart/form-data" method='post' novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <span>校园卡/学生证信息照片（仅支持英文文件名）</span>
+                        <input type="file" name="stu_card_photo" class="form-control" />
+                    </div>
+
+                    <div style="text-align: center">
+                        <button name="submit" class="btn btn-primary">Submit</button>
+                        <a class="btn btn-outline-primary" href="{% url 'users:settings' %}">Go Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}
