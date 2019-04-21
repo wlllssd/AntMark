@@ -1,6 +1,7 @@
-{% extends "commodity/base.html" %}
+{% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
+{% include 'commodity/upslider.html' %}
 
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}"> 
@@ -75,7 +76,6 @@
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
 <script type="text/javascript"> 
-
 function edit_commodity(){
     $.ajax({
         url: "{% url 'commodity:edit_commodity' commodity.id %}", 
@@ -93,3 +93,5 @@ function edit_commodity(){
 } </script>
 
 {% endblock %}
+
+
