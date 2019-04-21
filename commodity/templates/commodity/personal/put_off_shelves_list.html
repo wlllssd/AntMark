@@ -1,4 +1,4 @@
-{% extends 'commodity/base.html' %}
+{% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
 <style>
@@ -24,24 +24,28 @@
 </style>
 
 <div class="container">
-    <h1>请选择下架商品</h1>
-    <hr>
-    {% for commodity in commodities %}
-    <div class="col-md-3 column">
-        <div class="single-feature mb-30">
-            <h4>{{commodity.title}}</h4>
-            <img src="{{commodity.image.url}}" height="200px">
-            <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
-            <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
-            <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
-            <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-            <p id="line-limit-length">数量：{{commodity.amount}}</p>
-            <input type="button" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
+    {% include 'commodity/upslider.html' %}
+    <!-- <h1>请选择下架商品</h1>
+    <hr> -->
+    <br>
+    <div class="row clearfix">
+        {% for commodity in commodities %}
+        <div class="col-md-3 column">
+            <div class="single-feature mb-30">
+                <h4>{{commodity.title}}</h4>
+                <img src="{{commodity.image.url}}" height="200px">
+                <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
+                <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+                <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <input type="button" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
+            </div>
         </div>
+        {% empty %}
+        <p>您所有的商品已经下架了哦~</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>您所有的商品已经下架了哦~</p>
-    {% endfor %}
 </div>
 
 <script src="{% static 'js/jquery.js' %}"></script>

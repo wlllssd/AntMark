@@ -5,7 +5,7 @@
     <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="../../../static/img/four.png">
+    <link rel="shortcut icon" href="../../../static/img/logo_antmark2.png">
     <!-- Author Meta -->
     <meta name="author" content="colorlib">
     <!-- Meta Description -->
@@ -38,8 +38,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <a class="navbar-brand" href="{% url 'home:index' %}">
-                    <img src="/static/img/logo_antmark.png" alt="">
+                    <img src="/static/img/logo_antmark.png" alt="" height="50px" style="margin: -15px 5px 0px -20px">
                 </a>
+                <!-- <a class="navbar-brand" href="{% url 'home:index' %}"
+                    style='margin-left:-30px;color:whitesmoke'>LOGO旁边的字</a> -->
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{% url 'home:index' %}">主页</a></li>
                     <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
@@ -48,9 +50,10 @@
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav nav-tabs navbar-right">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}">
-                            {{ user|getUserNickname }}
-                            <span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="background-color:#337ab7">
+                            {{user.username}}
+                            <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>
                             <li><a href="{% url 'users:settings' %}">个人信息</a></li>
@@ -60,30 +63,29 @@
                     </li>
                 </ul>
                 {% else %}
-                <ul class="nav navbar-nav nav-tabs navbar-right">
-                    <li><a href="{% url 'users:login' %}">登录</a></li>
-                    <li><a href="{% url 'users:register' %}">注册</a></li>
+                <ul class="nav navbar-nav nav-tabs navbar-right" >
+                    <li style="background-color:#337ab7"><a href="{% url 'users:login' %}">登录</a></li>
+                    <li style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a></li>
                 </ul>
                 {% endif %}
                 </ul>
             </div>
         </nav>
-
         <!-- End Header Area -->
     </section>
 
-
-
     <div class="container">
-        <div>
-            {% block header %}{% endblock %}
-        </div>
         <div>
             {% block content %}{% endblock %}
         </div>
 
     </div>
-
+    
+    
+    <div>
+        <hr>
+        <p class='text-center'>我可是有底线的~</p>
+    </div>
 
 
     <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
@@ -91,7 +93,6 @@
     <script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
     <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <!-- <script src="{% static 'js/jquery.sticky.js' %}"></script> -->
     <script src="{% static 'js/slick.js' %}"></script>
     <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
     <script src="{% static 'js/waypoints.min.js' %}"></script>

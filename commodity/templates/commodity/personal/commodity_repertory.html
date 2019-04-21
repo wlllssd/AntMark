@@ -1,4 +1,4 @@
-{% extends 'commodity/base.html' %}
+{% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
 <style>
@@ -24,8 +24,10 @@
 </style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div class='container'>
-    <h1 style="font-family: 'SimSun'; height:20px ">我的商品库</h1>
-    <hr>
+    {% include 'commodity/upslider.html' %}
+    <!-- <h1 style="font-family: 'SimSun'; height:20px ">我的商品库</h1>
+    <hr> -->
+    <br>
     <div class="row clearfix">
         {% for commodity in commodities %}
         <div class="col-md-3 column">

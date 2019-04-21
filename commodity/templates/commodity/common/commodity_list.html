@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load staticfiles %} {% block content %}
+{% extends 'home/base.html' %} {% load staticfiles %} {% block content %}
 <style>
     #test1 {
         display: inline-block;
@@ -22,6 +22,7 @@
 </style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div class="container">
+    {% include 'commodity/search.html' %}
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
             <div class="form-group">

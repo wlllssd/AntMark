@@ -1,3 +1,6 @@
+.nav>li>a:hover {
+    background-color: #ffffff29
+}
 ::-moz-selection {
     /* Code for Firefox */
     background-color: #87CEFA;
@@ -2000,9 +2003,9 @@ h6 {
 .video-area .overlay-bg,
 .single-footer-widget .click-btn,
 .generic-banner {
-    background-image: -moz-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
-    background-image: -webkit-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
-    background-image: -ms-linear-gradient(0deg, #00bfff 0%, #87cefa 100%);
+    background-image: -ms-linear-gradient(0deg, #ffff 0%, #ffff 100%);
+    background-image: -moz-linear-gradient(0deg, #ffff 0%, #ffff 100%);
+    background-image: -webkit-linear-gradient(0deg, #ffff 0%, #ffff 100%);
 }
 
 .p1-gradient-color,
@@ -2157,16 +2160,14 @@ h6 {
 }
 
 .dropdown-menu {
-    background: #10101063;
+    background: #337ab7c7;
     border-radius: 0;
     margin-top: 10px;
     border: none;
 }
-
 .dropdown-menu>li>a {
     color: rgb(255, 255, 255);
 }
-
 .dropdown-menu a {
     padding: 5px 15px;
 }
@@ -2179,7 +2180,7 @@ h6 {
 
 .dropdown-item:focus,
 .dropdown-item:hover {
-    color: #555;
+    color: #fff;
     text-decoration: none;
     background-color: transparent;
 }
@@ -2414,6 +2415,7 @@ h6 {
 
 .single-feature {
     background-color: #f9f9ff;
+    border: 2px solid #ddd;
     padding: 30px 30px 15px 30px;
     -webkit-transition: all 0.3s ease 0s;
     -moz-transition: all 0.3s ease 0s;
@@ -2426,13 +2428,14 @@ h6 {
 }
 
 .single-feature:hover {
-    cursor: pointer;
-    color: #fff;
+    //cursor: pointer;
+    color: #000000;
+    border: 2px solid #fb0000;
 }
 
 .single-feature:hover a,
 .single-feature:hover .title .lnr {
-    color: #fff;
+    color: #000000;
 }
 
 .single-feature .title .lnr {
