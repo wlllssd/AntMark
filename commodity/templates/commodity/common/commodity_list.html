@@ -14,7 +14,7 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="keyword" style="width:400px; margin-left: 250px;"/>
             </div>
-            <button type="submit" class="btn btn-default" style="">搜索</button>
+            <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
 
@@ -25,17 +25,17 @@
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px">
+                    <img src="{{commodity.image.url}}" height="200px"  class="center-block">
                 </a>
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>
-                    <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+                    <h5 id="line-limit-length"><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h5>
                 </div>
-                <p id="line-limit-length">卖家：{{commodity.owner}}</p>
-                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
+                <!-- <p id="line-limit-length">卖家：{{commodity.owner}}</p> -->
+                <!-- <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p> -->
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-                <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <!-- <p id="line-limit-length">数量：{{commodity.amount}}</p> -->
                 <div align="right">
                     <a></a><span class="glyphicon glyphicon-menu-right"></span>
                 </div>
