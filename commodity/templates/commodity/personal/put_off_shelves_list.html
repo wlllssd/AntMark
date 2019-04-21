@@ -1,4 +1,4 @@
-{% extends 'commodity/base.html' %}
+{% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
 <style>
@@ -24,6 +24,7 @@
 </style>
 
 <div class="container">
+    {% include 'commodity/upslider.html' %}
     <!-- <h1>请选择下架商品</h1>
     <hr> -->
     <br>

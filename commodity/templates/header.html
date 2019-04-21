@@ -29,9 +29,9 @@
 			<ul class="nav navbar-nav nav-tabs navbar-right">
 				<li class="dropdown">
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="background-color:#337ab7;">
-
 						{{user.username}}
-						<span class="caret"></span></a>
+						<span class="caret"></span>
+					</a>
 					<ul class="dropdown-menu">
 						<li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>
 						<li><a href="{% url 'users:settings' %}">个人信息</a></li>
@@ -43,36 +43,6 @@
 			</ul>
 		</div>
 	</nav>
-	<!-- <nav class='navbar navbar-default' role='navigation'>
-		<div class='navbar-header'>
-			<a class='navbar-brand' href="#"><img src="{% static '/images/logo.png' %}" width="40px"
-					style="margin-top:-10px"></a>
-		</div>
-		<div>
-			<ul class='nav navbar-nav' role='navigation'>
-				<li><a href="{% url 'home:index' %}">主页</a></li>
-				<li><a href="{% url 'commodity:commodity_list'%}">商品</a></li>
-				<li><a href="#">公告</a></li>
-			</ul>
-			<ul class='nav navbar-nav navbar-right' style='margin-right:10px'>
-				<li>
-					<div class='dropdown' style='margin-top:8px'>
-						<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenu'
-							data-toggle='dropdown'>
-							{{user.username}}
-							<span class='caret'></span>
-						</button>
-						<ul class='dropdown-menu'>
-							<li><a href="{% url 'users:reset_pwd' %}">修改密码</a></li>
-							<li><a href="{% url 'users:settings' %}">个人信息</a></li>
-							<li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>
-						</ul>
-					</div>
-				</li>
-				<li><a href="{% url 'users:logout' %}">退出</a></li>
-			</ul>
-		</div>
-	</nav> -->
 </div>
 
 <script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
