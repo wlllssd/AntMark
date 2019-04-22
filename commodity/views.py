@@ -79,7 +79,6 @@ def commodity_repertory(request):
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
-        # ueditor_form = UEditorForm(data = )
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             if True:
@@ -100,13 +99,9 @@ def create_commodity(request):
                 commodity.price = cd['price']
                 commodity.amount = cd['amount']
                 commodity.for_sale = False
-                commodity.image = request.FILES.get('image', None)
                 commodity.save()
-                print("1")
                 # 重定向
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
-            # except:
-            #     return HttpResponse("2")
         else:
             return HttpResponse("3")
     else:
@@ -147,6 +142,20 @@ def edit_commodity(request, id):
                 return HttpResponse("2")
         else:
             return HttpResponse("3")
+
+# 上传商品图像
+@login_required(login_url = '/users/login')
+@csrf_exempt
+def commodity_image(request, id):
+    if request.method == 'POST':
+        img = request.POST['img']
+        commodity = Commodity.objects.get(id=id) 
+        commodity.image = img
+        commodity.save()
+        return HttpResponse("1")
+    else:
+        context = {'id':id}
+        return render(request, 'commodity/personal/imagecrop.html', context)
 
 # 删除商品
 @login_required(login_url = '/users/login')

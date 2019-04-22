@@ -25,15 +25,17 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div class='container'>
     {% include 'commodity/upslider.html' %}
-    <!-- <h1 style="font-family: 'SimSun'; height:20px ">我的商品库</h1>
-    <hr> -->
     <br>
     <div class="row clearfix">
         {% for commodity in commodities %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px" class="center-block">
+                    {% if commodity.image %}
+                    <img src="{{ commodity.image | striptags }}" height="200px" class="center-block">
+                    {% else %}
+                    <img src="{% static 'img/defaultImage.jpg' %}" height="200px" class="center-block">
+                    {% endif %}
                 </a>
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>

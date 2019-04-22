@@ -18,7 +18,16 @@
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品图片:</span></div>
-                    <div class="col-md-10 text-left"><img src="{{commodity.image.url}}" width="200px"></div> 
+                    <div class="col-md-10 text-left">
+                        {% if commodity.image %}
+                        <img src="{{commodity.image | striptags }}" width="200px">
+                        {% else %}
+                        <img src="{% static 'img/defaultImage.jpg' %}" width="200px">
+                        {% endif %}
+                    </div> 
+                    <div style="margin-right: 100px">
+                        <button type = "button" class = "btn btn-primary" onclick="upload_image_layer()">更换图片</button>
+                    </div>
                 </div>
                 
                 <div class="row" style="margin-top: 10px;">
@@ -92,6 +101,19 @@ function edit_commodity(){
     });
 } </script>
 
+<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/layer.js' %}"></script>
+
+<script>
+	function upload_image_layer(){
+		layer.open({
+			title: "上传头像",
+			area: ['900px', '700px'],
+			type: 2,
+			content: "{% url 'commodity:commodity_image' commodity.id%}",
+		});
+	}
+</script>
 {% endblock %}
 
 

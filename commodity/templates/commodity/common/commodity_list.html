@@ -26,7 +26,11 @@
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px"  class="center-block">
+                {% if commodity.image %}
+                <img src="{{commodity.image | striptags}}" height="200px" class="center-block">
+                {% else %}
+                <img src="{% static 'img/defaultImage.jpg' %}" height="200px" class="center-block">
+                {% endif %}
                 </a>
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>

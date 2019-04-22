@@ -44,8 +44,8 @@
                 <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" required style="width:80px"> 件</div> 
             </div>  
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>商品图片:</span></div>
-                <div class="col-md-10 text-left"><input type="file" name="image" required></div>
+                <div class="col-md-2 text-right"><span>默认封面:</span></div>
+                <div class="col-md-10 text-left"><img src="{% static 'img/defaultImage.jpg' %}" height="200px"></div>
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品描述:</span></div>
@@ -85,19 +85,19 @@ function create_commodity(){
     var body = $("#id_body").val();
     var price = $("#id_price").val();
     var amount = $("#id_amount").val();
-    var image = $("#id_image")[0].files[0];
+    // var image = $("#id_image")[0].files[0];
     var tags = [];
     $.each($("input[name='tag']:checked"), function(){tags.push($(this).val());});
     console.log(title);
     console.log(body);
     console.log(price);
     console.log(amount);
-    console.log(image);
+    // console.log(image);
     console.log(tags);
     $.ajax({
         url: "{% url 'commodity:create_commodity' %}",
         type: "POST",
-        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags), "image":image},
+        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags)},
         success: function(e){
             if(e=="1"){
                 layer.msg("successful");
