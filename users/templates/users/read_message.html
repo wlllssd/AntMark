@@ -1,0 +1,37 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %}{% block content %} {% load base %}
+
+<style>
+    .message_display {
+        border: 1px #ccc solid;
+        border-radius: 6px;
+        padding: 20px;
+        margin-top: 10px;
+    }
+</style>
+
+<body>
+    <div class="section-top-border">
+        <h2>查看信件</h2>
+        <br/>
+        <h4>发信人: {{ message.sender|getUserNickname }}({{ message.sender }})</h4>
+        <br/>
+        <p>{{ message.timestamp }}</p>
+        <label>信息内容：</label>
+        <div class="message_display">{{ message.text }}</div>
+        {% ifnotequal message.sender request.user %}
+        <hr/>
+        <h4>回复给发信人 {{ message.sender|getUserNickname }}:</h4>
+        <br/>
+        <form action="{% url 'users:call_admin' %}" method="POST" class="form">{% csrf_token %}
+            <div class="form-group">
+                <label for="text">信息内容：</label>
+                <textarea class="form-control" rows="8" name="text"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">回复</button>
+            <a href="{% url 'users:mailbox' %}" class="btn btn-default">返回</a>
+        </form>
+        {% endifnotequal %}
+    </div>
+
+</body>
+{% endblock content %}
