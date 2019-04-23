@@ -30,7 +30,7 @@ class Commodity(models.Model):
 	image = models.ImageField(blank=True)
 	amount = models.IntegerField(default = 1)
 	for_sale = models.BooleanField(default = True)
-	is_varified = models.BooleanField(default = True)
+	is_verified = models.BooleanField(default = True)
 	created = models.DateTimeField(default = timezone.now)
 	updated = models.DateTimeField(auto_now = True)
 

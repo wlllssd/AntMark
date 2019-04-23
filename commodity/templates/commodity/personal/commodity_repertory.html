@@ -14,7 +14,7 @@
     {% include 'commodity/upslider.html' %}
     <br>
     <div class="row clearfix">
-        {% for commodity in commodities %}{% if commodity.is_varified %}
+        {% for commodity in commodities %}{% if commodity.is_verified %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
@@ -33,11 +33,14 @@
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
                 <p id="line-limit-length">数量：{{commodity.amount}}</p>
+                <a name="preview" href="{% url 'commodity:preview_commodity' commodity.id %}">
+                    <button type="button" class="btn btn-default">预览</button>
+                </a>
                 <a name="edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
-                    <span class="glyphicon glyphicon-pencil"></span>
+                    <button type="button" class="btn btn-default" style="margin-left:10px">编辑</button>
                 </a>
                 <a name="delete" href="javascript:" onclick="del_commodity(this, {{commodity.id}})">
-                    <span class="glyphicon glyphicon-trash" style="margin-left:20px"></span>
+                    <button type="button" class="btn btn-default" style="margin-left:10px">删除</button>
                 </a>
             </div>
         </div>

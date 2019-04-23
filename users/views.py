@@ -251,7 +251,7 @@ def personal_index(request, user_id):
 def stu_verify(request):
     """ 用户提交校园卡照片，后台审核 """
     info = UserInfo.objects.get(user=request.user)
-    if info.is_verify:
+    if info.is_verified:
         response_data = {
             'message': "你已经完成学生认证啦，不用重复认证",
             'next_page': "用户设置页面",

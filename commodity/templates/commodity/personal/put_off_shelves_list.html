@@ -29,7 +29,7 @@
     <hr> -->
     <br>
     <div class="row clearfix">
-        {% for commodity in commodities %}{% if commodity.is_varified %}
+        {% for commodity in commodities %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 {% if commodity.image %}
@@ -49,7 +49,6 @@
                 <input type="button" class="btn btn-primary" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
             </div>
         </div>
-        {% endif %}
         {% empty %}
         <p>您所有的商品已经下架了哦~</p>
         {% endfor %}

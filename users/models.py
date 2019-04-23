@@ -19,7 +19,7 @@ class UserInfo(models.Model):
     qq = models.CharField(max_length=16, default="0")
     profile = ProcessedImageField(upload_to='user/img', default='user/img/default.jpg', 
         processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
-    is_verify = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     stuCardPhoto = ProcessedImageField(upload_to='user/img/verify', null=True,
         processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
     
@@ -31,6 +31,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, related_name="sender_msg", on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name="receiver_msg", on_delete=models.CASCADE)
     text = models.CharField(max_length=2000)
+    id_content = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     sender_del = models.BooleanField(default=False)

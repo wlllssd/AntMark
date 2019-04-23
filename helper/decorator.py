@@ -13,7 +13,7 @@ def user_verify_required(func):
         except ObjectDoesNotExist:
             raise Http404
 
-        if info.is_verify == False:
+        if info.is_verified == False:
             response_data = {
                 'message': "你尚未完成学生认证，暂时无法使用该功能",
                 'next_page': "学生认证页面",
