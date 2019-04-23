@@ -19,10 +19,20 @@ urlpatterns = [
 
     path('personal_index/<int:user_id>', views.personal_index, name = 'personal_index'),
 
-    path('view_notice/', views.view_notice, name = 'view_notice'),
+    path('stu_verify/', views.stu_verify, name = 'stu_verify'),
+
+    
+    # 消息处理相关
+    path('mailbox/', views.mailbox, name = 'mailbox'),
 
     path('call_admin/', views.call_admin, name = 'call_admin'),
 
-    path('stu_verify/', views.stu_verify, name = 'stu_verify')
-]
+    path('set_as_read/<int:message_id>', views.set_as_read, name = 'set_as_read'),
 
+    path('read_message/<int:message_id>', views.read_message, name = 'read_message'),
+
+    path('del_message/<int:message_id>', views.del_message, name = 'del_message'),
+
+    path('deal_mult_msg/', views.deal_mult_msg, name = 'deal_mult_msg'),
+
+]
