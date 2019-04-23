@@ -48,11 +48,14 @@ def commodity_list(request):
 @csrf_exempt
 def commodity_detail(request, id):
     commodity = get_object_or_404(Commodity, id = id)
-    commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
-    similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
-    similar_commodities = similar_commodities[:4]
-    context = {"commodity":commodity, "similar_commodities":similar_commodities}
-    return render(request, "commodity/common/commodity_detail.html", context)
+    if commodity.is_varified and commodity.for_sale and commodity.amount:
+        commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
+        similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
+        similar_commodities = similar_commodities[:4]
+        context = {"commodity":commodity, "similar_commodities":similar_commodities}
+        return render(request, "commodity/common/commodity_detail.html", context)
+    else:
+        return HttpResponse("404")
 
 
 # 个人商品库
@@ -102,6 +105,7 @@ def create_commodity(request):
                 commodity.price = cd['price']
                 commodity.amount = cd['amount']
                 commodity.for_sale = False
+                commodity.is_valified = False
                 commodity.save()
                 # 重定向
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))

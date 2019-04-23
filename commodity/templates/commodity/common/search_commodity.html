@@ -64,7 +64,7 @@
     <h3>搜索结果</h3>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount and commodity.is_varified %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">

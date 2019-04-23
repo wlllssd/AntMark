@@ -14,7 +14,7 @@
     {% include 'commodity/upslider.html' %}
     <br>
     <div class="row clearfix">
-        {% for commodity in commodities %}
+        {% for commodity in commodities %}{% if commodity.is_varified %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
@@ -41,6 +41,7 @@
                 </a>
             </div>
         </div>
+        {% endif %}
         {% empty %}
         {% endfor %}
     </div>
