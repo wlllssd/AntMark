@@ -1,7 +1,14 @@
 {% extends "home/base.html" %} {% block content %} {% load static %} {% load bootstrap4 %} {% load base %}
 
 <link rel="stylesheet" href="{% static 'css/personal_index.css' %}">
-
+<style>
+    #line-limit-length {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 200px;
+    }
+</style>
 <body>
     <section class="section-gap info-area">
         <div class="container">
@@ -33,13 +40,17 @@
                         {% endifequal %}
                         <hr> {% for comm in comms %}
                         <div class="comms">
-                            <h4>{{comm.title}}</h4>
-                            <img src="{{ comm.image.url }}" height="200px" width="220px">
-                            <p>待售：{{comm.for_sale}}</p>
-                            <p>标签：{{comm.commodity_tag.all|join:","}}</p>
-                            <p>货源：{{comm.commodity_source.all|join:","}}</p>
-                            <p>价格：￥{{comm.price}}</p>
-                            <p>数量：{{comm.amount}}</p>
+                            {% if comm.image %}
+                            <img src="{{ comm.image| striptags }}" height="200px" width="220px" style="margin-top:5px;">
+                            {% else %}
+                            <img src="{% static 'img/defaultImage.jpg' %}" height="200px" class="center-block" style="margin-top:5px;">
+                            {% endif %}
+                            <h5 id="line-limit-length">{{comm.title}}</h5>
+                            <p id="line-limit-length">待售：{{comm.for_sale}}</p>
+                            <p id="line-limit-length">标签：{{comm.commodity_tag.all|join:","}}</p>
+                            <p id="line-limit-length">货源：{{comm.commodity_source.all|join:","}}</p>
+                            <p id="line-limit-length">价格：￥{{comm.price}}</p>
+                            <p id="line-limit-length">数量：{{comm.amount}}</p>
                             {% ifequal cur_user request.user %}
                             <a name="edit" href="{% url 'commodity:edit_commodity' comm.id %}">
                                 <span class="glyphicon glyphicon-pencil"></span>
@@ -51,6 +62,7 @@
                         </div>
                         {% empty %} {% endfor %}
                     </div>
+                    
                     <hr/>
                     <br/>
                 </div>

@@ -46,7 +46,7 @@
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
                 <p id="line-limit-length">数量：{{commodity.amount}}</p>
-                <input type="button" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
+                <input type="button" class="btn btn-primary" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
             </div>
         </div>
         {% empty %}

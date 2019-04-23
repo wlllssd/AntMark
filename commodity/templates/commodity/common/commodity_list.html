@@ -9,21 +9,25 @@
 </style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div class="container">
-    {% include 'commodity/search.html' %}
+    <!-- {% include 'commodity/search.html' %} -->
     <div id="search" class="col-md-12 column">
+        
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
-            <div class="form-group">
-                <input type="text" class="form-control" name="keyword" style="width:400px; margin-left: 250px;"/>
+            <div class="form-group" style="margin-left:230px;">
+                <div class="input-group" >
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                    <input type="text" class="form-control" style="width:400px;" placeholder="请输入关键字" name="keyword" />
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
 
-    <h1>所有商品</h1>
+    <h3>所有商品</h3>
     <hr>
     <div class="row clearfix">
         {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
-        <div class="col-md-3 column">
+        <div class="col-md-3 column" >
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
                 {% if commodity.image %}

@@ -1,18 +1,5 @@
 {% extends 'home/base.html' %} {% load staticfiles %} {% block content %}
 <style>
-    #test1 {
-        display: inline-block;
-        border: 1px solid #ddd;
-        margin: 20px 10px;
-        padding: 0px 10px;
-        width: 250px;
-        height: 380px;
-        border-radius: 4px;
-        margin-right: 10px;
-        background-color: #fff;
-        margin-bottom: 10px;
-    }
-    
     #line-limit-length {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -28,14 +15,16 @@
  
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
-            <div class="form-group">
-                <input type="text" class="form-control" name="keyword" value="{{ keyword }}" style="width:400px; margin-left: 250px;"/>
+            <div class="form-group" style="margin-left:230px;">
+                <div class="input-group" >
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                    <input type="text" class="form-control" name="keyword" value="{{ keyword }}" style="width:400px;"/>
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
-    
-    <div class="col-md-12">
+    <div class="col-md-12 column">
         <div>
             <form class="form-horizontal" action="{% url 'commodity:search_commodity' %}" method="post">{% csrf_token %}
                 <div class="row" style="margin-top: 10px">
@@ -72,14 +61,14 @@
         </div>
     </div>    
     <hr>
-    <h1>搜索结果</h1>
+    <h3>搜索结果</h3>
     <hr>
     <div class="row clearfix">
         {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px">
+                    <img src="{{commodity.image | striptags}}" height="200px">
                 </a>
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>
