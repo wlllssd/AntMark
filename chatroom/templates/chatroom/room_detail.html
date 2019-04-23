@@ -106,7 +106,7 @@
     <div class="commodity_detail">
         <h4>正在咨询商品：{{ room.commodity.title}}</h4>
         <br/>
-        <img src="{{ room.commodity.image.url }}" height="320px">
+        <img src="{{ room.commodity.image | striptags }}" height="320px">
         <p>卖家：{{ room.commodity.owner|getUserNickname }}</p>
         <p>标签：{{ room.commodity.commodity_tag.all|join:"," }}</p>
         <p>货源：{{ room.commodity.commodity_source.all|join:"," }}</p>

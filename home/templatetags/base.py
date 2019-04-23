@@ -40,4 +40,11 @@ def is_del(room, user):
     if room.member2 == user and room.mem2_del:
         return False
     return True
-    
+
+@register.filter
+def getVerifyStatus(user):
+    try:
+        info = UserInfo.objects.get(user=user)
+    except ObjectDoesNotExist:
+        return False    
+    return info.is_verify

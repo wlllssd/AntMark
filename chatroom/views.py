@@ -13,17 +13,21 @@ from django.db.models import Q
 
 from commodity.models import Commodity
 from chatroom.models import Chatroom, Chatmsg
+from helper.decorator import user_verify_required
 
 import re, time, json
 
 @login_required
+@user_verify_required
 def room_list(request):
     rooms = Chatroom.objects.filter(Q(member1=request.user)|Q(member2=request.user))
     context = { 'rooms': rooms }
     return render(request, 'chatroom/room_list.html', context)
 
+
 # {% url 'chatroom:start_chat' comm.owner.id comm.id %}
 @login_required
+@user_verify_required
 def start_chat(request, user_id, comm_id):
     if request.user.id == user_id:
         response_data = {
@@ -41,6 +45,9 @@ def start_chat(request, user_id, comm_id):
         room = Chatroom.objects.create(member1=request.user, member2=member2, commodity=comm)
     else:
         room = rooms[0]
+        room.mem1_del = False
+        room.mem2_del = False
+        room.save()
 
     messages = Chatmsg.objects.filter(room=room)
 
@@ -49,6 +56,7 @@ def start_chat(request, user_id, comm_id):
         'messages': messages,
     }
     return render(request, 'chatroom/room_detail.html', context)
+
 
 @login_required
 def room_detail(request, room_id):
@@ -86,22 +94,27 @@ def room_detail(request, room_id):
     }
     return render(request, 'chatroom/room_detail.html', context)
 
+
 @login_required
 def get_messages(request, room_id):
     room = Chatroom.objects.get(id=room_id)
     if request.user != room.member1 and request.user != room.member2:
         raise Http404
 
-    last_id = request.GET.get('last', 0)    
+    last_id = request.GET.get('last', 0)
 
     messages = Chatmsg.objects.filter(room=room).filter(id__gt=last_id)
 
     context = { 'messages': messages }
     return render(request, 'chatroom/message.html', context)
     
+
 @login_required
 def del_room(request, room_id, mem_id):
     room = Chatroom.objects.get(id=room_id)
+    if request.user != room.member1 and request.user != room.member2:
+        raise Http404
+
     if mem_id == room.member1.id:
         room.mem1_del = True
     if mem_id == room.member2.id:

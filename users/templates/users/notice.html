@@ -1,0 +1,41 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} AntMark {% endblock %} {% load static %} {% load base %} {% block content %}
+
+<html lang="zxx" class="no-js">
+
+
+<body>
+    <section class="project-area section-gap" id="project" style="padding-top: 50px">
+        <div class="container">
+            <div style="width: 650px; margin: 0 auto">
+                <div class="title text-center">
+                    <h2 style="line-height:300%;">{{ message|safe }}</h2>
+                    <br/>
+                    <p>
+                        <input type="text" style="border:none; width:1.5em" readonly="true" value="{{ goto_time }}" id="time">  秒后跳转到 {{ next_page }}。
+                    </p>
+                </div
+            </div>
+        </div>
+    </section>
+</body>
+
+<script language="javascript">
+    var t = {{ goto_time }};
+    var time = document.getElementById("time");
+
+    function fun() {
+        t--;
+        time.value = t;
+        if (t <= 0) {
+            // location.href = 'http://127.0.0.1:8000';
+            location.href = "{{ goto_url }}"
+            clearInterval(inter);
+        }
+    }
+    var inter = setInterval("fun()", 1000);
+</script>
+
+</html>
+
+
+{% endblock content %}

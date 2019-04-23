@@ -1,19 +1,17 @@
 {% extends 'home/base.html' %}
 {% load staticfiles %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}"> 
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
-
 <div>
     {% include 'commodity/upslider.html' %}
-    <!-- <h1>新建商品</h1> -->
-    <!-- <hr> -->
     <br>
     <div style="margin-left:10px">
         <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'commodity:create_commodity' %}" method="post">{% csrf_token %} 
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品名称:</span></div>
-                <div class="col-md-10 text-left"><input type="text" name="title" required></div> 
+                <div class="col-md-10 text-left"><input type="text" name="title" required style="width:250px"></div> 
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-2 text-right"><span>商品标签:</span></div>
@@ -39,53 +37,39 @@
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品价格:</span></div>
-                <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" required></div> 
+                <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" required style="width:80px"> 元</div> 
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品数量:</span></div>
-                <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" required></div> 
+                <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" required style="width:80px"> 件</div> 
             </div>  
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>商品图片:</span></div>
-                <div class="col-md-10 text-left"><input type="file" name="image" required></div>
-            </div>   
-            <!-- <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>商品描述:</span></div>
-                <div id="editormd" class="col-md-10 text-left">
-                    <textarea id="id_body" cols="25" rows="10" name="body" required></textarea>
-                </div> 
-            </div>                     -->
-
+                <div class="col-md-2 text-right"><span>默认封面:</span></div>
+                <div class="col-md-10 text-left"><img src="{% static 'img/defaultImage.jpg' %}" height="200px"></div>
+            </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品描述:</span></div>
                 <div id="editormd" class="col-md-10 text-left">
                     <script id="container" name="body" type="text/platin"></script>
                 </div> 
-            </div> 
-            
-
-            <div class="row">
+            </div>         
+            <div class="row" style="margin:10px 0px 0px 190px">
                 <input type="submit" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
             </div>
         </form>
     </div>
 </div>
 
-
-<!-- <div class="form-group">
-    <label class="control-label col-md-3">商品描述:</label>
-    <div class="col-md-4">
-        <script id="container" name="content" type="text/platin"></script>
-    </div>
-</div> -->
-
+<!-- 
+    js函数实现富文本编辑器 
+-->
 <script src="{% static '/ueditor/ueditor.config.js' %}" type="text/javascript"></script>
 <script src="{% static '/ueditor/ueditor.all.js' %}" type="text/javascript"></script>
 <script type="text/javascript">
         var ue = UE.getEditor('container',{
-            initialFrameWidth: 800,
+            initialFrameWidth: 720,
             initialFrameHeight: 500,
-            serverUrl:'/ueditorImages/'
+            serverUrl:'/ueditor/controller/?imagePathFormat=ueditorImages/&filePathFormat=ueditorFiles/',
         });
  </script> 
 
@@ -101,19 +85,19 @@ function create_commodity(){
     var body = $("#id_body").val();
     var price = $("#id_price").val();
     var amount = $("#id_amount").val();
-    var image = $("#id_image")[0].files[0];
+    // var image = $("#id_image")[0].files[0];
     var tags = [];
     $.each($("input[name='tag']:checked"), function(){tags.push($(this).val());});
     console.log(title);
     console.log(body);
     console.log(price);
     console.log(amount);
-    console.log(image);
+    // console.log(image);
     console.log(tags);
     $.ajax({
         url: "{% url 'commodity:create_commodity' %}",
         type: "POST",
-        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags), "image":image},
+        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags)},
         success: function(e){
             if(e=="1"){
                 layer.msg("successful");

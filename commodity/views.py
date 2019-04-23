@@ -7,7 +7,10 @@ from django.views.decorators.http import require_POST
 from django.urls import reverse
 
 from .models import CommodityTag, Commodity, CommoditySource
-from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm, UEditorForm
+from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
+from helper.decorator import user_verify_required
+
+from django import forms
 
 # 显示所有商品标签，暂无作用
 def tag_list(request):
@@ -45,12 +48,17 @@ def commodity_list(request):
 @csrf_exempt
 def commodity_detail(request, id):
     commodity = get_object_or_404(Commodity, id = id)
-    context = {"commodity":commodity}
+    commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
+    similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
+    similar_commodities = similar_commodities[:4]
+    context = {"commodity":commodity, "similar_commodities":similar_commodities}
     return render(request, "commodity/common/commodity_detail.html", context)
+
 
 # 个人商品库
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@user_verify_required
 def commodity_repertory(request):
     commodity_list = Commodity.objects.filter(owner = request.user)
     paginator = Paginator(commodity_list, 10)
@@ -70,10 +78,10 @@ def commodity_repertory(request):
 # 创建商品
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@user_verify_required
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
-        # ueditor_form = UEditorForm(data = )
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             if True:
@@ -94,26 +102,23 @@ def create_commodity(request):
                 commodity.price = cd['price']
                 commodity.amount = cd['amount']
                 commodity.for_sale = False
-                commodity.image = request.FILES.get('image', None)
                 commodity.save()
-                print("1")
                 # 重定向
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
-            # except:
-            #     return HttpResponse("2")
         else:
             return HttpResponse("3")
     else:
         commodity_form = CommodityForm()
         tags = CommodityTag.objects.all()
         sources = CommoditySource.objects.all()
-        # ueditor_form = UEditorForm()
         context = {'commodity_form':commodity_form, 'tags':tags, 'sources':sources}
         return render(request, 'commodity/personal/create_commodity.html', context)
+
 
 # 编辑商品信息
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@user_verify_required
 def edit_commodity(request, id):
     commodity = get_object_or_404(Commodity, id = id)
     if request.method == 'GET':
@@ -142,10 +147,26 @@ def edit_commodity(request, id):
         else:
             return HttpResponse("3")
 
+# 上传商品图像
+@login_required(login_url = '/users/login')
+@csrf_exempt
+@user_verify_required
+def commodity_image(request, id):
+    if request.method == 'POST':
+        img = request.POST['img']
+        commodity = Commodity.objects.get(id=id) 
+        commodity.image = img
+        commodity.save()
+        return HttpResponse("1")
+    else:
+        context = {'id':id}
+        return render(request, 'commodity/personal/imagecrop.html', context)
+
 # 删除商品
 @login_required(login_url = '/users/login')
 @require_POST
 @csrf_exempt
+@user_verify_required
 def del_commodity(request):
     commodity_id = request.POST['commodity_id']
     try:
@@ -158,6 +179,7 @@ def del_commodity(request):
 # 待上架的商品列表
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@user_verify_required
 def put_on_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = False)
     paginator = Paginator(commodity_list, 10)
@@ -178,6 +200,7 @@ def put_on_shelves_list(request):
 @login_required(login_url = '/users/login')
 @require_POST
 @csrf_exempt
+@user_verify_required
 def put_on_commodity(request):
     commodity_id = request.POST['commodity_id']
     try:
@@ -192,6 +215,7 @@ def put_on_commodity(request):
 # 正在上架的商品列表
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@user_verify_required
 def put_off_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = True)
     paginator = Paginator(commodity_list, 10)
@@ -212,6 +236,7 @@ def put_off_shelves_list(request):
 @login_required(login_url = '/users/login')
 @require_POST
 @csrf_exempt
+@user_verify_required
 def put_off_commodity(request):
     commodity_id = request.POST['commodity_id']
     try:

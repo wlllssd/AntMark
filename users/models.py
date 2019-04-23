@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from markdownx.models import MarkdownxField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
-from simditor.fields import RichTextField
 
 # Create your models here.
 
@@ -21,6 +19,22 @@ class UserInfo(models.Model):
     qq = models.CharField(max_length=16, default="0")
     profile = ProcessedImageField(upload_to='user/img', default='user/img/default.jpg', 
         processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
+    is_verify = models.BooleanField(default=False)
+    stuCardPhoto = ProcessedImageField(upload_to='user/img/verify', null=True,
+        processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
     
     def __str__(self):
-        return self.nickname + " " + self.user
+        return self.nickname + " " + str(self.user)
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, related_name="sender_msg", on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name="receiver_msg", on_delete=models.CASCADE)
+    text = models.CharField(max_length=2000)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+    sender_del = models.BooleanField(default=False)
+    receiver_del = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.text

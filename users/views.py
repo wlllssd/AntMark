@@ -16,7 +16,7 @@ from django.db.models import Q
 from helper.crypto import encrypt, decrypt
 from django.conf import settings
 
-from users.models import UserInfo
+from users.models import UserInfo, Message
 from users.forms import InfoForm
 from commodity.models import Commodity
 
@@ -117,7 +117,7 @@ def user_reg(request):
                 except Exception as e:
                     response_data['message'] = '发送激活邮件失败，请稍后重新注册' + str(e)
                     new_user.delete()
-                return render(request, 'users/message.html', response_data)
+                return render(request, 'users/notice.html', response_data)
     
     context = { 
         'user_form': user_form, 
@@ -155,6 +155,9 @@ def user_active(request, active_code):
         else:
             user.is_active = True
             user.save()
+            # 在确认用户账号激活成功后及时创建用户信息表
+            Userinfo.objects.create(user=user)
+            
  
         response_data['goto_page'] = True
         response_data['message'] = '激活成功，欢迎加入AntMark！'
@@ -173,7 +176,7 @@ def user_active(request, active_code):
         response_data['goto_time'] = 5
         response_data['next_page'] = "用户登录界面"
 
-        return render(request, 'users/message.html' , response_data)
+        return render(request, 'users/notice.html' , response_data)
 
 
 @login_required
@@ -225,10 +228,11 @@ def reset_password(request):
             response_data['goto_url'] = settings.CUR_HOST
             response_data['goto_time'] = 3
 
-            return render(request, 'users/message.html' , response_data)
+            return render(request, 'users/notice.html' , response_data)
 
     context = { 'form': form }
     return render(request, 'users/reset_pwd.html', context)
+
 
 @login_required
 def personal_index(request, user_id):
@@ -242,13 +246,120 @@ def personal_index(request, user_id):
     }
     return render(request, 'users/personal_index.html', context)
 
-def view_notice(request):
-    """ 用户查看公告 """
-    return render(request, 'home/developing.html')
+
+@login_required
+def stu_verify(request):
+    """ 用户提交校园卡照片，后台审核 """
+    info = UserInfo.objects.get(user=request.user)
+    if info.is_verify:
+        response_data = {
+            'message': "你已经完成学生认证啦，不用重复认证",
+            'next_page': "用户设置页面",
+            'goto_url': settings.CUR_HOST + 'users/settings/', 
+            'goto_time': 5,
+        }
+        return render(request, 'users/notice.html' , response_data)
+
+    if request.method == 'POST':
+        stu_card_photo = request.FILES.get('stu_card_photo', None)
+        if stu_card_photo:
+            info.stuCardPhoto = stu_card_photo
+        info.save()
+        return HttpResponseRedirect(reverse('users:settings'))
+
+    return render(request, 'users/student_verify.html')
+
+
+# 消息处理相关视图函数
+@login_required
+def mailbox(request):
+    """ 用于接收信息以及查看发送的消息 """
+    # update_userInfo_unread_count(request.user)
+    inbox_messages = Message.objects.filter(receiver=request.user).filter(receiver_del=False).order_by('-timestamp')
+    outbox_messages = Message.objects.filter(sender=request.user).filter(sender_del=False).order_by('-timestamp')
+    context = {
+        'inbox_messages': inbox_messages,
+        'outbox_messages': outbox_messages
+    }
+    return render(request, 'users/mailbox.html', context)
 
 
 def call_admin(request):
     """ 用户发送消息联系管理员 """
-    return render(request, 'home/developing.html')
+    admin_user = User.objects.get(username="admin_user")
+
+    if request.method == 'POST':
+        response_data = {
+            'message': "消息发送失败，请通过邮件联系管理员",
+            'next_page': "联系管理员页面",
+            'goto_url': settings.CUR_HOST + 'users/call_admin/',
+            'goto_time': 5,
+        }
+
+        text = request.POST['text']
+        if text:
+            Message.objects.create(text=text, receiver=admin_user, sender=request.user)
+            response_data['message'] = "管理员已经收到消息，将尽快回复"
+            response_data['next_page'] = "个人设置页面"
+            response_data['goto_url'] = settings.CUR_HOST + 'users/settings'
+        
+        return render(request, 'users/notice.html' , response_data)
+
+    return render(request, 'users/send_message.html')
 
 
+@login_required
+def set_as_read(request, message_id):
+    """ 标记消息为已读 """
+    try:
+        message = Message.objects.get(id=message_id)
+        if request.user == message.receiver:
+            message.is_read = True
+            message.save()
+    finally:
+        return HttpResponseRedirect(reverse('users:mailbox'))
+
+
+@login_required
+def read_message(request, message_id):
+    """ 阅读消息完整内容并回复 """
+    message = Message.objects.get(id=message_id)
+    if request.user == message.receiver:
+        message.is_read = True
+        message.save()
+
+    context = { 'message': message }
+    return render(request, 'users/read_message.html', context)
+
+@login_required
+def del_message(request, message_id):
+    """ 某方删除当前消息，若另一方已删除，则删除该信息 """
+    try:
+        del_message = Message.objects.get(id=message_id)
+        if request.user == del_message.sender:
+            del_message.sender_del = True
+            if del_message.receiver_del == True:
+                del_message.delete()
+            else:
+                del_message.save()
+        else:
+            del_message.receiver_del = True
+            del_message.is_read = True
+            if del_message.sender_del == True:
+                del_message.delete()
+            else:
+                del_message.save()
+    finally:
+        return HttpResponseRedirect(reverse('users:mailbox'))
+
+
+@login_required
+def deal_mult_msg(request):
+    msg_ids = request.POST.getlist("checkbox_list")
+    if 'delete_msg' in request.POST:
+        for idx in msg_ids:
+            del_message(request, int(idx))
+    elif 'set_as_read' in request.POST:
+        for idx in msg_ids:
+            set_as_read(request, int(idx))
+    return HttpResponseRedirect(reverse('users:mailbox'))

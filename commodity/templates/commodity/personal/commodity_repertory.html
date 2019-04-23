@@ -2,19 +2,6 @@
 {% load staticfiles %}
 {% block content %}
 <style>
-    #test1 {
-        display: inline-block;
-        border: 1px solid #ddd;
-        margin: 20px 10px;
-        padding: 0px 10px;
-        width: 250px;
-        height: 380px;
-        border-radius: 4px;
-        margin-right: 10px;
-        background-color: #fff;
-        margin-bottom: 10px;
-    }
-
     #line-limit-length {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -25,19 +12,21 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 <div class='container'>
     {% include 'commodity/upslider.html' %}
-    <!-- <h1 style="font-family: 'SimSun'; height:20px ">我的商品库</h1>
-    <hr> -->
     <br>
     <div class="row clearfix">
         {% for commodity in commodities %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px">
+                    {% if commodity.image %}
+                    <img src="{{ commodity.image | striptags }}" height="200px" class="center-block">
+                    {% else %}
+                    <img src="{% static 'img/defaultImage.jpg' %}" height="200px" class="center-block">
+                    {% endif %}
                 </a>
                 <div class="title d-flex flex-row pb-20">
-                    <!-- <span class="glyphicon glyphicon-gift"></span> -->
-                    <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
+                    <span class="glyphicon glyphicon-gift"></span>
+                    <h5 id="line-limit-length"><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h5>
                 </div>
                 <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
                 <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
