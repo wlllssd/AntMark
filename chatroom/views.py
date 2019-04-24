@@ -36,7 +36,7 @@ def start_chat(request, user_id, comm_id):
             'goto_url': settings.CUR_HOST + 'chatroom/room_list/',
             'goto_time': 5,
         }
-        return render(request, 'users/message.html' , response_data)
+        return render(request, 'users/notice.html' , response_data)
 
     member2 = User.objects.get(id=user_id)
     comm = Commodity.objects.get(id=comm_id)
@@ -59,6 +59,7 @@ def start_chat(request, user_id, comm_id):
 
 
 @login_required
+@user_verify_required
 def room_detail(request, room_id):
     room = Chatroom.objects.get(id=room_id)
     if request.user != room.member1 and request.user != room.member2:

@@ -51,7 +51,7 @@
                 <div class="function-item">
                     <a href="{% url 'users:call_admin' %}">联系管理员</a>
                 </div>
-                {% if info.is_verify == False %}
+                {% if info.is_verified == False %}
                 <div class="function-item">
                     <a href="{% url 'users:stu_verify' %}" class="btn btn-success">用户学生认证</a>
                 </div>

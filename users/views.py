@@ -251,7 +251,7 @@ def personal_index(request, user_id):
 def stu_verify(request):
     """ 用户提交校园卡照片，后台审核 """
     info = UserInfo.objects.get(user=request.user)
-    if info.is_verify:
+    if info.is_verified:
         response_data = {
             'message': "你已经完成学生认证啦，不用重复认证",
             'next_page': "用户设置页面",
@@ -265,6 +265,15 @@ def stu_verify(request):
         if stu_card_photo:
             info.stuCardPhoto = stu_card_photo
         info.save()
+        
+        # 发消息给管理员通知其进行审核
+        text = "用户" + info.nickname + "(" + request.user.username + ")" + \
+            "提交了学生身份认证文件，请点击以下链接进行审核：" + "<a href=" + settings.CUR_HOST + \
+            "admin_manage/stu_verify_detail/" + str(request.user.id) + ">审核链接</a>"
+        admin_user = User.objects.filter(is_superuser=True)[0]
+        Message.objects.create(text=text, id_content=request.user.id, 
+            msg_type='stu_verify', sender=admin_user, receiver=admin_user)
+
         return HttpResponseRedirect(reverse('users:settings'))
 
     return render(request, 'users/student_verify.html')
@@ -272,18 +281,25 @@ def stu_verify(request):
 
 # 消息处理相关视图函数
 @login_required
-def mailbox(request):
-    """ 用于接收信息以及查看发送的消息 """
+def mail_inbox(request):
+    """ 用于查看接收的信息 """
     # update_userInfo_unread_count(request.user)
-    inbox_messages = Message.objects.filter(receiver=request.user).filter(receiver_del=False).order_by('-timestamp')
-    outbox_messages = Message.objects.filter(sender=request.user).filter(sender_del=False).order_by('-timestamp')
-    context = {
-        'inbox_messages': inbox_messages,
-        'outbox_messages': outbox_messages
-    }
-    return render(request, 'users/mailbox.html', context)
+    inbox_messages = Message.objects.filter(receiver=request.user, 
+        msg_type='message', receiver_del=False).order_by('-timestamp')
+    context = { 'inbox_messages': inbox_messages }
+    return render(request, 'users/mail_inbox.html', context)
 
 
+@login_required
+def mail_outbox(request):
+    """ 查看已经发送的消息 """
+    outbox_messages = Message.objects.filter(sender=request.user, 
+        msg_type='message', sender_del=False).order_by('-timestamp')
+    context = { 'outbox_messages': outbox_messages }
+    return render(request, 'users/mail_outbox.html', context)
+
+
+@login_required
 def call_admin(request):
     """ 用户发送消息联系管理员 """
     admin_user = User.objects.get(username="admin_user")
@@ -317,7 +333,7 @@ def set_as_read(request, message_id):
             message.is_read = True
             message.save()
     finally:
-        return HttpResponseRedirect(reverse('users:mailbox'))
+        return HttpResponseRedirect(reverse('users:mail_inbox'))
 
 
 @login_required
@@ -331,26 +347,30 @@ def read_message(request, message_id):
     context = { 'message': message }
     return render(request, 'users/read_message.html', context)
 
+
 @login_required
 def del_message(request, message_id):
     """ 某方删除当前消息，若另一方已删除，则删除该信息 """
     try:
         del_message = Message.objects.get(id=message_id)
-        if request.user == del_message.sender:
-            del_message.sender_del = True
-            if del_message.receiver_del == True:
-                del_message.delete()
-            else:
-                del_message.save()
+    except ObjectDoesNotExist:
+        raise Http404
+        
+    if request.user == del_message.sender:
+        del_message.sender_del = True
+        if del_message.receiver_del == True:
+            del_message.delete()
         else:
-            del_message.receiver_del = True
-            del_message.is_read = True
-            if del_message.sender_del == True:
-                del_message.delete()
-            else:
-                del_message.save()
-    finally:
-        return HttpResponseRedirect(reverse('users:mailbox'))
+            del_message.save()
+        return HttpResponseRedirect(reverse('users:mail_outbox'))
+    elif request.user == del_message.receiver:
+        del_message.receiver_del = True
+        del_message.is_read = True
+        if del_message.sender_del == True:
+            del_message.delete()
+        else:
+            del_message.save()
+        return HttpResponseRedirect(reverse('users:mail_inbox'))
 
 
 @login_required
@@ -358,8 +378,8 @@ def deal_mult_msg(request):
     msg_ids = request.POST.getlist("checkbox_list")
     if 'delete_msg' in request.POST:
         for idx in msg_ids:
-            del_message(request, int(idx))
+            response = del_message(request, int(idx))
     elif 'set_as_read' in request.POST:
         for idx in msg_ids:
-            set_as_read(request, int(idx))
-    return HttpResponseRedirect(reverse('users:mailbox'))
+            response = set_as_read(request, int(idx))
+    return response

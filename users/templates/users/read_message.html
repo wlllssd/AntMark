@@ -17,7 +17,7 @@
         <br/>
         <p>{{ message.timestamp }}</p>
         <label>信息内容：</label>
-        <div class="message_display">{{ message.text }}</div>
+        <div class="message_display">{{ message.text|safe }}</div>
         {% ifnotequal message.sender request.user %}
         <hr/>
         <h4>回复给发信人 {{ message.sender|getUserNickname }}:</h4>
@@ -28,7 +28,7 @@
                 <textarea class="form-control" rows="8" name="text"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">回复</button>
-            <a href="{% url 'users:mailbox' %}" class="btn btn-default">返回</a>
+            <a href="{% url 'users:mail_inbox' %}" class="btn btn-default">返回</a>
         </form>
         {% endifnotequal %}
     </div>

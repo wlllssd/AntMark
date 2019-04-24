@@ -47,4 +47,4 @@ def getVerifyStatus(user):
         info = UserInfo.objects.get(user=user)
     except ObjectDoesNotExist:
         return False    
-    return info.is_verify
+    return info.is_verified

@@ -7,6 +7,7 @@
                 <li id = "upslider2"><a href="{% url 'commodity:create_commodity' %}">新建商品</a></li>
                 <li id = "upslider3"><a href="{% url 'commodity:put_on_shelves_list' %}">上架商品</a></li>
                 <li id = "upslider4"><a href="{% url 'commodity:put_off_shelves_list' %}">下架商品</a></li>
+                <li id = "upslider5"><a href="{% url 'commodity:not_verified_list' %}">提交审核</a></li>
             </ul>
         </div>
     </div>
@@ -17,3 +18,8 @@
         arr[index].classList.remove("active");
     }
 </script>
+
+<!-- 
+settings.CUR_HOST + 'admin_manage/comm_verify_detail/'
+Message id_content 
+-->

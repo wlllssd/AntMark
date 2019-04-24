@@ -1,5 +1,4 @@
 from django import forms
-from DjangoUeditor.models import UEditorField
 
 from .models import CommodityTag, Commodity, CommoditySource
 
@@ -17,10 +16,7 @@ class CommoditySourceForm(forms.ModelForm):
 class CommodityForm(forms.ModelForm):
     class Meta:
         model = Commodity
-        fields = ('title', 'body', 'price', 'amount')
+        fields = ('title', 'body', 'price')
 
-class UEditorForm(forms.Form):
-    body = UEditorField(verbose_name = "commodity_descriprion",imagePath="ueditorImages/", 
-		width=700, height=600, filePath='ueditorFiles/', toolbars="full")
 
 

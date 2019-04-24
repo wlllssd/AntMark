@@ -1,18 +1,5 @@
 {% extends 'home/base.html' %} {% load staticfiles %} {% block content %}
 <style>
-    #test1 {
-        display: inline-block;
-        border: 1px solid #ddd;
-        margin: 20px 10px;
-        padding: 0px 10px;
-        width: 250px;
-        height: 380px;
-        border-radius: 4px;
-        margin-right: 10px;
-        background-color: #fff;
-        margin-bottom: 10px;
-    }
-    
     #line-limit-length {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -28,22 +15,24 @@
  
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
-            <div class="form-group">
-                <input type="text" class="form-control" name="keyword" value="{{ keyword }}"/>
+            <div class="form-group" style="margin-left:230px;">
+                <div class="input-group" >
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+                    <input type="text" class="form-control" name="keyword" value="{{ keyword }}" style="width:400px;"/>
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
         </form>
     </div>
-    
-    <div class="col-md-12">
-        <div style="margin-left:10px">
+    <div class="col-md-12 column">
+        <div>
             <form class="form-horizontal" action="{% url 'commodity:search_commodity' %}" method="post">{% csrf_token %}
                 <div class="row" style="margin-top: 10px">
                     <input name="keyword" type="hidden" value="{{ keyword }}">
                 </div>                
-                <div class="row" style="margin-top: 10px">
-                    <div class="col-md-2 text-right"><span>商品标签:</span></div>
-                    <div class="col-md-10 text-left">
+                <div class="row" style="margin-top: 10px" >
+                    <div class="col-md-1 text-left"><span>商品标签:</span></div>
+                    <div class="col-md-11 text-left">
                         <label class="checkebox-inline">
                             <input class="tagcheckbox" type="radio" id="0" name="tag" value="0">全部
                             {% for tag in tags %}
@@ -54,8 +43,8 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px">
-                    <div class="col-md-2 text-right"><span>商品货源:</span></div>
-                    <div class="col-md-10 text-left">
+                    <div class="col-md-1 text-left"><span>商品货源:</span></div>
+                    <div class="col-md-11 text-left">
                         <label class="checkebox-inline">
                             <input class="tagcheckbox" type="radio" id="0" name="source" value="0">全部
                             {% for source in sources %}
@@ -65,21 +54,21 @@
                         </label>                
                     </div>
                 </div>
-                <div class="row" style="margin-top: 10px">
-                    <input type="submit" class="btn btn-primary btn-lg" value="筛选">
+                <div class="row" style="margin-top: 10px; margin-left: 0px;">
+                    <input type="submit" class="btn btn-primary btn-default" value="筛选">
                 </div>
             </form>
         </div>
     </div>    
     <hr>
-    <h1>搜索结果</h1>
+    <h3>搜索结果</h3>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount %}
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.is_verified %}
         <div class="col-md-3 column">
             <div class="single-feature mb-30">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
-                    <img src="{{commodity.image.url}}" height="200px">
+                    <img src="{{commodity.image | striptags}}" height="200px">
                 </a>
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>
@@ -89,7 +78,6 @@
                 <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
                 <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-                <p id="line-limit-length">数量：{{commodity.amount}}</p>
                 <div align="right">
                     <a></a><span class="glyphicon glyphicon-menu-right"></span>
                 </div>

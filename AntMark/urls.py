@@ -22,8 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls', namespace = 'home')), 
     path('users/', include('users.urls', namespace = 'users')),
+    path('admin_manage/', include('admin_manage.urls', namespace = "admin_manage")),
     path('commodity/', include('commodity.urls', namespace = "commodity")),
-    # path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('chatroom/',include('chatroom.urls', namespace = "chatroom")),
     path('ueditor/',include('DjangoUeditor.urls')),
-    path('chatroom/',include('chatroom.urls', namespace = "chatroom"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\

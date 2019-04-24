@@ -23,7 +23,9 @@ urlpatterns = [
 
     
     # 消息处理相关
-    path('mailbox/', views.mailbox, name = 'mailbox'),
+    path('mail_inbox/', views.mail_inbox, name = 'mail_inbox'),
+
+    path('mail_outbox/', views.mail_outbox, name = 'mail_outbox'),
 
     path('call_admin/', views.call_admin, name = 'call_admin'),
 

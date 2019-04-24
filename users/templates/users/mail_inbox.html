@@ -1,0 +1,107 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+
+<script>
+    //选中收件箱中的所有邮件
+    function select_all_recemsg() {
+        var select_box = document.getElementById("rece_select_all")
+        var boxs = document.getElementsByName("checkbox_list");
+        var flag = select_box.checked
+        for (var i = 0; i < boxs.length; i++) {
+            boxs[i].checked = flag;
+        }
+    }
+
+    //警告框
+    function setAsRead() {
+        event.returnValue = confirm("是否将已经选择的多条信息标记为已读？")
+    }
+
+    function delInboxMsgConfirm() {
+        event.returnValue = confirm("是否从'收件箱中'删除已经选择的信息？")
+    }
+</script>
+
+<body>
+    <div class="section-top-border">
+        <h1>Mailbox 收件箱</h1>
+        <br/>
+        <div style="float:right">
+            <a href="{% url 'users:mail_inbox' %}" class="btn btn-success">收件箱</a>
+            <a href="{% url 'users:mail_outbox' %}" class="btn btn-info">发件箱</a>
+        </div>
+        <br/>
+        <div class="section" id="inbox">
+            <form action="{% url 'users:deal_mult_msg' %}" enctype="multipart/form-data" method="POST" class="form">{% csrf_token %}
+                <button type="submit" class="btn btn-info" name="delete_msg" onclick="delInboxMsgConfirm()">删除</button>
+                <button type="submit" class="btn btn-info" name="set_as_read" onclick="setAsRead()">标记为已读</button><br/><br/>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="rece_select_all" onclick="select_all_recemsg()"></th>
+                            <th>Inbox Message(收件箱)</th>
+                            <th>发信人</th>
+                            <th>信件内容</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in inbox_messages %} {% ifequal message.is_read False %}
+                        <tr class="info">
+                            <td><input type="checkbox" name="checkbox_list" value='{{message.id}}'></td>
+                            <td>{{ message.timestamp|date:'M d, Y H:i' }}</td>
+                            <td>{{ message.sender|getUserNickname }}({{ message.sender }})</td>
+                            {% if message.text|length > 40 %}
+                            <td>{{ message.text|slice:'0 : 40' }} . . .</td>
+                            {% else %}
+                            <td>{{ message.text}}</td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'users:read_message' message.id %}" title="查看并回复">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'users:set_as_read' message.id %}" title="标记为已读">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td><input type="checkbox" name="checkbox_list" id="{{message.id}}" value="{{message.id}}"></td>
+                            <td>{{ message.timestamp|date:'M d, Y H:i' }}</td>
+                            <td>{{ message.sender|getUserNickname }}({{ message.sender }})</td>
+                            {% if message.text|length > 40 %}
+                            <td>{{ message.text|slice:'0 : 40' }} . . .</td>
+                            {% else %}
+                            <td>{{ message.text}}</td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'users:read_message' message.id %}" title="查看并回复">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'users:del_message' message.id %}" title="删除信息" onclick="delInboxMsgConfirm()">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endifequal %} {% empty %}
+                        <tr>
+                            <td>No message.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <br/>
+
+        <a href="{% url 'users:call_admin' %}" class="btn btn-default">联系管理员</a>
+        <a href="{% url 'home:index' %}" class="btn btn-default">返回主页</a>
+    </div>
+</body>
+{% endblock content %}

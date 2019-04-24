@@ -38,11 +38,14 @@
                     <li><a href="{% url 'home:index' %}">主页</a></li>
                     <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
                     <li><a href="{% url 'chatroom:room_list' %}">聊天列表</a></li>
+                    {% if user.is_superuser %}
+                    <li><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
+                    {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav nav-tabs navbar-right">
                     <li>
-                        <a href="{% url 'users:mailbox' %}">邮箱</a></li>
+                        <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
                             {{ user|getUserNickname }}
