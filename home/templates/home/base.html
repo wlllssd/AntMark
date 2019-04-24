@@ -41,7 +41,7 @@
                 </ul>
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav nav-tabs navbar-right">
-                    <li>
+                    <li style="background-color:#337ab7">
                         <a href="{% url 'users:mailbox' %}">邮箱</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
