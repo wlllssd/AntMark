@@ -1,0 +1,20 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
+
+<html lang="zxx" class="no-js">
+
+<body>
+    <section class="project-area section-gap" style="padding-top: 50px">
+        <div class="container">
+            <div class="title text-center">
+                <h1 class="mb-10">AntMark 管理员后台管理平台 </h1>
+                <br/><br/>
+                <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-primary">学生验证审核</a>
+                <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-primary">商品审核</a>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+
+{% endblock content %}

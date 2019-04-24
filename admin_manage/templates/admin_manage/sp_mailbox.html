@@ -1,0 +1,118 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+
+<script>
+    //选中收件箱中的所有邮件
+    function select_all_recemsg() {
+        var select_box = document.getElementById("rece_select_all")
+        var boxs = document.getElementsByName("checkbox_list");
+        var flag = select_box.checked
+        for (var i = 0; i < boxs.length; i++) {
+            boxs[i].checked = flag;
+        }
+    }
+
+    //警告框
+    function delMsgConfirm() {
+        event.returnValue = confirm("是否从 收件箱中 删除已经选择的信息？")
+    }
+</script>
+
+<body>
+    <div class="section-top-border">
+        <h1>{{ function }}审核系统</h1>
+        <br/>
+        <div style="float:right">
+            <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-success">学生认证审核系统</a>
+            <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-info">商品审核系统</a>
+        </div>
+        <br/>
+        <div class="section" id="inbox">
+            <form action="{% url 'admin_manage:deal_mult_msg' %}" enctype="multipart/form-data" method="POST" class="form">{% csrf_token %}
+                <button type="submit" class="btn btn-info" name="delete_msg" onclick="delMsgConfirm()">删除</button><br/><br/>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="rece_select_all" onclick="select_all_recemsg()"></th>
+                            <th>Message</th>
+                            <th>发信人</th>
+                            <th>信件内容</th>
+                            <th>查看</th>
+                            <th>审核</th>
+                            <th>删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in inbox_messages %} {% ifequal message.is_read False %}
+                        <tr class="info">
+                            <td><input type="checkbox" name="checkbox_list" value='{{message.id}}'></td>
+                            <td>{{ message.timestamp|date:'M d, Y H:i' }}</td>
+                            <td>{{ message.sender|getUserNickname }}({{ message.sender }})</td>
+                            {% if message.text|length > 40 %}
+                            <td>{{ message.text|slice:'0 : 40' }} . . .</td>
+                            {% else %}
+                            <td>{{ message.text}}</td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'admin_manage:read_message' message.id %}" title="查看">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                            <td>
+                                {% ifequal message.msg_type 'stu_verify' %}
+                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}" title="审核">
+                                    <span class="glyphicon glyphicon-search " aria-hidden="true "></span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}" title="审核">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </a>
+                                {% endifequal %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td><input type="checkbox" name="checkbox_list" value='{{message.id}}'></td>
+                            <td>{{ message.timestamp|date:'M d, Y H:i' }}</td>
+                            <td>{{ message.sender|getUserNickname }}({{ message.sender }})</td>
+                            {% if message.text|length > 40 %}
+                            <td>{{ message.text|slice:'0 : 40' }} . . .</td>
+                            {% else %}
+                            <td>{{ message.text}}</td>
+                            {% endif %}
+                            <td>
+                                <a href="{% url 'admin_manage:read_message' message.id %}" title="查看">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                            <td>
+                                {% ifequal message.msg_type 'stu_verify' %}
+                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}" title="审核">
+                                    <span class="glyphicon glyphicon-search " aria-hidden="true "></span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}" title="审核">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </a>
+                                {% endifequal %}
+                            </td>
+                            <td>
+                                <a href="{% url 'admin_manage:del_message' message.id %}" title="删除信息" onclick="delMsgConfirm()">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endifequal %} {% empty %}
+                        <tr>
+                            <td>No message.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+            <br/>
+        </div>
+
+        <a href="{% url 'home:index' %}" class="btn btn-default">返回主页</a>
+    </div>
+</body>
+{% endblock content %}
