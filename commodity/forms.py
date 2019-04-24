@@ -16,7 +16,7 @@ class CommoditySourceForm(forms.ModelForm):
 class CommodityForm(forms.ModelForm):
     class Meta:
         model = Commodity
-        fields = ('title', 'body', 'price', 'amount')
+        fields = ('title', 'body', 'price')
 
 
 

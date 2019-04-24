@@ -20,7 +20,7 @@ def user_verify_required(func):
                 'goto_url': settings.CUR_HOST + 'users/stu_verify',
                 'goto_time': 5,
             }
-            return render(request, 'users/message.html' , response_data)
+            return render(request, 'users/notice.html' , response_data)
 
         # 执行原来的方法(响应页面)
         response = func(*args, **kwargs)

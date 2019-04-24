@@ -5,12 +5,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.urls import reverse
+from django.contrib.auth.models import User
+
+import sys
+sys.path.append('..')
+from users.models import Message, UserInfo
+from AntMark import settings
 
 from .models import CommodityTag, Commodity, CommoditySource
 from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
 from helper.decorator import user_verify_required
 
-from django import forms
 
 # 显示所有商品标签，暂无作用
 def tag_list(request):
@@ -29,7 +34,7 @@ def source_list(request):
 @csrf_exempt
 def commodity_list(request):
     commodity_list = Commodity.objects.all()
-    paginator = Paginator(commodity_list, 10)
+    paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -46,11 +51,12 @@ def commodity_list(request):
 # 显示商品详情
 @login_required(login_url = '/users/login')
 @csrf_exempt
-def commodity_detail(request, id):
-    commodity = get_object_or_404(Commodity, id = id)
-    if commodity.is_verified and commodity.for_sale and commodity.amount:
-        commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
-        similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
+def commodity_detail(request, commodity_id):
+    commodity = get_object_or_404(Commodity, id = commodity_id)
+    if commodity.is_verified and commodity.for_sale :
+        # commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
+        # similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
+        similar_commodities = Commodity.objects.filter(commodity_tag = commodity.commodity_tag).exclude(id = commodity.id)
         similar_commodities = similar_commodities[:4]
         context = {"commodity":commodity, "similar_commodities":similar_commodities}
         return render(request, "commodity/common/commodity_detail.html", context)
@@ -64,7 +70,7 @@ def commodity_detail(request, id):
 @user_verify_required
 def commodity_repertory(request):
     commodity_list = Commodity.objects.filter(owner = request.user)
-    paginator = Paginator(commodity_list, 10)
+    paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -87,28 +93,21 @@ def create_commodity(request):
         commodity_form = CommodityForm(data = request.POST)
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
-            if True:
-                commodity = Commodity.objects.create(owner=request.user)
+            try:
+                tag = CommodityTag.objects.get(tag = request.POST['tag'])
+                source = CommoditySource.objects.get(source = request.POST['source'])
+                commodity = Commodity.objects.create(owner=request.user, commodity_source = source, commodity_tag = tag)
+                
                 commodity.title = cd['title']
                 commodity.body = cd['body']
-                
-                # 获取商品标签（多对多）
-                tagList = request.POST.getlist('tag', None)
-                tags = CommodityTag.objects.filter(tag__in = tagList)
-                commodity.commodity_tag.set(tags)
-
-                # 获取商品货源（多对多）
-                sourceList = request.POST.getlist('source', None)
-                sources = CommoditySource.objects.filter(source__in = sourceList)
-                commodity.commodity_source.set(sources)
-
                 commodity.price = cd['price']
-                commodity.amount = cd['amount']
                 commodity.for_sale = False
                 commodity.is_verified = False
                 commodity.save()
                 # 重定向
                 return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
+            except:
+                return HttpResponse("2")
         else:
             return HttpResponse("3")
     else:
@@ -123,8 +122,8 @@ def create_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 @user_verify_required
-def edit_commodity(request, id):
-    commodity = get_object_or_404(Commodity, id = id)
+def edit_commodity(request, commodity_id):
+    commodity = get_object_or_404(Commodity, id = commodity_id)
     if request.method == 'GET':
         commodity_form = CommodityForm()
         sources = CommoditySource.objects.all()
@@ -136,26 +135,18 @@ def edit_commodity(request, id):
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
+                tag = CommodityTag.objects.get(tag = request.POST['tag'])
+                source = CommoditySource.objects.get(source = request.POST['source'])
                 commodity.title = cd['title']
-                commodity.amount = cd['amount']
                 commodity.price = cd['price']
                 commodity.body = cd['body']
-
-                # 获取商品货源（多对多）
-                sourceList = request.POST.getlist('source', None)
-                sources = CommoditySource.objects.filter(source__in = sourceList)
-                commodity.commodity_source.set(sources)
-
-                # 获取商品标签（多对多）
-                tagList = request.POST.getlist('tag', None)
-                tags = CommodityTag.objects.filter(tag__in = tagList)
-                commodity.commodity_tag.set(tags)
-
-                commodity.for_sale = False
+                commodity.commodity_tag = tag
+                commodity.commodity_source =  source
                 commodity.is_verified = False
+                commodity.for_sale = False
 
                 commodity.save()
-                return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
+                return HttpResponseRedirect(reverse('commodity:not_verified_list'))
             except:
                 return HttpResponse("2")
         else:
@@ -165,15 +156,15 @@ def edit_commodity(request, id):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 @user_verify_required
-def commodity_image(request, id):
+def commodity_image(request, commodity_id):
     if request.method == 'POST':
         img = request.POST['img']
-        commodity = Commodity.objects.get(id=id) 
+        commodity = Commodity.objects.get(id=commodity_id) 
         commodity.image = img
         commodity.save()
         return HttpResponse("1")
     else:
-        context = {'id':id}
+        context = {'commodity_id':commodity_id}
         return render(request, 'commodity/personal/imagecrop.html', context)
 
 # 删除商品
@@ -194,9 +185,9 @@ def del_commodity(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 @user_verify_required
-def preview_commodity(request, id):
-    commodity = get_object_or_404(Commodity, id = id)
-    commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
+def preview_commodity(request, commodity_id):
+    commodity = get_object_or_404(Commodity, id = commodity_id)
+    # commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
     context = {"commodity":commodity}
     return render(request, "commodity/personal/preview_commodity.html", context)
 
@@ -207,7 +198,7 @@ def preview_commodity(request, id):
 @user_verify_required
 def put_on_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = False, is_verified = True)
-    paginator = Paginator(commodity_list, 10)
+    paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -231,7 +222,6 @@ def put_on_commodity(request):
     try:
         commodity = Commodity.objects.get(id = commodity_id)
         commodity.for_sale = True
-        commodity.amount = 1
         commodity.save()
         return HttpResponse("1")
     except:
@@ -243,7 +233,7 @@ def put_on_commodity(request):
 @user_verify_required
 def put_off_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = True, is_verified = True)
-    paginator = Paginator(commodity_list, 10)
+    paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -267,7 +257,6 @@ def put_off_commodity(request):
     try:
         commodity = Commodity.objects.get(id = commodity_id)
         commodity.for_sale = False
-        commodity.amount = 0
         commodity.save()
         return HttpResponse("1")
     except:
@@ -279,7 +268,7 @@ def put_off_commodity(request):
 @user_verify_required
 def not_verified_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, is_verified = False)
-    paginator = Paginator(commodity_list, 10)
+    paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -292,6 +281,28 @@ def not_verified_list(request):
         commodities = current_page.object_list
     context = {'commodities':commodities, 'page':current_page}
     return render(request, 'commodity/personal/not_verified_list.html', context)  
+
+
+# 提出商品审核
+@login_required(login_url = '/users/login')
+@csrf_exempt
+@user_verify_required
+def commodity_verify(request, commodity_id):
+    commodity = Commodity.objects.get(id = commodity_id)
+    info = UserInfo.objects.get(user = request.user)
+    text = "用户" + info.nickname + "(" + request.user.username + ")" + \
+            "提交了商品身份认证文件，请点击以下链接进行审核：" + "<a href=" + settings.CUR_HOST + \
+            "/admin_manage/comm_verfity/" + str(commodity.id) + ">审核链接</a>"
+    admin_user = User.objects.filter(is_superuser=True)[0]
+    Message.objects.create(text = text, id_content=commodity_id, msg_type='commodity_verify', 
+        sender = admin_user, receiver = admin_user)
+    response_data = {
+        'message': "商品已经提交审核，等待管理员通知",
+        'next_page': "商品提交审核页面",
+        'goto_url': settings.CUR_HOST + 'commodity/not-verified-list/',
+        'goto_time': 3,
+    }
+    return render(request, 'users/notice.html' , response_data)
 
 
 
@@ -312,7 +323,7 @@ def search_commodity(request):
             source = CommoditySource.objects.get(source = sourceChoice)
             condition['commodity_source'] = source.id
         commodity_list = Commodity.objects.filter(title__icontains = keyword, **condition)
-        paginator = Paginator(commodity_list, 10)
+        paginator = Paginator(commodity_list, 20)
         page = request.GET.get('page')        
         try:
             current_page = paginator.page(page)

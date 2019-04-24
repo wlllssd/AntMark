@@ -21,20 +21,16 @@
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-2 text-right"><span>商品标签:</span></div>
-                <div class="col-md-10 text-left">{{commodity.commodity_tag.all|join:","}}</div>
+                <div class="col-md-10 text-left">{{commodity.commodity_tag}}</div>
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-2 text-right"><span>商品货源:</span></div>
-                <div class="col-md-10 text-left">{{commodity.commodity_source.all|join:","}}</div>
+                <div class="col-md-10 text-left">{{commodity.commodity_source}}</div>
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品价格:</span></div>
                 <div class="col-md-10 text-left">￥{{commodity.price}}</div> 
             </div>
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>商品数量:</span></div>
-                <div class="col-md-10 text-left">{{commodity.amount}}</div> 
-            </div>  
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品描述:</span></div>
                 <div id="editormd" class="col-md-10 text-left" style="border:1px solid rgb(230, 230, 230); padding: 10px; overflow-x: hidden;" >

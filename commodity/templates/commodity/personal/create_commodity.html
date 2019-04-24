@@ -11,28 +11,28 @@
         <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'commodity:create_commodity' %}" method="post">{% csrf_token %} 
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品名称:</span></div>
-                <div class="col-md-10 text-left"><input type="text" name="title" required style="width:250px"></div> 
+                <div class="col-md-10 text-left"><input type="text" name="title" required style="width:400px"></div> 
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-2 text-right"><span>商品标签:</span></div>
-                <div class="col-md-10 text-left">
-                    {% for tag in tags %}
-                    <label class="checkebox-inline">
-                        <input class="tagcheckbox" type="checkbox" id="{{tag.id}}" name="tag" value="{{tag.tag}}">{{tag.tag}}
-                    </label>
-                    {% empty %}
-                    {% endfor %}
+                <div class="col-md-10 text-left">  
+                    <select name="tag" required >
+                        {% for tag in tags %}
+                        <option id="{{tag.id}}" name="tag" value="{{tag.tag}}">{{tag.tag}}</option>
+                        {% empty %}
+                        {% endfor %}                     
+                    </select>
                 </div>
             </div>
             <div class="row" style="margin-top: 10px">
                 <div class="col-md-2 text-right"><span>商品货源:</span></div>
                 <div class="col-md-10 text-left">
-                    {% for source in sources %}
-                    <label class="checkebox-inline">
-                        <input class="tagcheckbox" type="checkbox" id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}
-                    </label>
-                    {% empty %}
-                    {% endfor %}
+                    <select name="source" required>
+                        {% for source in sources %}
+                        <option id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}</option>
+                        {% empty %}
+                        {% endfor %}
+                    </select>
                 </div>
             </div>
             <div class="row" style="margin-top: 10px;">
@@ -40,21 +40,17 @@
                 <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" required style="width:80px"> 元</div> 
             </div>
             <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>商品数量:</span></div>
-                <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" required style="width:80px"> 件</div> 
-            </div>  
-            <div class="row" style="margin-top: 10px;">
-                <div class="col-md-2 text-right"><span>默认封面:</span></div>
-                <div class="col-md-10 text-left"><img src="{% static 'img/defaultImage.jpg' %}" height="200px"></div>
-            </div>
-            <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>商品描述:</span></div>
                 <div id="editormd" class="col-md-10 text-left">
                     <script id="container" name="body" type="text/platin"></script>
                 </div> 
-            </div>         
+            </div>  
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-2 text-right"></div>
+                <div class="col-md-10 text-left"><span style="color:red">注：在创建商品成功后，请点击“编辑”上传商品封面，否则无法通过审核</span></div>
+            </div>       
             <div class="row" style="margin:10px 0px 0px 190px">
-                <input type="submit" class="btn btn-primary btn-lg" value="提交" onclick="create_commodity()">
+                <input type="submit" class="btn btn-info btn-lg" value="提交" onclick="create_commodity()">
             </div>
         </form>
     </div>
@@ -84,20 +80,18 @@ function create_commodity(){
     var title = $("#id_title").val();
     var body = $("#id_body").val();
     var price = $("#id_price").val();
-    var amount = $("#id_amount").val();
     // var image = $("#id_image")[0].files[0];
     var tags = [];
     $.each($("input[name='tag']:checked"), function(){tags.push($(this).val());});
     console.log(title);
     console.log(body);
     console.log(price);
-    console.log(amount);
     // console.log(image);
     console.log(tags);
     $.ajax({
         url: "{% url 'commodity:create_commodity' %}",
         type: "POST",
-        data: {"title":title, "body":body, "price":price, "amount":amount, "tags":JSON.stringify(tags)},
+        data: {"title":title, "body":body, "price":price, "tags":JSON.stringify(tags)},
         success: function(e){
             if(e=="1"){
                 layer.msg("successful");

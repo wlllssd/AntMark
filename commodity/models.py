@@ -21,14 +21,13 @@ class CommoditySource(models.Model):
 class Commodity(models.Model):
 	title = models.CharField(max_length = 300)
 	owner = models.ForeignKey(User, related_name = "commodity", on_delete = models.CASCADE)
-	commodity_tag = models.ManyToManyField(CommodityTag, related_name = "commodity_tag", blank = False)
-	commodity_source = models.ManyToManyField(CommoditySource, related_name = "commodity_source", blank = False)
+	commodity_tag = models.ForeignKey(CommodityTag, related_name = "commodity_tag", on_delete = models.CASCADE)
+	commodity_source = models.ForeignKey(CommoditySource, related_name = "commodity_source", on_delete = models.CASCADE)
 	body = UEditorField(verbose_name = "commodity_descriprion",imagePath="ueditorImages/", 
 			width=700, height=600, filePath='ueditorFiles/', toolbars="full", 
 			upload_settings={"imageMaxSize":1204000})
 	price = models.DecimalField(max_digits=7, decimal_places=2, default = 0.00)
 	image = models.ImageField(blank=True)
-	amount = models.IntegerField(default = 1)
 	for_sale = models.BooleanField(default = True)
 	is_verified = models.BooleanField(default = True)
 	created = models.DateTimeField(default = timezone.now)

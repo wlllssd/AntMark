@@ -28,8 +28,15 @@ class UserInfo(models.Model):
 
 
 class Message(models.Model):
+    TYPE_CHOICES = (
+        (u'M', u'message'),
+        (u'S', u'stu_verify'),
+        (u'C', u'commodity_verify'),
+    )
+
     sender = models.ForeignKey(User, related_name="sender_msg", on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name="receiver_msg", on_delete=models.CASCADE)
+    msg_type = models.CharField(max_length = 20, choices = TYPE_CHOICES, default='message')
     text = models.CharField(max_length=2000)
     id_content = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)

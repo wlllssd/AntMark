@@ -15,12 +15,12 @@
  
     <div id="search" class="col-md-12 column">
         <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
-            <div class="form-group" style="margin-left:230px;">
+            <div class="form-group" style="margin-left:200px;">
                 <div class="input-group" >
                     <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                    <input type="text" class="form-control" name="keyword" value="{{ keyword }}" style="width:400px;"/>
+                    <input type="text" class="form-control" style="width:300px;" placeholder="请输入关键字" name="keyword" />
+                    <button type="submit" class="btn btn-primary">搜索</button>
                 </div>
-                <button type="submit" class="btn btn-primary">搜索</button>
             </div>
         </form>
     </div>
@@ -64,9 +64,9 @@
     <h3>搜索结果</h3>
     <hr>
     <div class="row clearfix">
-        {% for commodity in commodities %} {% if commodity.for_sale and commodity.amount and commodity.is_verified %}
-        <div class="col-md-3 column">
-            <div class="single-feature mb-30">
+        {% for commodity in commodities %} {% if commodity.for_sale and commodity.is_verified %}
+        <div style="display:inline-block;">
+            <div class="single-feature mb-30" style="width:220px; margin-right:10px; padding: 10px;">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
                     <img src="{{commodity.image | striptags}}" height="200px">
                 </a>
@@ -74,11 +74,8 @@
                     <span class="glyphicon glyphicon-gift"></span>
                     <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
                 </div>
-                <p id="line-limit-length">出售人：{{commodity.owner}}</p>
-                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:", "}}</p>
-                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:", "}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-                <p id="line-limit-length">数量：{{commodity.amount}}</p>
                 <div align="right">
                     <a></a><span class="glyphicon glyphicon-menu-right"></span>
                 </div>

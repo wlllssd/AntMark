@@ -43,7 +43,7 @@
         })
         $('#btnCrop').on('click', function(){
             $.ajax({
-                url: '{% url "commodity:commodity_image" id %}', 
+                url: '{% url "commodity:commodity_image" commodity_id %}', 
                 type: 'POST',
                 data: {"img": img},
                 success: function(e){

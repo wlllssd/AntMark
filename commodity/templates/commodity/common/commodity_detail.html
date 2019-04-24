@@ -24,11 +24,7 @@
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-left">货源：</div>
-                    <div class="col-md-10 text-left">{{commodity.commodity_source.all|join:", "}}</div>
-                </div>
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-2 text-left">数量：</div>
-                    <div class="col-md-10 text-left">{{commodity.amount}}</div>
+                    <div class="col-md-10 text-left">{{commodity.commodity_source}}</div>
                 </div>
                 <a href="{% url 'chatroom:start_chat' commodity.owner.id commodity.id %}" class="btn btn-info">联系卖家</a>
             </div>     

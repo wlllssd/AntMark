@@ -30,8 +30,8 @@
     <br>
     <div class="row clearfix">
         {% for commodity in commodities %}
-        <div class="col-md-3 column">
-            <div class="single-feature mb-30">
+        <div style="display:inline-block;">
+            <div class="single-feature mb-30" style="width:262px; margin-right:12px;">
                 {% if commodity.image %}
                 <img src="{{commodity.image | striptags}}" height="200px" class="center-block">
                 {% else %}
@@ -39,14 +39,16 @@
                 {% endif %}
                 <div class="title d-flex flex-row pb-20">
                     <span class="glyphicon glyphicon-gift"></span>
-                    <h5 id="line-limit-length"><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h5>
+                    <h5 id="line-limit-length">{{commodity.title}}</h5>
                 </div>
                 <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
-                <p id="line-limit-length">标签：{{commodity.commodity_tag.all|join:","}}</p>
-                <p id="line-limit-length">货源：{{commodity.commodity_source.all|join:","}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
-                <p id="line-limit-length">数量：{{commodity.amount}}</p>
-                <input type="button" class="btn btn-primary" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
+                <a name="preview" href="{% url 'commodity:preview_commodity' commodity.id %}">
+                    <button type="button" class="btn btn-info">预览</button>
+                </a>
+                <input type="button" class="btn btn-info" href="javascript:" id="test2" value="下架" onclick="put_off(this, {{commodity.id}})">
             </div>
         </div>
         {% empty %}

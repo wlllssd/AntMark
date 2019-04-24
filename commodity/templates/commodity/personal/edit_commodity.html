@@ -14,7 +14,7 @@
             <form class="form-horizontal" action="{% url 'commodity:edit_commodity' commodity.id %}" method="post">{% csrf_token %} 
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品名称:</span></div>
-                    <div class="col-md-10 text-left"><input type="text" value="{{commodity.title}}" name="title"></div>
+                    <div class="col-md-10 text-left"><input type="text" value="{{commodity.title}}" name="title" style="width:400px"></div>
                 </div> 
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品图片:</span></div>
@@ -25,36 +25,34 @@
                         <img src="{% static 'img/defaultImage.jpg' %}" width="200px">
                         {% endif %}
                         <div style="margin-right: 100px; margin-top: 10px;">
-                            <button type = "button" class = "btn btn-primary" onclick="upload_image_layer()">更换图片</button>
+                            <button type = "button" class = "btn btn-info" onclick="upload_image_layer()">更换图片</button>
                         </div>
                     </div> 
                 </div>
-                <div class="row" style="margin-top: 10px;">
+                <div class="row" style="margin-top: 10px">
                     <div class="col-md-2 text-right"><span>商品标签:</span></div>
-                    <div class="col-md-10 text-left">
-                        {% for tag in tags %}
-                        <label class="checkebox-inline">
-                            <input class="tagcheckbox" type="checkbox" id="{{tag.id}}" name="tag" value="{{tag.tag}}">{{tag.tag}}
-                        </label>
-                        {% empty %}
-                        {% endfor %}
-                    </div>                    
-                </div>  
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-2 text-right"><span>商品货源:</span></div> 
-                    <div class="col-md-10 text-left">
-                        {% for source in sources %}
-                        <label class="checkebox-inline">
-                            <input class="tagcheckbox" type="checkbox" id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}
-                        </label>
-                        {% empty %}
-                        {% endfor %}
+                    <div class="col-md-10 text-left">  
+                        <select name="tag" required >
+                            {% for tag in tags %}{% if tag == commodity.commodity_tag %}
+                            <option id="{{tag.id}}" name="tag" value="{{tag.tag}}" selected>{{tag.tag}}</option>
+                            {% else %}
+                            <option id="{{tag.id}}" name="tag" value="{{tag.tag}}" >{{tag.tag}}</option>
+                            {% endif %}{% empty %}{% endfor %}                     
+                        </select>
                     </div>
-                </div> 
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-md-2 text-right"><span>商品数量:</span></div> 
-                    <div class="col-md-10 text-left"><input type="number" name="amount" min="0" max="50" value="{{commodity.amount}}" required style="width:80px"> 件</div> 
-                </div> 
+                </div>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-md-2 text-right"><span>商品货源:</span></div>
+                    <div class="col-md-10 text-left">
+                        <select name="source" required >
+                            {% for source in sources %}{% if source == commodity.commodity_source %}
+                            <option id="{{source.id}}" name="source" value="{{source.source}}" selected>{{source.source}}</option>
+                            {% else %}
+                            <option id="{{source.id}}" name="source" value="{{source.source}}">{{source.source}}</option>
+                            {% endif %}{% empty %}{% endfor %}
+                        </select>
+                    </div>
+                </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-md-2 text-right"><span>商品价格:</span></div> 
                     <div class="col-md-10 text-left"><input type="number" name="price" min="0" max="10000" step="0.01" value="{{commodity.price}}" required style="width:80px"> 元</div> 
@@ -70,7 +68,7 @@
                     </div> 
                 </div>
                 <div class="row" style="margin:10px 0px 0px 160px">
-                    <input type="submit" class="btn btn-primary btn-lg" value="完成">
+                    <input type="submit" class="btn btn-info btn-lg" value="完成">
                 </div>
             </form>
         </div>
@@ -95,7 +93,7 @@ function edit_commodity(){
     $.ajax({
         url: "{% url 'commodity:edit_commodity' commodity.id %}", 
         type: "POST",
-        data: {"body":body, "amount":amount, "price":price}, 
+        data: {"body":body, "price":price}, 
         success: function(e){
             if(e=="1"){ 
                 layer.msg("successful");
