@@ -4,9 +4,13 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}"> 
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
+
 <div>
     {% include 'commodity/upslider.html' %}
     <br>
+    <div style="margin-bottom: 15px;">
+        <span style="color:rgb(238, 22, 87);font-weight: bolder;">说明: 创建商品时请填写完整的信息，商品封面可在创建商品后点击“编辑”添加。</span>
+    </div>
     <div style="margin-left:10px">
         <form class="form-horizontal" enctype="multipart/form-data" action="{% url 'commodity:create_commodity' %}" method="post">{% csrf_token %} 
             <div class="row" style="margin-top: 10px;">
@@ -89,7 +93,7 @@ function create_commodity(){
     // console.log(image);
     console.log(tags);
     $.ajax({
-        url: "{% url 'commodity:create_commodity' %}",
+        url: "{% url 'commodity:not_verified_list' %}",
         type: "POST",
         data: {"title":title, "body":body, "price":price, "tags":JSON.stringify(tags)},
         success: function(e){

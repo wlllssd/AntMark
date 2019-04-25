@@ -30,7 +30,7 @@ SECRET_KEY = 'wpcq2fia!%f@5w_7c@n(%(3s!1ks$=&*_w4n#n5mskvjaw__jj'
 #     DEBUG = TEMPLATE_DEBUG = False
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'schnee.pro', '*.schnee.pro']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 ADMINS = (
     ('suzh', '1194133793@qq.com')
@@ -85,7 +85,7 @@ ROOT_URLCONF = 'AntMark.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'home','templates','home')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect
@@ -45,8 +45,10 @@ def commodity_list(request):
     except EmptyPage:
         current_page = paginator.page(1)
         commodities = current_page.object_list
-    context = {'commodities':commodities, 'page':current_page}
+    sources = CommoditySource.objects.all()
+    context = {'commodities':commodities, 'page':current_page, 'sources':sources}
     return render(request, 'commodity/common/commodity_list.html', context)
+
 
 # 显示商品详情
 @login_required(login_url = '/users/login')
@@ -54,14 +56,12 @@ def commodity_list(request):
 def commodity_detail(request, commodity_id):
     commodity = get_object_or_404(Commodity, id = commodity_id)
     if commodity.is_verified and commodity.for_sale :
-        # commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
-        # similar_commodities = Commodity.objects.filter(commodity_tag__in = commodity_tags_ids).exclude(id = commodity.id)
-        similar_commodities = Commodity.objects.filter(commodity_tag = commodity.commodity_tag).exclude(id = commodity.id)
+        similar_commodities = Commodity.objects.filter(commodity_tag = commodity.commodity_tag, for_sale = True, is_verified = True).exclude(id = commodity.id)
         similar_commodities = similar_commodities[:4]
         context = {"commodity":commodity, "similar_commodities":similar_commodities}
         return render(request, "commodity/common/commodity_detail.html", context)
     else:
-        return HttpResponse("404")
+        return render_to_response('404.html')
 
 
 # 个人商品库
@@ -105,7 +105,7 @@ def create_commodity(request):
                 commodity.is_verified = False
                 commodity.save()
                 # 重定向
-                return HttpResponseRedirect(reverse('commodity:commodity_repertory'))
+                return HttpResponseRedirect(reverse('commodity:not_verified_list'))
             except:
                 return HttpResponse("2")
         else:
@@ -305,24 +305,28 @@ def commodity_verify(request, commodity_id):
     return render(request, 'users/notice.html' , response_data)
 
 
-
 # 搜索和筛选商品
 @login_required(login_url = "/users/login")
 @csrf_exempt
 def search_commodity(request):
     keyword = request.POST.get('keyword')
+    sourceChoice = request.POST.get('source')
+    tagChoice = request.POST.getlist('tag', None)
+    is_checked = []
+
     if keyword != "":
-        condition = {}
-        tagChoice = request.POST.get('tag', None)
-        if tagChoice is not None and tagChoice != "0":
-            tag = CommodityTag.objects.get(tag = tagChoice)
-            condition['commodity_tag'] = tag.id
-        
-        sourceChoice = request.POST.get('source', None)
-        if sourceChoice is not None and sourceChoice != "0": 
-            source = CommoditySource.objects.get(source = sourceChoice)
-            condition['commodity_source'] = source.id
-        commodity_list = Commodity.objects.filter(title__icontains = keyword, **condition)
+        if sourceChoice != "0": 
+            sourceList = CommoditySource.objects.filter(id__in = sourceChoice)
+        else:
+            sourceList = CommoditySource.objects.all()
+
+        if len(tagChoice) == 0:
+            is_checked.append(0)
+            tagList = CommodityTag.objects.all()
+        else:
+            tagList = CommodityTag.objects.filter(id__in = tagChoice)
+
+        commodity_list = Commodity.objects.filter(title__icontains = keyword, commodity_tag__in = tagList, commodity_source__in = sourceList)
         paginator = Paginator(commodity_list, 20)
         page = request.GET.get('page')        
         try:
@@ -335,8 +339,14 @@ def search_commodity(request):
             current_page = paginator.page(1)
             commodities = current_page.object_list
         tags = CommodityTag.objects.all()
-        sources = CommoditySource.objects.all()   
-        context = {'commodities':commodities, 'keyword':keyword, 'page':current_page, 'tags':tags, 'sources':sources}
+        sources = CommoditySource.objects.all()
+
+        for tag in tags:
+            if str(tag.id) in tagChoice:
+                is_checked.append(tag.id)
+
+        context = {'commodities':commodities, 'keyword':keyword, 'page':current_page, 
+        'tags':tags, 'sources':sources, 'sourceChoice':int(sourceChoice), 'is_checked':is_checked}
         return render(request, 'commodity/common/search_commodity.html', context)    
     else:
-        return HttpResponseRedirect(reverse('commodity:commodity_list'))    
+        return HttpResponseRedirect(reverse('commodity:commodity_list'))  

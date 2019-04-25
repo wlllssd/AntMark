@@ -1,34 +1,16 @@
 {% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-    #test1 {
-        display: inline-block;
-        border: 1px solid #ddd;
-        margin: 20px 10px;
-        padding: 0px 10px;
-        width: 250px;
-        height: 380px;
-        border-radius: 4px;
-        margin-right: 10px;
-        background-color: #fff;
-        margin-bottom: 10px;
-    }
 
-    #line-limit-length {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 200px;
-    }
-</style>
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
-
+<link rel="stylesheet" href="{% static 'css/commodity.css' %}">
 <div class='container'>
     {% include 'commodity/upslider.html' %}
-    <!-- <h1>请选择上架商品</h1>
-    <hr> -->
     <br>
+    <div style="margin-bottom: 15px;">
+        <span style="color:rgb(238, 22, 87);font-weight: bolder;">说明: 以下是您未上架的商品，您可以点击“上架”将某一商品上架。
+            上架后的商品将会出现在商品列表中，用户也可以搜索到该商品。</span>
+    </div>
     <div class="row clearfix">
         {% for commodity in commodities %}
         <div style="display:inline-block;">
