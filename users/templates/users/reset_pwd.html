@@ -3,22 +3,43 @@
 <body>
     <div class="section-top-border">
         <center>
-            <h2>Reset Password</h2>
+            <h2>重置密码</h2>
         </center>
         <hr/>
         <div style="width: 550px; margin: 0 auto">
             <form class="form-users myforms" method="post" action="{% url 'users:reset_pwd' %}" novalidate>
-                {% csrf_token %} {% for field in form %}
+                {% csrf_token %} 
+                {% comment %} {% for field in form %}
                 <div class="form-group">
                     <span>{{ field.label }}</span> {{ field | add_class:"form-control"}}
                     <p class="error-message text-danger">
                         {% for error in field.errors %} {{ error }} {% endfor %}
                     </p>
                 </div>
-                {% endfor %}
+                {% endfor %} {% endcomment %}
+                <div class="form-group">
+                    <span>原密码</span> <input type="password" name="old_password" autofocus class="form-control" required id="id_old_password" />
+                    <p class="error-message text-danger">
+                        
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <span>新密码</span> <input type="password" name="new_password1" class="form-control" required id="id_new_password1" />
+                    <p class="error-message text-danger">
+                        
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <span>确认新密码</span> <input type="password" name="new_password2" class="form-control" required id="id_new_password2" />
+                    <p class="error-message text-danger">
+                        
+                    </p>
+                </div>
                 <center>
-                    <button name="submit" class="btn btn-primary">Submit</button>
-                    <a class="btn btn-outline-primary" href="javascript:history.go(-1)">Go Back</a>
+                    <button name="submit" class="btn btn-primary">提交</button>
+                    <a class="btn btn-outline-primary" href="javascript:history.go(-1)">返回</a>
                 </center>
             </form>
         </div>

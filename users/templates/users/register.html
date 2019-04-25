@@ -7,28 +7,40 @@
         <form class="form-users" method="post" enctype="multipart/form-data" action="{% url 'users:register' %}">
             {% csrf_token %}
             <center>
-                <h2>Register</h2>
+                <h2>注册</h2>
             </center>
             <hr>
             <div class="form-group form-register">
-                {% for field in user_form %}
+                {% comment %} {% for field in user_form %}
                 <div class="form-group">
                     <span> {{ field.label }} </span> {{ field | add_class:"form-control"}}
                 </div>
-                {% endfor %} {{ user_form.media }}
+                {% endfor %} {{ user_form.media }} {% endcomment %}
+                <div class="form-group">
+                    <span> 用户名 </span> <input type="text" name="username" maxlength="150" autofocus class="form-control" required id="id_username" />
+                </div>
+                
+                <div class="form-group">
+                    <span> 密码 </span> <input type="password" name="password1" class="form-control" required id="id_password1" />
+                </div>
+                
+                <div class="form-group">
+                    <span> 确认密码 </span> <input type="password" name="password2" class="form-control" required id="id_password2" />
+                </div>
+                {{ user_form.media }}
                 <div style="text-align: center">
                     <p style="color: red"> {{ response_data.message }} </p>
                 </div>
             </div>
             <br/>
             <div style="text-align: center">
-                <button name="submit" class="btn btn-primary">Register</button>
-                <a class="btn btn-outline-primary" href="/">Go Back</a>
+                <button name="submit" class="btn btn-primary">注册</button>
+                <a class="btn btn-outline-primary" href="/">返回</a>
             </div>
             <input type="hidden" name="next" value="{% url 'home:index' %}" />
         </form>
         <div style="text-align: center">
-            <p>Have an account? <a href="{% url 'users:login' %}">Click</a> to log in.</p>
+            <p>已有账号? <a href="{% url 'users:login' %}">点击</a>以登录</p>
         </div>
     </div>
 </body>
