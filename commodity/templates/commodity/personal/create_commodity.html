@@ -54,64 +54,67 @@
                 <div class="col-md-10 text-left"><span style="color:red">注：在创建商品成功后，请点击“编辑”上传商品封面，否则无法通过审核</span></div>
             </div>       
             <div class="row" style="margin:10px 0px 0px 190px">
-                <input type="submit" class="btn btn-info btn-lg" value="提交" onclick="create_commodity()">
+                <div class="col-md-2 text-left">
+                    <input type="submit" class="btn btn-info btn-lg" value="提交" onclick="create_commodity()">
+                </div>
+                <div class="col-md-2 col-md-offset-6 text-left">
+                    <input type="button" class="btn btn-danger btn-lg" onclick="cancel()" value="取消">
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<!-- 
-    js函数实现富文本编辑器 
--->
+
+
+
 <script src="{% static '/ueditor/ueditor.config.js' %}" type="text/javascript"></script>
 <script src="{% static '/ueditor/ueditor.all.js' %}" type="text/javascript"></script>
-<script type="text/javascript">
-        var ue = UE.getEditor('container',{
-            initialFrameWidth: 720,
-            initialFrameHeight: 500,
-            serverUrl:'/ueditor/controller/?imagePathFormat=ueditorImages/&filePathFormat=ueditorFiles/',
-        });
- </script> 
-
-<!-- 
-    写js函数create_commodity()实现提交表单功能，上面出现的所有字段都要提交
- -->
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>
 <script src="{% static 'js/json2.js' %}"></script>
-<script language="javascript">
+<script language="javascript"> 
+//js函数实现富文本编辑器 
+var ue = UE.getEditor('container',{
+    initialFrameWidth: 720,
+    initialFrameHeight: 500,
+    serverUrl:'/ueditor/controller/?imagePathFormat=ueditorImages/&filePathFormat=ueditorFiles/',
+});
+
+var pre_content = "hello";
+
+ue.ready(function() {  
+    pre_content = ue.getContent();  
+});  
+
+function cancel(){
+    if(ue){
+        ue.setContent(pre_content);
+        ue.reset();
+    }
+}
+
+//写js函数create_commodity()实现提交表单功能，上面出现的所有字段都要提交
 function create_commodity(){
     var title = $("#id_title").val();
     var body = $("#id_body").val();
     var price = $("#id_price").val();
-    // var image = $("#id_image")[0].files[0];
     var tags = [];
     $.each($("input[name='tag']:checked"), function(){tags.push($(this).val());});
-    console.log(title);
-    console.log(body);
-    console.log(price);
-    // console.log(image);
-    console.log(tags);
     $.ajax({
         url: "{% url 'commodity:not_verified_list' %}",
         type: "POST",
         data: {"title":title, "body":body, "price":price, "tags":JSON.stringify(tags)},
         success: function(e){
-            if(e=="1"){
-                layer.msg("successful");
-                location.href = "{% url 'commodity:commodity_list' %}";
-            }else if(e=="2"){
-                layer.msg("sorry.") ;
-            }else{
-                layer.msg("商品名称必须写，不能空。");
+            if(e=="2"||e=="3"){
+                layer.msg("请检查填写的商品信息！");
             }
         },
     });
 }   
-</script>
-<script>
-    var temp = document.getElementById("upslider2");
-    temp.classList.add("active");
+
+var temp = document.getElementById("upslider2");
+temp.classList.add("active");
 </script>
 {% endblock %}
 
