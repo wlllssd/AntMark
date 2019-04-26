@@ -91,6 +91,8 @@ def commodity_repertory(request):
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
+        print('body:  ', commodity_form['body'])
+        print(commodity_form)
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
