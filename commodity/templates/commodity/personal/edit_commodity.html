@@ -94,12 +94,6 @@ var ue = UE.getEditor('container',{
     serverUrl:'/ueditor/controller/?imagePathFormat=ueditorImages/&filePathFormat=ueditorFiles/',
 });
 
-var pre_content = "hello";
-
-ue.ready(function() {  
-    pre_content = ue.getContent();  
-});  
-
 function upload_image_layer(){
 	layer.open({
 		title: "上传头像",
@@ -110,9 +104,8 @@ function upload_image_layer(){
 } 
 
 function cancel(){
-    if(ue){
-        ue.setContent(pre_content);
-        ue.reset();
+    if(confirm("您确定要关闭本页面吗？")){
+        window.history.back(-1); 
     }
 }
 </script>
