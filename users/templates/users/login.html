@@ -5,25 +5,25 @@
 
     <div class="section">
         {% if user.is_authenticated %}
-        <p>You have login. Go back to <a href="{% url 'home:home' %}">index</a></p>
+        <p>你已登录，回到 <a href="{% url 'home:home' %}">主页</a></p>
         {% else %}
 
         <div class="mycontainer" style="margin-top: 240px">
             <center>
-                <h2>Login</h2>
+                <h2>登录</h2>
             </center>
             <br/>
             <form class="" method="post" action="{% url 'users:login' %}" novalidate>
                 {% csrf_token %} {% if form.errors %}
-                <p style="text-align: center; color: grey; font-size: 24px; ">Incorrect username or password.</p>
+                <p style="text-align: center; color: grey; font-size: 24px; ">不正确的用户名或密码</p>
         </div class="col-xs-4">
         {% endif %}
-        <label for="id_username" class="form-control sr-only">Username</label> {{ form.username | add_class:"form-control" | attr:"placeholder:Username"}}
+        <label for="id_username" class="form-control sr-only">用户名</label> {{ form.username | add_class:"form-control" | attr:"placeholder:用户名"}}
         <p></p>
-        <label for="id_password" class="form-control sr-only">Password</label> {{ form.password | add_class:"form-control" | attr:"placeholder:Password"}}
+        <label for="id_password" class="form-control sr-only">密码</label> {{ form.password | add_class:"form-control" | attr:"placeholder:密码"}}
         <p></p>
         <center>
-            <button class="btn btn-primary form-control-button" type="submit" name="submit">Log in</button>
+            <button class="btn btn-primary form-control-button" type="submit" name="submit">登录</button>
         </center>
         <input type="hidden" name="next" value="{{ next }}" />
         </form>

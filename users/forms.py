@@ -18,10 +18,10 @@ class InfoForm(forms.ModelForm):
             'qq',
         ]
         labels = {
-            'nickname': 'Nickname',
-            'gender': 'Gender',
-            'intro': 'User introduce',
-            'phone': 'Phone',
-            'wechat': 'Wechat',
+            'nickname': '昵称',
+            'gender': '性别',
+            'intro': '个人简介',
+            'phone': '电话',
+            'wechat': '微信',
             'qq': 'QQ',
         }
