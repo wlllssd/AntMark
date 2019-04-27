@@ -1,18 +1,23 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} 
+{% load static %} 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
 
-<html lang="zxx" class="no-js">
-
-<body>
-    <section class="project-area section-gap" id="project" style="padding-top: 50px">
-        <div class="container">
-            <div class="title text-center">
-                <h1 class="mb-10">AntMark Index.</h1>
-                <p>Why we have this page? Just for fun n _ n</p>
-            </div>
-        </div>
-    </section>
+<body class="overlay" style="background: rgba(0,0,0,.3)">
+    <div class="banner-content text-center" style="margin-top:15%">
+        <h3 class="text-black mb-20">大学生闲置物品交易平台</h3>
+        <a href="{% url 'commodity:commodity_list' %}" class="header-btn">AntMark</a>
+    </div>
 </body>
 
-</html>
-
+<script src="/static/js/vendor/jquery-2.2.4.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#navbar").css("background-color","rgba(0,0,0,.0001)");
+    $("#login_button").css("background-color","rgba(0,0,0,.0001)");
+    $("#reg_button").css("background-color","rgba(0,0,0,.0001)");
+    $("#mailbox").css("background-color","rgba(0,0,0,.0001)");
+    $("#nickname").css("background-color","rgba(0,0,0,.0001)");
+});
+</script>
 {% endblock content %}
