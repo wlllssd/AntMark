@@ -25,7 +25,7 @@ class Commodity(models.Model):
 	commodity_source = models.ForeignKey(CommoditySource, related_name = "commodity_source", on_delete = models.CASCADE)
 	body = UEditorField(verbose_name = "commodity_descriprion",imagePath="ueditorImages/", 
 			width=700, height=600, filePath='ueditorFiles/', toolbars="full", 
-			upload_settings={"imageMaxSize":1204000})
+			upload_settings={"imageMaxSize":1204000}, blank = True)
 	price = models.DecimalField(max_digits=7, decimal_places=2, default = 0.00)
 	image = models.ImageField(blank=True)
 	for_sale = models.BooleanField(default = True)

@@ -25,11 +25,17 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/typicons.min.css' %}">
+
 </head>
+<style>
+    .dropdown .dropdown-menu {
+        display: none;
+    }
+</style>
 
 <body class="container">
     <section class="banner-area" id="home">
-        <nav class="navbar navbar-no-bg bg-primary fixed-top container navbar-dark" role="navigation">
+        <nav id="navbar" class="navbar navbar-no-bg bg-primary fixed-top container navbar-dark" role="navigation">
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <a class="navbar-brand" href="{% url 'home:index' %}">
                     <img src="/static/img/logo_antmark.png" alt="" height="35px" style="margin: -5px 5px 0px -20px">
@@ -47,12 +53,12 @@
                     <li>
                         <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
+                        <a id="nickname" class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
                             {{ user|getUserNickname }}
                             {% ifequal user|getVerifyStatus False %}
-                                (未学生验证)
+                            (未学生验证)
                             {% endifequal %}
-                            <span class="caret"></span></a>
+                            <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>
                             <li><a href="{% url 'users:settings' %}">个人信息</a></li>
@@ -62,9 +68,9 @@
                     </li>
                 </ul>
                 {% else %}
-                <ul class="nav navbar-nav nav-tabs navbar-right">
-                    <li style="background-color:#337ab7"><a href="{% url 'users:login' %}">登录</a></li>
-                    <li style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li id="login_button" style="background-color:#337ab7"><a href="{% url 'users:login' %}">登录</a></li>
+                    <li id="reg_button" style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a></li>
                 </ul>
                 {% endif %}
                 </ul>
@@ -77,13 +83,10 @@
         <div>
             {% block content %}{% endblock %}
         </div>
-
     </div>
 
 
-    <div>
-        <hr>
-        <p class='text-center'>我可是有底线的~</p>
+    <div class="container">
     </div>
 
 

@@ -1,34 +1,36 @@
 {% extends 'home/base.html' %} {% load staticfiles %} {% block content %}
-<style>
-    #line-limit-length {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 200px;
-    }
-</style>
+
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/commodity.css' %}">
+
 <div class="container">
-    <!-- {% include 'commodity/search.html' %} -->
-    <div id="search" class="col-md-12 column">
-        
-        <form class="navbar-form navbar-left" role="search" action="{% url 'commodity:search_commodity' %}" method="POST">{% csrf_token %}
-            <div class="form-group" style="margin-left:230px;">
+    <!-- 搜索框 -->
+    <div class="search_container container" style="margin-bottom:20px;margin-top:5px">
+        <form action="{% url 'commodity:search_commodity' %}" class="search_parent" method="POST">
+            <div class="form-group" style="margin-left:80px;"> 
                 <div class="input-group" >
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
-                    <input type="text" class="form-control" style="width:400px;" placeholder="请输入关键字" name="keyword" />
+                    <div class="input-group-btn">
+                        <select name="source" class="btn btn-default dropdown-toggle">
+                            <option id="0" name="source" value="0">全校</option>
+                            {% for source in sources %}
+                            <option id="{{source.id}}" name="source" value="{{source.id}}">{{source.source}}</option>
+                            {% empty %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" style="width:500px;" placeholder="请输入关键字" name="keyword" />
+                    <button type="submit" class="btn btn-primary">搜索</button>
                 </div>
-                <button type="submit" class="btn btn-primary">搜索</button>
             </div>
         </form>
     </div>
 
-    <h3>所有商品</h3>
-    <hr>
     <div class="row clearfix">
+        <h3>所有商品</h3>
+        <hr>
         {% for commodity in commodities %} {% if commodity.for_sale and commodity.is_verified %}
         <div style="display:inline-block;">
-            <div class="single-feature mb-30" style="width:262px; margin-right:12px;">
+            <div class="single-feature mb-30" style="width:220px; margin-right:10px; padding: 10px;">
                 <a href="{% url 'commodity:commodity_detail' commodity.id %}">
                 {% if commodity.image %}
                 <img src="{{commodity.image | striptags}}" height="200px" class="center-block">

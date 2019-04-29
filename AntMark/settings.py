@@ -32,8 +32,7 @@ DEBUG = True
 
 CUR_HOST = 'http://127.0.0.1:8000/'
 
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'schnee.pro', '*.schnee.pro']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 ADMINS = (
     ('suzh', '1194133793@qq.com')
@@ -50,7 +49,6 @@ EMAIL_HOST_PASSWORD = "AntMarkAdmin2019"          # 你的邮箱密码
 EMAIL_USE_TLS = False                             # 这里是 False
 EMAIL_FROM = "antmark_mail@sina.com"              # 你的邮箱账号
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER
-
 
 
 # Application definition
@@ -90,7 +88,7 @@ ROOT_URLCONF = 'AntMark.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'home','templates','home')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -167,7 +165,9 @@ STATICFILES_DIRS = [
 # upload folder
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+MEDIA_DIRS = (
+    os.path.join(BASE_DIR, 'media'),
+)
 
 # markdownx options
 MARKDOWNX_EDITOR_RESIZABLE = False

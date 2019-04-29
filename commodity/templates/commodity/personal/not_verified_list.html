@@ -1,18 +1,16 @@
 {% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-    #line-limit-length {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 200px;
-    }
-</style>
 
+<link rel="stylesheet" href="{% static 'css/commodity.css' %}">
 <div class="container">
     {% include 'commodity/upslider.html' %}
     <br>
+    <div style="margin-bottom: 15px;">
+        <span style="color:rgb(238, 22, 87);font-weight: bolder;">说明: 以下是您创建后未通过审核的商品，您可以对商品信息进行修改。
+        点击“提交”之后，该商品信息会被系统提交给管理员，管理员通过审核之后商品会出现在您的商品仓库中，由您选择上架或下架。
+        若审核未通过，系统将提示您该商品未通过审核的原因，您可以继续修改商品信息后再“提交”。</span>
+    </div>
     <div class="row clearfix">
         {% for commodity in commodities %}
         <div style="display:inline-block;">
@@ -75,7 +73,7 @@
                     success: function (e) {
                         if (e == "1") {
                             parent.location.reload();
-                            layer.msg("has been deleted.");
+                            layer.msg("已删除");
                         } else {
                             layer.msg("删除失败");
                         }

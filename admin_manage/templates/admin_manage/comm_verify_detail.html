@@ -78,7 +78,7 @@
             <div class="clear"></div>
             <hr/>
             <div>
-                <form action="{% url 'admin_manage:comm_verify_detail' comm.id %}" method="POST" class="form">{% csrf_token %}
+                <form action="{% url 'admin_manage:comm_verify_detail' message.id comm.id %}" method="POST" class="form">{% csrf_token %}
                     <input type="checkbox" name="verified" id='verified' onclick="addSuccessMsg()">审核通过
                     <input type="checkbox" name="unverified" id='unverified' onclick="displayFailMsgBlock()">审核不通过
                     <div id="failmsg" style="display: none">

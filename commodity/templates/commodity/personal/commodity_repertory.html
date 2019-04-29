@@ -1,18 +1,17 @@
 {% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<style>
-    #line-limit-length {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 200px;
-    }
-</style>
+
 <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/commodity.css' %}">
+
 <div class='container'>
     {% include 'commodity/upslider.html' %}
     <br>
+    <div style="margin-bottom: 15px;">
+        <span style="color:rgb(238, 22, 87);font-weight: bolder;">说明: 审核通过的商品会置于商品库中，包括已上架和未上架的商品，您可以对商品再次进行修改和删除。
+            在修改了商品信息后，该商品将会处于未审核状态，由管理员通过审核后才能将被上架。请谨慎修改商品信息。</span>
+    </div>
     <div class="row clearfix">
         {% for commodity in commodities %}{% if commodity.is_verified %}
         <div style="display:inline-block;">
@@ -73,7 +72,7 @@
                     success: function (e) {
                         if (e == "1") {
                             parent.location.reload();
-                            layer.msg("has been deleted.");
+                            layer.msg("已删除");
                         } else {
                             layer.msg("删除失败");
                         }

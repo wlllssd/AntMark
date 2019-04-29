@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+    #web_bg {
+        position: fixed;
+        top: -15%;
+        left: 0;
+        width: 100%;
+        height: 120%;
+        min-width: 1000px;
+        z-index: -10;
+        zoom: 1;
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -o-background-size: cover;
+        background-position: center 0;
+    }
+</style>
+
+<div class="container">
+    <img id="web_bg" src=/static/img/404page.jpg style="width: 100%">
+</div>
+<div class='text-center' style="margin-top: 45%;font-size: 20px">
+    <a href="{% url 'home:index' %}">返回主页</a>
+</div>
+{% endblock %}
