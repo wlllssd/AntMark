@@ -1,27 +1,30 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %}{% block content %} {% load base %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %}{% block content %}
+{% load base %}
 
-<style>
-    .message_display {
-        border: 1px #ccc solid;
-        border-radius: 6px;
-        padding: 20px;
-        margin-top: 10px;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
 
 <body>
     <div class="section-top-border">
+        <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
+            <li class="breadcrumb-item"><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
+            {% if message.msg_type == 'stu_verify' %}
+            <li class="breadcrumb-item"><a href="{% url 'admin_manage:stu_verify_list' %}">学生认证审核系统</a></li>
+            {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'admin_manage:comm_verify_list' %}">商品审核系统</a></li>
+            {% endif %}
+            <li class="breadcrumb-item">查看信件</li>
+        </ol>
         <h2>查看信件</h2>
-        <br/>
+        <br />
         <h4>发信人: {{ message.sender|getUserNickname }}({{ message.sender }})</h4>
-        <br/>
+        <br />
         <p>{{ message.timestamp }}</p>
         <label>信息内容：</label>
         <div class="message_display">{{ message.text|safe }}</div>
         {% ifnotequal message.sender request.user %}
-        <hr/>
+        <hr />
         <h4>回复给发信人 {{ message.sender|getUserNickname }}:</h4>
-        <br/>
+        <br />
         <form action="{% url 'users:call_admin' %}" method="POST" class="form">{% csrf_token %}
             <div class="form-group">
                 <label for="text">信息内容：</label>
@@ -29,11 +32,16 @@
             </div>
             <button type="submit" class="btn btn-primary">回复</button>
         </form>
-        {% endifnotequal %} {% if message.msg_type == 'stu_verify' %}
+        {% endifnotequal %}
+
+        
         <div>
-            <br/>
-            <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-default">返回</a> {% else %}
-            <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-default">返回</a> {% endif %}
+            <br />
+            {% if message.msg_type == 'stu_verify' %}
+            <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-default">返回</a>
+            {% else %}
+            <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-default">返回</a>
+            {% endif %}
         </div>
     </div>
 
