@@ -1,0 +1,90 @@
+{% extends 'home/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/commodity.css' %}">
+<div class="container">
+    {% include 'commodity/upslider.html' %}
+    <br>
+    <div style="margin-bottom: 15px;">
+        <span style="color:rgb(238, 22, 87);font-weight: bolder;">说明: 以下是您创建后未通过审核的商品，您可以对商品信息进行修改。
+        点击“提交”之后，该商品信息会被系统提交给管理员，管理员通过审核之后商品会出现在您的商品仓库中，由您选择上架或下架。
+        若审核未通过，系统将提示您该商品未通过审核的原因，您可以继续修改商品信息后再“提交”。</span>
+    </div>
+    <div class="row clearfix">
+        {% for commodity in commodities %}
+        <div style="display:inline-block;">
+            <div class="single-feature mb-30" style="width:262px; margin-right:12px;">
+                {% if commodity.image %}
+                <img src="{{commodity.image | striptags}}" height="200px" class="center-block">
+                {% else %}
+                <img src="{% static 'img/defaultImage.jpg' %}" height="200px" class="center-block">
+                {% endif %}
+                <div class="title d-flex flex-row pb-20">
+                    <span class="glyphicon glyphicon-gift"></span>
+                    <h5 id="line-limit-length"><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h5>
+                </div>
+                <p id="line-limit-length">待售：{{commodity.for_sale}}</p>
+                <p id="line-limit-length">标签：{{commodity.commodity_tag}}</p>
+                <p id="line-limit-length">货源：{{commodity.commodity_source}}</p>
+                <p id="line-limit-length">价格：￥{{commodity.price}}</p>
+                <a name="preview" href="{% url 'commodity:preview_commodity' commodity.id %}">
+                    <button type="button" class="btn btn-info btn-sm">预览</button>
+                </a>
+                <a name="edit" href="{% url 'commodity:edit_commodity' commodity.id %}">
+                    <button type="button" class="btn btn-info btn-sm">编辑</button>
+                </a>
+                <a name="delete" href="javascript:" onclick="del_commodity(this, {{commodity.id}})">
+                    <button type="button" class="btn btn-danger btn-sm">删除</button>
+                </a>
+                <a name="verify" href="{% url 'commodity:commodity_verify' commodity.id %}" >
+                    <button type="button" class="btn btn-success btn-sm">提交</button>
+                </a>      
+            </div>
+        </div>
+        {% empty %}
+        <p>您所有的商品已经通过审核了哦~</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/layer.js' %}"></script>
+<script src="{% static 'js/json2.js' %}"></script>
+<script type="text/javascript">
+    function del_commodity(the, commodity_id) {
+        var commodity_name = $(the).parents("div").children("div").children("h4").text();
+        // var commodity_name = $(the).parents("div").children("h4").text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除商品",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除商品：' + commodity_name +
+                '</p> </div>',
+            btn: ['确定', '取消'],
+            yes: function () {
+                $.ajax({
+                    url: '{% url "commodity:del_commodity" %}',
+                    type: "POST",
+                    data: {
+                        "commodity_id": commodity_id
+                    },
+                    success: function (e) {
+                        if (e == "1") {
+                            parent.location.reload();
+                            layer.msg("已删除");
+                        } else {
+                            layer.msg("删除失败");
+                        }
+                    },
+                })
+            },
+        });
+    }
+</script>
+<script>
+    var temp = document.getElementById("upslider5");
+    temp.classList.add("active");
+</script>
+{% endblock %}

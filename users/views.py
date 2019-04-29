@@ -268,8 +268,7 @@ def stu_verify(request):
         
         # 发消息给管理员通知其进行审核
         text = "用户" + info.nickname + "(" + request.user.username + ")" + \
-            "提交了学生身份认证文件，请点击以下链接进行审核：" + "<a href=" + settings.CUR_HOST + \
-            "admin_manage/stu_verify_detail/" + str(request.user.id) + ">审核链接</a>"
+            "提交了学生身份认证文件，请尽快审核"
         admin_user = User.objects.filter(is_superuser=True)[0]
         Message.objects.create(text=text, id_content=request.user.id, 
             msg_type='stu_verify', sender=admin_user, receiver=admin_user)

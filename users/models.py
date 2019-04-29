@@ -20,12 +20,7 @@ class UserInfo(models.Model):
     profile = ProcessedImageField(upload_to='user/img', default='user/img/default.jpg', 
         processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
     is_verified = models.BooleanField(default=False)
-<<<<<<< HEAD
-    stuCardPhoto = ProcessedImageField(upload_to='user/img/verify', null=True,
-        processors=[ResizeToFill(500, 500)],  format='JPEG', options={'quality': 60})
-=======
     stuCardPhoto = ProcessedImageField(upload_to='user/img/verify', null=True, format='JPEG')
->>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
     
     def __str__(self):
         return self.nickname + " " + str(self.user)
@@ -33,16 +28,6 @@ class UserInfo(models.Model):
 
 class Message(models.Model):
     TYPE_CHOICES = (
-<<<<<<< HEAD
-        (u'M', u'message'),
-        (u'S', u'stu_verify'),
-        (u'C', u'commodity_verify'),
-    )
-
-    sender = models.ForeignKey(User, related_name="sender_msg", on_delete=models.CASCADE)
-    receiver = models.ForeignKey(User, related_name="receiver_msg", on_delete=models.CASCADE)
-    msg_type = models.CharField(max_length = 20, choices = TYPE_CHOICES, default='message')
-=======
         (u'M', u'massage'),
         (u'S', u'stu_verify'),
         (u'C', u'commodity_verify'),
@@ -50,7 +35,6 @@ class Message(models.Model):
     sender = models.ForeignKey(User, related_name="sender_msg", on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name="receiver_msg", on_delete=models.CASCADE)
     msg_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default="message")
->>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
     text = models.CharField(max_length=2000)
     id_content = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)

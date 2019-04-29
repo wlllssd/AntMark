@@ -49,15 +49,9 @@
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
-<<<<<<< HEAD
-                <ul class="nav navbar-nav navbar-right">
-                    <li id="mailbox" style="background-color:#337ab7">
-                        <a href="{% url 'users:mailbox' %}">邮箱</a></li>
-=======
                 <ul class="nav navbar-nav nav-tabs navbar-right">
                     <li>
                         <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
->>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
                     <li class="dropdown">
                         <a id="nickname" class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
                             {{ user|getUserNickname }}

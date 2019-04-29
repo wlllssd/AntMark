@@ -21,8 +21,6 @@ def user_verify_required(func):
                 'goto_time': 5,
             }
             return render(request, 'users/notice.html' , response_data)
-<<<<<<< HEAD
-=======
 
         # 执行原来的方法(响应页面)
         response = func(*args, **kwargs)
@@ -42,7 +40,6 @@ def superuser_required(func):
                 'goto_time': 5,
             }
             return render(request, 'users/notice.html' , response_data)
->>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
 
         # 执行原来的方法(响应页面)
         response = func(*args, **kwargs)

@@ -77,6 +77,7 @@ def stu_verify_detail(request, message_id, user_id):
         return HttpResponseRedirect(reverse('admin_manage:stu_verify_list'))
 
     context = { 
+        'message': message,
         'stu_user': stu_user,
         'stu_info': stu_info,
     }
@@ -112,7 +113,10 @@ def comm_verify_detail(request, message_id, comm_id):
         Message.objects.create(sender=request.user, receiver=comm.owner, text=text)
         return HttpResponseRedirect(reverse('admin_manage:comm_verify_list'))
 
-    context = { 'comm': comm }
+    context = {
+        'message': message, 
+        'comm': comm,
+        }
     return render(request, 'admin_manage/comm_verify_detail.html', context)
 
 
