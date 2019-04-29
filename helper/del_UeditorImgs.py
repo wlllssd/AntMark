@@ -3,6 +3,10 @@ from django.conf import settings
 import os
 import fnmatch
 
+import sys
+sys.path.append('..')
+
+
 def load_setting():
     os.environ['DJANGO_SETTINGS_MODULE'] = 'AntMark.settings'
     django.setup()
