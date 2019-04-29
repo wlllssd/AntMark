@@ -1,5 +1,16 @@
 <!DOCTYPE html> {% extends "home/base.html" %} {% load widget_tweaks %} {% block content %} {% load static %}
 
+<script type="text/javascript">
+    function checknull() {　　
+        var stu_card_photo = document.getElementById('stu_card_photo');
+        if (stu_card_photo.value == "") {
+            alert("提交的文件不能为空");
+            return false;
+        }
+        return true;
+    }
+</script>
+
 <body>
     <div class="section-top-border">
         <div style="margin-left: 100px">
@@ -14,11 +25,11 @@
             <p>O：更多疑问请 <a href="{% url 'users:call_admin' %}">【联系管理员】</a> </p>
             <br/>
             <div class="col-md-9" style="float:left">
-                <form action="{% url 'users:stu_verify' %}" enctype="multipart/form-data" method='post' novalidate>
+                <form action="{% url 'users:stu_verify' %}" enctype="multipart/form-data" method='post' onsubmit="return checknull()">
                     {% csrf_token %}
                     <div class="form-group">
                         <span>校园卡/学生证信息照片（仅支持英文文件名）</span>
-                        <input type="file" name="stu_card_photo" class="form-control" />
+                        <input type="file" name="stu_card_photo" id="stu_card_photo" class="form-control" />
                     </div>
 
                     <div style="text-align: center">

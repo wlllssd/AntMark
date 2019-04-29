@@ -30,7 +30,14 @@ SECRET_KEY = 'wpcq2fia!%f@5w_7c@n(%(3s!1ks$=&*_w4n#n5mskvjaw__jj'
 #     DEBUG = TEMPLATE_DEBUG = False
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+=======
+CUR_HOST = 'http://127.0.0.1:8000/'
+
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'schnee.pro', '*.schnee.pro']
+>>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
 
 ADMINS = (
     ('suzh', '1194133793@qq.com')
@@ -49,6 +56,10 @@ EMAIL_FROM = "antmark_mail@sina.com"              # 你的邮箱账号
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -61,12 +72,13 @@ INSTALLED_APPS = [
     #third party app
     'bootstrap4',
     'widget_tweaks',
+    'DjangoUeditor',
 
     #my app
     'home',
     'users',
+    'admin_manage',
     'commodity',
-    'DjangoUeditor',
     'chatroom',
 ]
 
@@ -166,29 +178,6 @@ MEDIA_DIRS = (
     os.path.join(BASE_DIR, 'media'),
 )
 
-
-SIMDITOR_UPLOAD_PATH = '/media/uploads/'
-SIMDITOR_IMAGE_BACKEND = 'pillow'
-
-SIMDITOR_TOOLBAR = [
-    'title', 'bold', 'italic', 'underline', 'strikethrough', 'fontScale',
-    'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|', 'link',
-    'image', 'hr', '|', 'indent', 'outdent', 'alignment', 'fullscreen',
-    'markdown', 'emoji'
-]
-
-SIMDITOR_CONFIGS = {
-    'toolbar': SIMDITOR_TOOLBAR,
-    'upload': {
-        'url': '/simditor/upload/',
-        'fileKey': 'upload',
-        'image_size': 1024 * 1024 * 4   # max image size 4MB
-    },
-    'emoji': {
-        'imagePath': '/static/simditor/images/emoji/'
-    }
-}
-
 # markdownx options
 MARKDOWNX_EDITOR_RESIZABLE = False
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
@@ -209,5 +198,3 @@ LOGIN_URL = '/users/login'
 BOOTSTRAP4 = {
     'include_jquery': True,
 }
-
-CUR_HOST = 'http://127.0.0.1:8000/'

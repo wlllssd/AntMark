@@ -106,10 +106,14 @@
     <div class="commodity_detail">
         <h4>正在咨询商品：{{ room.commodity.title}}</h4>
         <br/>
+<<<<<<< HEAD
         <img src="{{ room.commodity.image | striptags }}" height="320px">
+=======
+        <img src="{{ room.commodity.image | striptags}}" height="320px">
+>>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
         <p>卖家：{{ room.commodity.owner|getUserNickname }}</p>
-        <p>标签：{{ room.commodity.commodity_tag.all|join:"," }}</p>
-        <p>货源：{{ room.commodity.commodity_source.all|join:"," }}</p>
+        <p>标签：{{ room.commodity.commodity_tag }}</p>
+        <p>货源：{{ room.commodity.commodity_source }}</p>
         <p>价格：￥{{ room.commodity.price }}</p>
         <p>数量：{{ room.commodity.amount }}</p>
     </div>
