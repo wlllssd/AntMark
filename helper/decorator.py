@@ -21,6 +21,28 @@ def user_verify_required(func):
                 'goto_time': 5,
             }
             return render(request, 'users/notice.html' , response_data)
+<<<<<<< HEAD
+=======
+
+        # 执行原来的方法(响应页面)
+        response = func(*args, **kwargs)
+
+        return response # 返回内容给前端
+    return warpper
+
+def superuser_required(func):
+    def warpper(*args, **kwargs):
+        request = args[0]
+        if request.user.is_superuser == False:
+            # raise Http404
+            response_data = {
+                'message': "该功能为管理员功能，请勿尝试，否则报警了啊！",
+                'next_page': "网站主页",
+                'goto_url': settings.CUR_HOST,
+                'goto_time': 5,
+            }
+            return render(request, 'users/notice.html' , response_data)
+>>>>>>> 6cb8ae606f7ded5961baa385a967f3fbb61d899d
 
         # 执行原来的方法(响应页面)
         response = func(*args, **kwargs)
