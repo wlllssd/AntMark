@@ -1,4 +1,5 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %}
+{% block content %}
 
 <html lang="zxx" class="no-js">
 
@@ -7,9 +8,13 @@
         <div class="container">
             <div class="title text-center">
                 <h1 class="mb-10">AntMark 管理员后台管理平台 </h1>
-                <br/><br/>
-                <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-primary">学生验证审核</a>
-                <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-primary">商品审核</a>
+                <br>
+                <p class="mb-10">欢迎回来</p>
+                <br /><br />
+                <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-primary"
+                    style="margin-left:-30px">学生认证审核</a>
+                <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-primary"
+                    style="margin-left:40px">商品审核</a>
             </div>
         </div>
     </section>

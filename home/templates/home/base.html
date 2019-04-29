@@ -27,11 +27,11 @@
     <link rel="stylesheet" href="{% static 'css/typicons.min.css' %}">
 
 </head>
-<style>
+<!-- <style>
     .dropdown .dropdown-menu {
         display: none;
     }
-</style>
+</style> -->
 
 <body class="container">
     <section class="banner-area" id="home">
@@ -49,7 +49,7 @@
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
-                <ul class="nav navbar-nav nav-tabs navbar-right">
+                <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
                     <li class="dropdown">
