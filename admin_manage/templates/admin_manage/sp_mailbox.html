@@ -1,5 +1,6 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
-
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
 <script>
     //选中收件箱中的所有邮件
     function select_all_recemsg() {
@@ -19,16 +20,35 @@
 
 <body>
     <div class="section-top-border">
+        <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
+            <li class="breadcrumb-item"><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
+            <li class="breadcrumb-item active">{{function}}审核系统</li>
+        </ol>
         <h1>{{ function }}审核系统</h1>
-        <br/>
-        <div style="float:right">
+
+        <!-- <div style="float:right">
             <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-success">学生认证审核系统</a>
             <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-info">商品审核系统</a>
-        </div>
-        <br/>
+        </div> -->
+        <br />
+
         <div class="section" id="inbox">
-            <form action="{% url 'admin_manage:deal_mult_msg' %}" enctype="multipart/form-data" method="POST" class="form">{% csrf_token %}
-                <button type="submit" class="btn btn-info" name="delete_msg" onclick="delMsgConfirm()">删除</button><br/><br/>
+            <form action="{% url 'admin_manage:deal_mult_msg' %}" enctype="multipart/form-data" method="POST"
+                class="form">{% csrf_token %}
+
+                <div>
+                    <div style="float:left">
+                        <button type="submit" class="btn btn-info" name="delete_msg"
+                            onclick="delMsgConfirm()">删除</button>
+                    </div>
+                    <div style="float:right">
+                        <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-success">学生认证审核系统</a>
+                        <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-info">商品审核系统</a>
+                    </div>
+                    <br><br>
+                </div>
+
+                
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -59,11 +79,13 @@
                             </td>
                             <td>
                                 {% ifequal message.msg_type 'stu_verify' %}
-                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}" title="审核">
+                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}"
+                                    title="审核">
                                     <span class="glyphicon glyphicon-search " aria-hidden="true "></span>
                                 </a>
                                 {% else %}
-                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}" title="审核">
+                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}"
+                                    title="审核">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </a>
                                 {% endifequal %}
@@ -86,17 +108,20 @@
                             </td>
                             <td>
                                 {% ifequal message.msg_type 'stu_verify' %}
-                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}" title="审核">
+                                <a href="{% url 'admin_manage:stu_verify_detail' message.id message.id_content %}"
+                                    title="审核">
                                     <span class="glyphicon glyphicon-search " aria-hidden="true "></span>
                                 </a>
                                 {% else %}
-                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}" title="审核">
+                                <a href="{% url 'admin_manage:comm_verify_detail' message.id message.id_content %}"
+                                    title="审核">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 </a>
                                 {% endifequal %}
                             </td>
                             <td>
-                                <a href="{% url 'admin_manage:del_message' message.id %}" title="删除信息" onclick="delMsgConfirm()">
+                                <a href="{% url 'admin_manage:del_message' message.id %}" title="删除信息"
+                                    onclick="delMsgConfirm()">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                 </a>
                             </td>
@@ -109,10 +134,11 @@
                     </tbody>
                 </table>
             </form>
-            <br/>
+            <br />
         </div>
 
-        <a href="{% url 'home:index' %}" class="btn btn-default">返回主页</a>
+        <a href="#" class="btn btn-default" style="background-color: white">回到顶部</a>
+        <!-- <a href="{% url 'home:index' %}" class="btn btn-default">返回主页</a> -->
     </div>
 </body>
 {% endblock content %}
