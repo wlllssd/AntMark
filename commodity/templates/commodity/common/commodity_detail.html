@@ -37,12 +37,24 @@
                             <div class="col-md-2 text-left">货源：</div>
                             <div class="col-md-10 text-left">{{commodity.commodity_source}}</div>
                         </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-2 text-left">标签：</div>
+                            <div class="col-md-10 text-left">{{commodity.commodity_tag}}</div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-3 text-left">创建时间：</div>
+                            <div class="col-md-9 text-left">{{commodity.created}}</div>
+                        </div>
+                        <div class="row" style="margin-top: 10px;">
+                            <div class="col-md-3 text-left">上架日期：</div>
+                            <div class="col-md-9 text-left">{{commodity.updated}}</div>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin-top:-60px;margin-left:auto">
+                <div class="row" style="margin-top:-80px;margin-left:auto">
                     <div class="col-md-2 text-left">
                         <a href="{% url 'chatroom:start_chat' commodity.owner.id commodity.id %}"
-                            class="btn btn-info">联系卖家</a>
+                            class="btn btn-info btn-lg">联系卖家</a>
                     </div>
                 </div>
                 <!-- <h3>{{commodity.title}}</h3>

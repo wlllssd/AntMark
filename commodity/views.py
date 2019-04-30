@@ -314,13 +314,14 @@ def search_commodity(request):
     sourceChoice = request.POST.get('source')
     tagChoice = request.POST.getlist('tag', None)
     is_checked = []
-
+    # 关键字搜索
     if keyword != "":
+        # 货源筛选
         if sourceChoice != "0": 
             sourceList = CommoditySource.objects.filter(id__in = sourceChoice)
         else:
             sourceList = CommoditySource.objects.all()
-
+        # 标签筛选
         if len(tagChoice) == 0:
             is_checked.append(0)
             tagList = CommodityTag.objects.all()
@@ -341,7 +342,7 @@ def search_commodity(request):
             commodities = current_page.object_list
         tags = CommodityTag.objects.all()
         sources = CommoditySource.objects.all()
-
+        # 已选中的标签的id
         for tag in tags:
             if str(tag.id) in tagChoice:
                 is_checked.append(tag.id)
