@@ -1,5 +1,5 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} 
-{% load static %} 
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %}
+{% load staticfiles %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/index.css' %}">
 
@@ -10,14 +10,14 @@
     </div>
 </body>
 
-<script src="/static/js/vendor/jquery-2.2.4.min.js"></script>
+<script src="{% static 'js/vendor/jquery-2.2.4.min.js' %}"></script>
 <script>
-$(document).ready(function(){
-    $("#navbar").css("background-color","rgba(0,0,0,.0001)");
-    $("#login_button").css("background-color","rgba(0,0,0,.0001)");
-    $("#reg_button").css("background-color","rgba(0,0,0,.0001)");
-    $("#mailbox").css("background-color","rgba(0,0,0,.0001)");
-    $("#nickname").css("background-color","rgba(0,0,0,.0001)");
-});
+    $(document).ready(function () {
+        $("#navbar").css("background-color", "rgba(0,0,0,.0001)");
+        $("#login_button").css("background-color", "rgba(0,0,0,.0001)");
+        $("#reg_button").css("background-color", "rgba(0,0,0,.0001)");
+        $("#mailbox").css("background-color", "rgba(0,0,0,.0001)");
+        $("#nickname").css("background-color", "rgba(0,0,0,.0001)");
+    });
 </script>
 {% endblock content %}

@@ -5,7 +5,7 @@
     <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="../../../static/img/logo_antmark2.png">
+    <link rel="shortcut icon" href="{% static '/img/logo.png' %}">
     <!-- Author Meta -->
     <meta name="author" content="colorlib">
     <!-- Meta Description -->
@@ -27,18 +27,20 @@
     <link rel="stylesheet" href="{% static 'css/typicons.min.css' %}">
 
 </head>
-<style>
+<!-- <style>
     .dropdown .dropdown-menu {
         display: none;
     }
-</style>
+</style> -->
 
 <body class="container">
     <section class="banner-area" id="home">
-        <nav id="navbar" class="navbar navbar-no-bg bg-primary fixed-top container navbar-dark" role="navigation">
+        <nav id="navbar" class="navbar navbar-no-bg bg-primary navbar-fixed-top container navbar-dark"
+            role="navigation">
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <a class="navbar-brand" href="{% url 'home:index' %}">
-                    <img src="/static/img/logo_antmark.png" alt="" height="35px" style="margin: -5px 5px 0px -20px">
+                    <img src="{% static '/img/logo_antmark.png' %}" alt="" height="35px"
+                        style="margin: -5px 5px 0px -20px">
                 </a>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{% url 'home:index' %}">主页</a></li>
@@ -49,11 +51,18 @@
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
-                <ul class="nav navbar-nav nav-tabs navbar-right">
+                <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
+                    <li style="margin:-10px -20px -10px 0px;z-index: 1;">
+                        <a style="background-color: #ffffff00" href="{% url 'users:personal_index' request.user.id %}">
+                            <img src="{% static '/img/bamao.png' %}" height="40px">
+                        </a>
+
+                    </li>
                     <li class="dropdown">
-                        <a id="nickname" class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
+                        <a id="nickname" class="dropdown-toggle" data-toggle="dropdown"
+                            href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
                             {{ user|getUserNickname }}
                             {% ifequal user|getVerifyStatus False %}
                             (未学生验证)
@@ -70,7 +79,8 @@
                 {% else %}
                 <ul class="nav navbar-nav navbar-right">
                     <li id="login_button" style="background-color:#337ab7"><a href="{% url 'users:login' %}">登录</a></li>
-                    <li id="reg_button" style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a></li>
+                    <li id="reg_button" style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a>
+                    </li>
                 </ul>
                 {% endif %}
                 </ul>
@@ -79,7 +89,8 @@
         <!-- End Header Area -->
     </section>
 
-    <div class="container">
+    <!-- 距顶部搜索栏空间由margin-top控制 -->
+    <div class="container" style="margin-top:60px">
         <div>
             {% block content %}{% endblock %}
         </div>

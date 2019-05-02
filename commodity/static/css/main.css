@@ -1,6 +1,11 @@
 .nav>li>a:hover {
-    background-color: #ffffff29
+    background-color: #ffffff29;
 }
+
+.dropdown .dropdown-menu {
+    display: none;
+}
+
 ::-moz-selection {
     /* Code for Firefox */
     background-color: #87CEFA;
@@ -1965,9 +1970,11 @@ h6 {
     .navbar-nav {
         margin-top: 10px;
     }
+
     .navbar-nav a {
         padding: 0;
     }
+
     .navbar-nav li {
         padding: 15px 0;
     }
@@ -2145,7 +2152,7 @@ h6 {
 
 @media (min-width: 768px) {
     .dropdown .dropdown-menu {
-        display: block;
+        display: none;
         opacity: 0;
         -webkit-transition: all 300ms ease-in;
         -moz-transition: all 300ms ease-in;
@@ -2153,6 +2160,7 @@ h6 {
         -o-transition: all 300ms ease-in;
         transition: all 300ms ease-in;
     }
+
     .dropdown:hover .dropdown-menu {
         display: block;
         opacity: 1;
@@ -2165,9 +2173,11 @@ h6 {
     margin-top: 10px;
     border: none;
 }
+
 .dropdown-menu>li>a {
     color: rgb(255, 255, 255);
 }
+
 .dropdown-menu a {
     padding: 5px 15px;
 }
@@ -2458,6 +2468,7 @@ h6 {
         left: 0;
         top: 20px;
     }
+
     .gallery-area .owl-controls .owl-prev,
     .gallery-area .owl-controls .owl-next {
         display: inline-block;

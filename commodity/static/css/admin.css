@@ -1,0 +1,10 @@
+.section-top-border {
+    padding-top: 10px;
+}
+
+.message_display {
+    border: 1px #ccc solid;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 10px;
+}
