@@ -32,7 +32,7 @@ DEBUG = True
 
 CUR_HOST = 'http://127.0.0.1:8000/'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','120.78.188.26', 'www.antmark.store']
 
 ADMINS = (
     ('suzh', '1194133793@qq.com')

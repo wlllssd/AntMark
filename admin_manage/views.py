@@ -109,7 +109,7 @@ def comm_verify_detail(request, message_id, comm_id):
         if 'verified' in request.POST:
             comm.is_verified = True
             comm.save()
-        text = '【商品审核】 ' + text
+        text = '【商品审核】 你的商品 [' + comm.title + ']的审核结果 ' + text
         Message.objects.create(sender=request.user, receiver=comm.owner, text=text)
         return HttpResponseRedirect(reverse('admin_manage:comm_verify_list'))
 
