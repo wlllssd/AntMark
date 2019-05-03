@@ -5,9 +5,15 @@
     <section class="section-gap info-area">
         <div class="container">
             <div class="col-md-3" style="float:left;">
+                {% if cur_info.profile %}
                 <div class="profile_border">
                     <img class="img-circle" id="personal_profile" src="/media/{{cur_info.profile}}" alt="">
                 </div>
+                {% else %}
+                <div class="profile_border">
+                    <img class="img-circle" id="personal_profile" src="{% static 'img/default.jpg' %}" alt="">
+                </div>     
+                {% endif %}           
                 <div class="info">
                     <h3>{{ cur_info.nickname }} {% ifequal cur_info.gender 'M' %}
                         <span style="color: #87CEFA">♂</span> {% else %}
