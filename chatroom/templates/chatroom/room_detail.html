@@ -111,20 +111,20 @@
         <p>标签：{{ room.commodity.commodity_tag }}</p>
         <p>货源：{{ room.commodity.commodity_source }}</p>
         <p>价格：￥{{ room.commodity.price }}</p>
-        <p>数量：{{ room.commodity.amount }}</p>
+        {% comment %} <p>数量：{{ room.commodity.amount }}</p> {% endcomment %}
     </div>
     <div class="input_field">
         <form id="chatForm" class="form" method="post" enctype="multipart/form-data" action="{% url 'chatroom:room_detail' room.id %}">
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" name="text" id="text" class="form-control" />
-                <span>Image(Only support english filename)</span>
+                <span>图片(仅支持英文文件名)</span>
                 <input type="file" name="image" id="image" class="form-control" />
                 <input type="hidden" name="post_type" value="send_chat" />
             </div>
             <div style="float:right">
                 <button type="submit" class="btn btn-primary">发送</button>
-                <a class="btn btn-outline-primary" href="{% url 'chatroom:room_list' %}">返回</a>
+                <a class="btn btn-danger" href="{% url 'chatroom:room_list' %}">返回</a>
             </div>
         </form>{{ form.media }}
     </div>
