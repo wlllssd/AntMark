@@ -38,11 +38,11 @@
                 <div class="col-md-1 text-left"><span>商品标签:</span></div>
                 <div class="col-md-11 text-left">
                     <input id="check_all" type="checkbox" name="check_all" value="true" {%if 0 in is_checked%}checked{%endif%}/>
-                    <label for="check_all">全部类别</label>
+                    <label for="check_all">全部类别&nbsp;&nbsp;&nbsp;&nbsp;</label>
 
                     {% for tag in tags %}
                     <input id="{{tag.id}}" type="checkbox" name="tag" value="{{tag.id}}" {%if tag.id in is_checked%}checked{%endif%}/>
-                    <label for="{{tag.id}}">{{tag.tag}}&nbsp;</label>
+                    <label for="{{tag.id}}">{{tag.tag}}&nbsp;&nbsp;&nbsp;&nbsp;</label>
                     {% empty %}
                     {% endfor %}
                 </div>
