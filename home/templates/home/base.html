@@ -40,17 +40,17 @@
                             style="margin: -10px 5px 0px -20px">
                     </a>
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="{% url 'home:index' %}">主页</a></li>
-                        <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
+                        <li><a href="{% url 'home:index' %}"><i class="fa fa-home"></i> 主页</a></li>
+                        <li><a href="{% url 'commodity:commodity_list' %}"><i class="fa fa-shopping-cart"></i> 商品</a></li>
                         {% if user.is_superuser %}
-                        <li><a href="{% url 'admin_manage:admin_index' %}">审核中心</a></li>
+                        <li><a href="{% url 'admin_manage:admin_index' %}"><i class="fa fa-check-square"></i> 审核中心</a></li>
                         {% endif %}
                     </ul>
                     {% if user.is_authenticated %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{% url 'chatroom:room_list' %}">购物车</a></li>
+                        <li><a href="{% url 'chatroom:room_list' %}"><i class="fa fa-comments-o"></i> 聊天室</a></li>
                         <li>
-                            <a href="{% url 'users:mail_inbox' %}">邮箱</a></li>
+                            <a href="{% url 'users:mail_inbox' %}"><i class="fa fa-envelope"></i> 邮箱</a></li>
                         <li class="dropdown">
                             <a id="nickname" class="dropdown-toggle" data-toggle="dropdown"
                                 href="{% url 'users:personal_index' request.user.id %}"
@@ -65,16 +65,16 @@
                                 {% endif %}
                                 <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{% url 'commodity:commodity_repertory' %}">商品管理</a></li>
-                                <li><a href="{% url 'users:settings' %}">个人信息</a></li>
-                                <li><a href="{% url 'users:reset_pwd' %}">修改密码</a></li>
-                                <li><a class="dropdown-item" href="{% url 'users:logout' %}">登出</a></li>
+                                <li><a href="{% url 'commodity:commodity_repertory' %}"><i class="fa fa-edit"></i>&nbsp;&nbsp;&nbsp;&nbsp;商品管理</a></li>
+                                <li><a href="{% url 'users:settings' %}"><i class="fa fa-user-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;个人信息</a></li>
+                                <li><a href="{% url 'users:reset_pwd' %}"><i class="fa fa-key"></i>&nbsp;&nbsp;&nbsp;&nbsp;修改密码</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:logout' %}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;&nbsp;&nbsp;登出</a></li>
                             </ul>
                         </li>
                     </ul>
                     {% else %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li id="login_button" style="background-color:#337ab7"><a href="{% url 'users:login' %}">登录</a>
+                        <li id="login_button" style="background-color:#337ab7"><a href="{% url 'users:login' %}"><i class="fa fa-sign-in"></i> 登录</a>
                         </li>
                         <li id="reg_button" style="background-color:#337ab7"><a href="{% url 'users:register' %}">注册</a>
                         </li>
