@@ -381,4 +381,6 @@ def deal_mult_msg(request):
     elif 'set_as_read' in request.POST:
         for idx in msg_ids:
             response = set_as_read(request, int(idx))
-    return response
+    if 'response' in locals().keys():
+        return response
+    return HttpResponseRedirect(reverse('users:mail_inbox'))
