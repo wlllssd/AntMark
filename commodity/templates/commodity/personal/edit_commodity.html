@@ -1,14 +1,15 @@
 {% extends 'home/base.html' %}
 {% load staticfiles %}
 {% block content %}
-{% include 'commodity/upslider.html' %}
+
 
 <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
 <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}"> 
 
 <div class="container">
+    {% include 'commodity/upslider.html' %}
     <div class="col-md-10">
-        <div style="margin-left:10px">
+        <div style="margin-left:10px;margin-top: 20px;">
             <h3>修改商品信息</h3>
             <hr>
             <form class="form-horizontal" action="{% url 'commodity:edit_commodity' commodity.id %}" method="post">{% csrf_token %} 

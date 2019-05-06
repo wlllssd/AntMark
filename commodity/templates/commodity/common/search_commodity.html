@@ -5,9 +5,9 @@
 
 <div class="container">
 
-    <div class="search_container container" style="margin-bottom:20px;margin-top:50px;margin-left:10%">
+    <div class="search_container container" style="margin:50px auto;">
         <form action="{% url 'commodity:search_commodity' %}" class="search_parent" method="POST">
-            <div class="form-group" style="margin-left:80px;"> 
+            <div class="form-group"> 
                 <div class="input-group" >
                     <div class="input-group-btn">
                         <select name="source" class="btn btn-default dropdown-toggle">
@@ -19,7 +19,7 @@
                             {% endif %}{% empty %}{% endfor %}
                         </select>
                     </div>
-                    <input type="text" class="form-control" style="width:500px;" value="{{keyword}}" name="keyword" />
+                    <input type="text" class="form-control" style="width:80%;" value="{{keyword}}" name="keyword" />
                     <button type="submit" class="btn btn-primary">搜索</button>
                 </div>
             </div>
@@ -52,7 +52,7 @@
 
     <div class="row clearfix">
         <h3>搜索结果</h3>
-        <hr style="margin-right: 13px;">
+        <hr style="margin-right: 25px;">
     </div>
     
     <div class="row clearfix">
@@ -75,7 +75,10 @@
         </div>
         {% endif %} 
         {% empty %} 
-        <h1>找不到该商品</h1>
+        <!-- <h1>找不到该商品</h1> -->
+        <div style="text-align: center;">
+            <img src="{% static 'img/noSuchCommodity.png' %}" width="60%">
+        </div>
         {% endfor %}
     </div>
     {% include 'paginator.html' %}

@@ -29,11 +29,11 @@
 
 </head>
 
-<body class="container">
+<body class="container" style="background-image: url({% static 'img/bg1.png' %});background-size:100% 150%;">
     <div class="container">
         <section class="banner-area" id="home">
             <nav id="navbar" class="navbar navbar-no-bg bg-primary navbar-fixed-top container navbar-dark"
-                role="navigation" style="left:40px">
+                role="navigation" style="left:40px;">
                 <div class="collapse navbar-collapse" id="top-navbar-1">
                     <a class="navbar-brand" href="{% url 'home:index' %}">
                         <img src="{% static '/img/AntMark.png' %}" alt="" height="40px"
@@ -43,7 +43,7 @@
                         <li><a href="{% url 'home:index' %}">主页</a></li>
                         <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
                         {% if user.is_superuser %}
-                        <li><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
+                        <li><a href="{% url 'admin_manage:admin_index' %}">审核中心</a></li>
                         {% endif %}
                     </ul>
                     {% if user.is_authenticated %}
@@ -88,14 +88,10 @@
     </section>
 
     <!-- 距顶部搜索栏空间由margin-top控制 -->
-    <div class="container" style="margin-top:60px">
+    <div id="bg2" class="container" style="padding: 15px; height:100%; min-height:920px; margin:60px 0px 0px 5px;background-image: url({% static 'img/bg2.png' %});">
         <div>
             {% block content %}{% endblock %}
         </div>
-    </div>
-
-
-    <div class="container">
     </div>
 
 

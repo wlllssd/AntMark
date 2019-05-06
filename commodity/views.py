@@ -70,7 +70,7 @@ def commodity_detail(request, commodity_id):
 @user_verify_required
 def commodity_repertory(request):
     commodity_list = Commodity.objects.filter(owner = request.user)
-    paginator = Paginator(commodity_list, 20)
+    paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -200,7 +200,7 @@ def preview_commodity(request, commodity_id):
 @user_verify_required
 def put_on_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = False, is_verified = True)
-    paginator = Paginator(commodity_list, 20)
+    paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -235,7 +235,7 @@ def put_on_commodity(request):
 @user_verify_required
 def put_off_shelves_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, for_sale = True, is_verified = True)
-    paginator = Paginator(commodity_list, 20)
+    paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)
@@ -270,7 +270,7 @@ def put_off_commodity(request):
 @user_verify_required
 def not_verified_list(request):
     commodity_list = Commodity.objects.filter(owner = request.user, is_verified = False)
-    paginator = Paginator(commodity_list, 20)
+    paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
         current_page = paginator.page(page)

@@ -1,7 +1,7 @@
 {% extends 'home/base.html' %} {% load staticfiles %} {% block content %}
 <link rel="stylesheet" href="{% static 'css/card.css' %}">
 <div class="row">
-    <hr style="margin-left:10px;">
+    <hr style="margin-left:10px; margin-right: 10px;">
     <!-- 左侧主要边框 -->
     <div class="col-md-10" style="margin-bottom: 30px">
 
@@ -30,7 +30,7 @@
                         <div class="row" style="margin-top: 10px;">
                             <div class="col-md-2 text-left">卖家：</div>
                             <div class="col-md-10 text-left"><a
-                                    href="{% url 'users:personal_index' commodity.owner.id %}">{{commodity.owner}}</a>
+                                    href="{% url 'users:personal_index' commodity.owner.id %}">{{commodity.owner.user.nickname}}</a>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 10px;">
