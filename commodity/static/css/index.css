@@ -1,6 +1,7 @@
 body {
     background: url("../../../static/img/slide1.jpg");
     background-size: cover;
+    overflow: hidden;
     animation-name: myfirst;
     animation-duration: 12s;
     /*变换时间*/
@@ -15,41 +16,21 @@ body {
 @keyframes myfirst {
     0% {
         background: url("../../../static/img/slide1.jpg");
+        background-size: 100% auto; 
     }
 
     34% {
         background: url("../../../static/img/slide2.jpg");
+        background-size: 100% auto; 
     }
 
     67% {
         background: url("../../../static/img/slide3.jpg");
+        background-size: 100% auto; 
     }
 
     100% {
-        background: url("../../../static/img/slide1.jpg");
+        background: url("../../../static/img/slide4.jpg");
+        background-size: 100% auto; 
     }
-}
-
-.form {
-    background: rgba(255, 255, 255, 0.2);
-    width: 400px;
-    margin: 120px auto;
-}
-
-/*阴影*/
-.fa {
-    display: inline-block;
-    top: 27px;
-    left: 6px;
-    position: relative;
-    color: #ccc;
-}
-
-input[type="text"],
-input[type="password"] {
-    padding-left: 26px;
-}
-
-.checkbox {
-    padding-left: 21px;
 }
