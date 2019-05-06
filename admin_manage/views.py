@@ -156,4 +156,6 @@ def deal_mult_msg(request):
     if 'delete_msg' in request.POST:
         for idx in msg_ids:
             response = del_message(request, int(idx))
-    return response
+    if 'response' in locals().keys():
+        return response
+    return HttpResponseRedirect(reverse('users:mail_inbox'))
