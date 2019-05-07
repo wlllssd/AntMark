@@ -35,17 +35,17 @@
 
 <body class="container">
     <section class="banner-area" id="home">
-        <nav id="navbar" class="navbar navbar-no-bg bg-primary navbar-fixed-top container navbar-dark"
-            role="navigation">
+        <nav id="navbar" class="navbar navbar-no-bg bg-primary navbar-fixed-top container navbar-dark" role="navigation">
             <div class="collapse navbar-collapse" id="top-navbar-1">
                 <a class="navbar-brand" href="{% url 'home:index' %}">
-                    <img src="{% static '/img/logo_antmark.png' %}" alt="" height="35px"
-                        style="margin: -5px 5px 0px -20px">
+                    <img src="{% static '/img/logo_antmark.png' %}" alt="" height="35px" style="margin: -5px 5px 0px -20px">
                 </a>
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="{% url 'home:index' %}">主页</a></li>
                     <li><a href="{% url 'commodity:commodity_list' %}">商品</a></li>
                     <li><a href="{% url 'chatroom:room_list' %}">聊天列表</a></li>
+                    <li><a href="{% url 'home:annos' %}">查看公告</a></li>
+                    <li><a href="{% url 'home:about' %}">关于</a></li>
                     {% if user.is_superuser %}
                     <li><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
                     {% endif %}
@@ -61,8 +61,7 @@
 
                     </li>
                     <li class="dropdown">
-                        <a id="nickname" class="dropdown-toggle" data-toggle="dropdown"
-                            href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
+                        <a id="nickname" class="dropdown-toggle" data-toggle="dropdown" href="{% url 'users:personal_index' request.user.id %}" style="background-color:#337ab7">
                             {{ user|getUserNickname }}
                             {% ifequal user|getVerifyStatus False %}
                             (未学生验证)

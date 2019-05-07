@@ -10,6 +10,7 @@ from helper.decorator import superuser_required
 
 from commodity.models import Commodity
 from users.models import UserInfo, Message
+from admin_manage.models import Announcement
 
 @login_required
 @superuser_required
@@ -118,6 +119,27 @@ def comm_verify_detail(request, message_id, comm_id):
         'comm': comm,
         }
     return render(request, 'admin_manage/comm_verify_detail.html', context)
+
+
+@login_required
+@superuser_required
+def create_anno(request):
+    """ 管理员发布公告 """
+    if request.method == 'POST':
+        response_data = {
+            'message': "公告内容不可为空",    
+            'next_page': "管理员后台主页",
+            'goto_url': settings.CUR_HOST + 'admin_manage',
+            'goto_time': 2,
+        }
+
+        text = request.POST['text']
+        if text:
+            Announcement.objects.create(text=text)
+            response_data['message'] = "你已创建新的公告"        
+        return render(request, 'users/notice.html' , response_data)
+
+    return render(request, 'admin_manage/create_anno.html')
 
 
 @login_required

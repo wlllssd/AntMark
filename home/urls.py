@@ -7,6 +7,8 @@ app_name = 'home'
 
 urlpatterns = [
     path('', views.index, name = 'index'),
+    
+    path('annos/', views.annos, name = 'annos'),
 
     path('about/', views.about, name = 'about'),
 ]
