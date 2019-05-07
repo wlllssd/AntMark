@@ -1,5 +1,4 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %}
-{% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
 
 <html lang="zxx" class="no-js">
 
@@ -12,10 +11,9 @@
                 <br>
                 <p class="mb-10">欢迎回来</p>
                 <br /><br />
-                <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-primary"
-                    style="margin-left:-30px">学生认证审核</a>
-                <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-primary"
-                    style="margin-left:40px">商品审核</a>
+                <a href="{% url 'admin_manage:stu_verify_list' %}" class="btn btn-primary" style="margin-left:-30px">学生认证审核</a>
+                <a href="{% url 'admin_manage:comm_verify_list' %}" class="btn btn-primary" style="margin-left:40px">商品审核</a>
+                <a href="{% url 'admin_manage:create_anno' %}" class="btn btn-primary" style="margin-left:40px">发布公告</a>
             </div>
         </div>
     </section>
