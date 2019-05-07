@@ -43,9 +43,12 @@
             </div>
         </div>
         {% empty %}
-        <p>您所有的商品已经通过审核了哦~</p>
+        <div style="text-align: center;">
+            <img src="{% static 'img/allVerified.png' %}" width="60%">
+        </div>
         {% endfor %}
     </div>
+    {% include 'paginator.html' %}
 </div>
 
 <script src="{% static 'js/jquery.js' %}"></script>

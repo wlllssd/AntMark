@@ -35,9 +35,12 @@
             </div>
         </div>
         {% empty %}
-        <p>您所有的商品已经上架了哦~</p>
+        <div style="text-align: center;">
+            <img src="{% static 'img/allPutOn.png' %}" width="60%">
+        </div>
         {% endfor %}
     </div>
+    {% include 'paginator.html' %}
 </div>
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/layer.js' %}"></script>

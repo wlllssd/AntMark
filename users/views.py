@@ -311,7 +311,7 @@ def mail_outbox(request):
 @login_required
 def call_admin(request):
     """ 用户发送消息联系管理员 """
-    admin_user = User.objects.get(username="admin_user")
+    admin_user = User.objects.get(username="sysu")
 
     if request.method == 'POST':
         response_data = {

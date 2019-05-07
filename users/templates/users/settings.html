@@ -4,7 +4,7 @@
 
 <body>
     <div class="section-top-border">
-        <h2>设置</h2>
+        <h2> <i class="fa fa-user" style="margin-left:18px;"></i> 个人信息</h2>
         <div class="col-md-9" style="float:left">
             <form action="{% url 'users:settings' %}" enctype="multipart/form-data" method='post' novalidate class="myforms">
                 {% csrf_token %}

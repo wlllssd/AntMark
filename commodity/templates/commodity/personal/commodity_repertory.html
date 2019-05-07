@@ -42,6 +42,9 @@
         </div>
         {% endif %}
         {% empty %}
+        <div style="text-align: center;">
+            <img src="{% static 'img/noVerifiedCommodity.png' %}" width="60%">
+        </div>
         {% endfor %}
     </div>
     {% include 'paginator.html' %}

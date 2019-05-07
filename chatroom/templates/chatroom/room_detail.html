@@ -1,4 +1,5 @@
-<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %} {% block content %}
+<!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %}
+{% block content %}
 
 <html lang="zxx" class="no-js">
 
@@ -26,14 +27,14 @@
             }
         }
 
-        var update_chat = function() {
+        var update_chat = function () {
             var last_msg_id = $('#display_block > .message_block').last().data('id');
             $.ajax({
                 url: "{% url 'chatroom:get_messages' room.id %}",
                 data: {
                     last: last_msg_id
                 },
-                success: function(data) {
+                success: function (data) {
                     // console.log(data)
                     $('#display_block').append(data);
                     if (scroll_mode) {
@@ -43,16 +44,16 @@
             });
         };
 
-        $(function() {
+        $(function () {
             setInterval(update_chat, 2000);
-            $('textarea').on('keydown', function(event) {
+            $('textarea').on('keydown', function (event) {
                 if (event.keyCode == 13) {
                     if (!event.shiftKey) {
                         $('#create_message').submit();
                     };
                 };
             });
-            $('.img').click(function() {
+            $('.img').click(function () {
                 $(this).toggleClass('img_min');
                 $(this).toggleClass('img_max');
             });
@@ -66,19 +67,21 @@
 <body>
     <div>
 
-        <br/> {% ifequal room.member1 request.user %}
-        <h4>{{ room.member2|getUserNickname }} {% if room.mem2_del %} <span style="color: red">(另一用户已删除该聊天室，你发送的消息将无法被接收)</span> {% endif %} </h4>
+        <br /> {% ifequal room.member1 request.user %}
+        <h4>您正在与{{ room.member2|getUserNickname }}聊天 {% if room.mem2_del %} <span
+                style="color: red">(另一用户已删除该聊天室，你发送的消息将无法被接收)</span> {% endif %} </h4>
         {% else %}
-        <h4>{{ room.member1|getUserNickname }} {% if room.mem1_del %} <span style="color: red">(另一用户已删除该聊天室，你发送的消息将无法被接收)</span> {% endif %} </h4> {% endifequal %}
+        <h4>您正在与{{ room.member1|getUserNickname }}聊天 {% if room.mem1_del %} <span
+                style="color: red">(另一用户已删除该聊天室，你发送的消息将无法被接收)</span> {% endif %} </h4> {% endifequal %}
 
         <div class="display_block" id="display_block">
             {% for msg in messages %}
             <div class="message_block" id="{{ msg.id }}" data-id='{{ msg.id }}' name="message_block">
                 {% ifequal msg.sender request.user %}
                 <div class="message_right">
-                    <br/>
+                    <!-- <br/> -->
                     <p> {{ msg.timestamp }} </p>
-                    <p> {{ msg.sender|getUserNickname }} </p>
+                    <!-- <p> {{ msg.sender|getUserNickname }} </p> -->
                     <div class="message_content">
                         {% ifnotequal msg.content "" %}
                         <p>{{ msg.content }}</p>
@@ -88,9 +91,9 @@
                 </div>
                 {% else %}
                 <div class="message_left">
-                    <br/>
+                    <!-- <br/> -->
                     <p> {{ msg.timestamp }} </p>
-                    <p> {{ msg.sender|getUserNickname }} </p>
+                    <!-- <p> {{ msg.sender|getUserNickname }} </p> -->
                     <div class="message_content">
                         {% ifnotequal msg.content "" %}
                         <p>{{ msg.content }}</p>
@@ -110,25 +113,26 @@
         <h4>你正在咨询商品：{{ room.commodity.title}}</h4>
         {% endifequal %}
         <br/>
-        <img src="{{ room.commodity.image | striptags}}" height="320px">
+        <img src="{{ room.commodity.image | striptags}}" height="320px" style="margin:10px 0">
         <p>卖家：{{ room.commodity.owner|getUserNickname }}</p>
         <p>标签：{{ room.commodity.commodity_tag }}</p>
         <p>货源：{{ room.commodity.commodity_source }}</p>
         <p>价格：￥{{ room.commodity.price }}</p>
-        <p>数量：{{ room.commodity.amount }}</p>
+        {% comment %} <p>数量：{{ room.commodity.amount }}</p> {% endcomment %}
     </div>
     <div class="input_field">
-        <form id="chatForm" class="form" method="post" enctype="multipart/form-data" action="{% url 'chatroom:room_detail' room.id %}">
+        <form id="chatForm" class="form" method="post" enctype="multipart/form-data"
+            action="{% url 'chatroom:room_detail' room.id %}">
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" name="text" id="text" class="form-control" />
-                <span>Image(Only support english filename)</span>
+                <span>图片(仅支持英文文件名)</span>
                 <input type="file" name="image" id="image" class="form-control" />
                 <input type="hidden" name="post_type" value="send_chat" />
             </div>
             <div style="float:right">
                 <button type="submit" class="btn btn-primary">发送</button>
-                <a class="btn btn-outline-primary" href="{% url 'chatroom:room_list' %}">返回</a>
+                <a class="btn btn-danger" href="{% url 'chatroom:room_list' %}">返回</a>
             </div>
         </form>{{ form.media }}
     </div>
@@ -137,12 +141,14 @@
         <div class="function_button">
             <button type="button" class="btn btn-primary" onclick="scroll_to_button()">滑动到底端</button>
             <a href="{% url 'commodity:commodity_detail' room.commodity.id %}" class="btn btn-primary">查看商品详情</a>
-            <input id="scroll_mode" type="button" onclick="set_scroll_flag()" class="btn btn-primary" value="聊天框滑动模式：自动">
+            <input id="scroll_mode" type="button" onclick="set_scroll_flag()" class="btn btn-primary"
+                value="聊天框滑动模式：自动">
         </div>
         <div class="function_button">
             <a href="{% url 'chatroom:chat_intro' %}" class="btn btn-success">使用说明书</a>
             <a href="{% url 'users:personal_index' room.commodity.owner.id %}" class="btn btn-primary">进入卖家主页</a>
-            <a href="{% url 'chatroom:del_room' room.id request.user.id %}" class="btn btn-danger" onclick="delRoomConfirm()">删除聊天室</a>
+            <a href="{% url 'chatroom:del_room' room.id request.user.id %}" class="btn btn-danger"
+                onclick="delRoomConfirm()">删除聊天室</a>
         </div>
     </div>
 
