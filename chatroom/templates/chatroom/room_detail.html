@@ -107,7 +107,12 @@
         </div>
     </div>
     <div class="commodity_detail">
-        <h4>正在咨询商品：{{ room.commodity.title}}</h4>
+        {% ifequal room.commodity.owner request.user %}
+        <h4>TA正在咨询商品：{{ room.commodity.title}}</h4>
+        {% else %}
+        <h4>你正在咨询商品：{{ room.commodity.title}}</h4>
+        {% endifequal %}
+        <br/>
         <img src="{{ room.commodity.image | striptags}}" height="320px" style="margin:10px 0">
         <p>卖家：{{ room.commodity.owner|getUserNickname }}</p>
         <p>标签：{{ room.commodity.commodity_tag }}</p>
