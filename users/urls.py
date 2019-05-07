@@ -29,6 +29,8 @@ urlpatterns = [
 
     path('call_admin/', views.call_admin, name = 'call_admin'),
 
+    path('send_message/<int:user_id>', views.send_message, name = 'send_message'),
+
     path('set_as_read/<int:message_id>', views.set_as_read, name = 'set_as_read'),
 
     path('read_message/<int:message_id>', views.read_message, name = 'read_message'),
