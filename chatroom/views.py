@@ -75,6 +75,17 @@ def room_detail(request, room_id):
         text = request.POST['text'].strip()
         image = request.FILES.get('image', None)
         
+        if image:
+            accept_format = ['png', 'jpg', 'peg'] #peg -> jpeg
+            if image.name[-3:] not in accept_format:
+                response_data = {
+                    'message': "提交的图片格式应该为 png/jpg/jpeg ",
+                    'next_page': "聊天详情页面",
+                    'goto_url': settings.CUR_HOST + 'chatroom/room_detail/' + str(room.id), 
+                    'goto_time': 3,
+                }
+                return render(request, 'users/notice.html' , response_data)
+
         if text.strip() != '' or image:
             Chatmsg.objects.create(room=room, sender=request.user, content=text, image=image)
         
