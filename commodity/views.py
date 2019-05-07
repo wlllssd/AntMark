@@ -33,7 +33,7 @@ def source_list(request):
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def commodity_list(request):
-    commodity_list = Commodity.objects.all()
+    commodity_list = Commodity.objects.filter(is_verified = True, for_sale = True)
     paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
@@ -69,7 +69,7 @@ def commodity_detail(request, commodity_id):
 @csrf_exempt
 @user_verify_required
 def commodity_repertory(request):
-    commodity_list = Commodity.objects.filter(owner = request.user)
+    commodity_list = Commodity.objects.filter(owner = request.user, is_verified = True)
     paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
@@ -91,8 +91,6 @@ def commodity_repertory(request):
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
-        print('body:  ', commodity_form['body'])
-        print(commodity_form)
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:

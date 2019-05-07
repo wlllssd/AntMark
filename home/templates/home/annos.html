@@ -7,11 +7,14 @@
         <div class="container">
             <div class="title text-center">
                 <h1 class="mb-10">公告 </h1>
+                <hr>
             </div>
             <div>
                 {% for anno in annos %}
                 <p>{{ anno.timestamp }}</p>
+                <p>{{ anno.title }}</p>
                 <p>{{ anno.text }}</p>
+                <hr>
                 {% endfor %}
             </div>
         </div>

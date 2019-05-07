@@ -3,11 +3,20 @@
 
 <body>
     <div class="section-top-border">
-        <h2>发布公告:</h2>
-        <p>发布所有人都能看到的公告</p>
-        <hr/>
+        <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
+            <li class="breadcrumb-item"><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
+            <li class="breadcrumb-item active">发布公告</li>
+        </ol>
+        <div class="col-md-10" style="float:left">
+            <h2>发布公告</h2>
+            <hr/>
+        </div>
         <div class="col-md-10" style="float:left">
             <form action="{% url 'admin_manage:create_anno' %}" method="POST" class="form">{% csrf_token %}
+                <div class="form-group">
+                    <label for="title">公告标题：</label>
+                    <input class="form-control" rows="8" name="title">
+                </div>                
                 <div class="form-group">
                     <label for="text">公告内容：</label>
                     <textarea class="form-control" rows="8" name="text"></textarea>

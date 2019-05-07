@@ -10,6 +10,6 @@ def about(request):
 
 def annos(request):
     """ 查看公告 """
-    annos = Announcement.objects.all()
+    annos = Announcement.objects.all()[:5]
     context = { 'annos': annos }
     return render(request, 'home/annos.html', context)
