@@ -1,0 +1,23 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block title %} Index {% endblock %} {% load static %} {% block content %}
+
+<html lang="zxx" class="no-js">
+
+<body>
+    <section class="project-area section-gap" id="project" style="padding-top: 50px">
+        <div class="container">
+            <div class="title text-center">
+                <h1 class="mb-10">公告 </h1>
+            </div>
+            <div>
+                {% for anno in annos %}
+                <p>{{ anno.timestamp }}</p>
+                <p>{{ anno.text }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
+
+{% endblock content %}

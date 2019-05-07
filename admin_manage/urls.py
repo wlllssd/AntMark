@@ -15,6 +15,8 @@ urlpatterns = [
 
     path('comm_verify_detail/<int:message_id>/<int:comm_id>', views.comm_verify_detail, name = "comm_verify_detail"),
 
+    path('create_anno/', views.create_anno, name = "create_anno"),
+
     path('read_message/<int:message_id>', views.read_message, name = 'read_message'),
 
     path('del_message/<int:message_id>', views.del_message, name = 'del_message'),

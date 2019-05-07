@@ -1,0 +1,22 @@
+<!DOCTYPE html> {% extends "home/base.html" %} {% block content %} {% load static %} {% load bootstrap4 %} {% load base %}
+
+
+<body>
+    <div class="section-top-border">
+        <h2>发布公告:</h2>
+        <p>发布所有人都能看到的公告</p>
+        <hr/>
+        <div class="col-md-10" style="float:left">
+            <form action="{% url 'admin_manage:create_anno' %}" method="POST" class="form">{% csrf_token %}
+                <div class="form-group">
+                    <label for="text">公告内容：</label>
+                    <textarea class="form-control" rows="8" name="text"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">发送</button>
+                <a class="btn btn-outline-primary" href="javascript:history.go(-1)">返回上一步</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}
