@@ -33,7 +33,7 @@ def login_view(request):
         if form.is_valid():
             login(request, form.get_user())
             return HttpResponseRedirect(reverse('home:index'))
-    context = {'form': form }
+    context = { 'form': form }
     return render(request, 'users/login.html', context)
 
 
@@ -117,6 +117,10 @@ def user_reg(request):
                 except Exception as e:
                     response_data['message'] = '发送激活邮件失败，请稍后重新注册' + str(e)
                     new_user.delete()
+                    
+                response_data['goto_url'] = settings.CUR_HOST + 'users/login'
+                response_data['goto_time'] = 5
+                response_data['next_page'] = "用户登录界面"
                 return render(request, 'users/notice.html', response_data)
     
     context = { 
@@ -156,7 +160,7 @@ def user_active(request, active_code):
             user.is_active = True
             user.save()
             # 在确认用户账号激活成功后及时创建用户信息表
-            Userinfo.objects.create(user=user)
+            UserInfo.objects.create(user=user)
             
  
         response_data['goto_page'] = True
@@ -251,17 +255,23 @@ def personal_index(request, user_id):
 def stu_verify(request):
     """ 用户提交校园卡照片，后台审核 """
     info = UserInfo.objects.get(user=request.user)
+    response_data = {
+        'message': "你已经完成学生认证啦，不用重复认证",
+        'next_page': "用户设置页面",
+        'goto_url': settings.CUR_HOST + 'users/settings/', 
+        'goto_time': 5,
+    }
     if info.is_verified:
-        response_data = {
-            'message': "你已经完成学生认证啦，不用重复认证",
-            'next_page': "用户设置页面",
-            'goto_url': settings.CUR_HOST + 'users/settings/', 
-            'goto_time': 5,
-        }
         return render(request, 'users/notice.html' , response_data)
 
     if request.method == 'POST':
         stu_card_photo = request.FILES.get('stu_card_photo', None)
+
+        accept_format = ['png', 'jpg', 'peg'] #peg -> jpeg
+        if stu_card_photo.name[-3:] not in accept_format:
+            response_data['message'] = "提交的图片格式应该为 png/jpg/jpeg "
+            return render(request, 'users/notice.html' , response_data)
+
         if stu_card_photo:
             info.stuCardPhoto = stu_card_photo
         info.save()
