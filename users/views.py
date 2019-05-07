@@ -210,7 +210,18 @@ def user_settings(request):
         info.wechat = info_form.cleaned_data['wechat']
         info.qq = info_form.cleaned_data['qq']
         myprofile = request.FILES.get('profile', None)
+
         if myprofile:
+            accept_format = ['png', 'jpg', 'peg'] #peg -> jpeg
+            if myprofile.name[-3:] not in accept_format:
+                response_data = {
+                    'message': "提交的图片格式应该为 png/jpg/jpeg ",
+                    'next_page': "用户设置页面",
+                    'goto_url': settings.CUR_HOST + 'users/settings/', 
+                    'goto_time': 3,
+                }
+                return render(request, 'users/notice.html' , response_data)
+                
             if info.profile.name != 'user/img/default.jpg' :
                 info.profile.delete()
             info.profile = myprofile
@@ -259,7 +270,7 @@ def stu_verify(request):
         'message': "你已经完成学生认证啦，不用重复认证",
         'next_page': "用户设置页面",
         'goto_url': settings.CUR_HOST + 'users/settings/', 
-        'goto_time': 5,
+        'goto_time': 3,
     }
     if info.is_verified:
         return render(request, 'users/notice.html' , response_data)
@@ -311,7 +322,7 @@ def mail_outbox(request):
 @login_required
 def call_admin(request):
     """ 用户发送消息联系管理员 """
-    admin_user = User.objects.get(username="sysu")
+    admin_user = User.objects.get(username="admin_user")
 
     if request.method == 'POST':
         response_data = {
