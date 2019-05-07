@@ -22,7 +22,7 @@
         <hr/>
         <h4>回复给发信人 {{ message.sender|getUserNickname }}:</h4>
         <br/>
-        <form action="{% url 'users:call_admin' %}" method="POST" class="form">{% csrf_token %}
+        <form action="{% url 'users:send_message' message.sender.id %}" method="POST" class="form">{% csrf_token %}
             <div class="form-group">
                 <label for="text">信息内容：</label>
                 <textarea class="form-control" rows="8" name="text"></textarea>

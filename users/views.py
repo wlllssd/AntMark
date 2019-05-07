@@ -324,6 +324,30 @@ def call_admin(request):
 
 
 @login_required
+def send_message(request, user_id):
+    try:
+        receiver = User.objects.get(id=user_id)
+    except ObjectDoesNotExist:
+        raise Http404
+    
+    if request.method == 'POST':
+        response_data = {
+            'message': "消息内容不可为空",    
+            'next_page': "收件箱页面",
+            'goto_url': settings.CUR_HOST + 'users/mail_inbox/',
+            'goto_time': 2,
+        }
+
+        text = request.POST['text']
+        if text:
+            Message.objects.create(text=text, receiver=receiver, sender=request.user)
+            response_data['message'] = "你已回复消息，请等待对方回复"        
+        return render(request, 'users/notice.html' , response_data)
+
+    return HttpResponseRedirect(reverse('users:mail_inbox'))
+
+
+@login_required
 def set_as_read(request, message_id):
     """ 标记消息为已读 """
     try:
@@ -354,22 +378,27 @@ def del_message(request, message_id):
         del_message = Message.objects.get(id=message_id)
     except ObjectDoesNotExist:
         raise Http404
-        
+
+    response = None
+
     if request.user == del_message.sender:
         del_message.sender_del = True
         if del_message.receiver_del == True:
             del_message.delete()
         else:
             del_message.save()
-        return HttpResponseRedirect(reverse('users:mail_outbox'))
-    elif request.user == del_message.receiver:
+        response = HttpResponseRedirect(reverse('users:mail_outbox'))
+
+    if request.user == del_message.receiver:
         del_message.receiver_del = True
         del_message.is_read = True
         if del_message.sender_del == True:
             del_message.delete()
         else:
             del_message.save()
-        return HttpResponseRedirect(reverse('users:mail_inbox'))
+        response = HttpResponseRedirect(reverse('users:mail_inbox'))
+    
+    return response if response != None else HttpResponseRedirect(reverse('users:mail_inbox'))
 
 
 @login_required
