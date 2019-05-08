@@ -3,22 +3,47 @@
 <html lang="zxx" class="no-js">
 
 <body>
-    <section class="project-area section-gap" id="project" style="padding-top: 50px">
-        <div class="container">
-            <div class="title text-center">
-                <h1 class="mb-10"><i class="fa fa-bullhorn"></i> 公告 </h1>
-                <hr>
-            </div>
-            <div>
-                {% for anno in annos %}
-                <p>{{ anno.timestamp }}</p>
-                <p>{{ anno.title }}</p>
-                <p>{{ anno.text }}</p>
-                <hr>
-                {% endfor %}
-            </div>
+<section class="project-area section-gap" id="project" style="padding-top: 50px">
+    <div class="container">
+        <div class="title text-center">
+            <h1 class="mb-10"><i class="fa fa-bullhorn"></i> 公告 </h1>
+            <hr>
         </div>
-    </section>
+        <!--<div>-->
+        <!--{% for anno in annos %}-->
+        <!--<p>{{ anno.timestamp }}</p>-->
+        <!--<p>{{ anno.title }}</p>-->
+        <!--<p>{{ anno.text }}</p>-->
+        <!--<hr>-->
+        <!--{% endfor %}-->
+        <!--</div> -->
+        <div class="panel-group" id="accordion">
+            {% for anno in annos %}
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse{{forloop.counter}}">
+                            <div class="row">
+                                <div class="col-md-2 text-left">
+                                    <p class="text-black">标题：{{ anno.title }}</p>
+                                </div>
+                                <div class="col-md-2 col-md-offset-8 text-left">
+                                    <p>{{ anno.timestamp }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {{ anno.text }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 </body>
 
 </html>
