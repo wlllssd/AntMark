@@ -43,7 +43,7 @@
                         <li><a href="{% url 'home:index' %}"><i class="fa fa-home fa-lg"></i> 主页</a></li>
                         <li><a href="{% url 'commodity:commodity_list' %}"><i class="fa fa-shopping-cart fa-lg"></i> 商品</a></li>
                         <li><a href="{% url 'home:annos' %}"><i class="fa fa-bullhorn fa-lg"></i> 公告</a></li>
-                        <li><a href="{% url 'home:about' %}"><i class="fa fa-info-circle fa-lg"></i> 关于</a></li>
+                        <li><a href="{% url 'home:about' %}"><i class="fa fa-info-circle fa-lg"></i> 了解我们</a></li>
                         {% if user.is_superuser %}
                         <li><a href="{% url 'admin_manage:admin_index' %}"><i class="fa fa-user-plus fa-lg"></i> 管理员中心</a></li>
                         {% endif %}

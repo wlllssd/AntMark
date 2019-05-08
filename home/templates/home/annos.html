@@ -9,14 +9,6 @@
             <h1 class="mb-10"><i class="fa fa-bullhorn"></i> 公告 </h1>
             <hr>
         </div>
-        <!--<div>-->
-        <!--{% for anno in annos %}-->
-        <!--<p>{{ anno.timestamp }}</p>-->
-        <!--<p>{{ anno.title }}</p>-->
-        <!--<p>{{ anno.text }}</p>-->
-        <!--<hr>-->
-        <!--{% endfor %}-->
-        <!--</div> -->
         <div class="panel-group" id="accordion">
             {% for anno in annos %}
             <div class="panel panel-info">
@@ -42,7 +34,7 @@
                 </div>
                 <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
                     <div class="panel-body">
-                        {{ anno.text }}
+                        {{ anno.text | linebreaksbr }}
                     </div>
                 </div>
             </div>
