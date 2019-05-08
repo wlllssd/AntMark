@@ -1,6 +1,6 @@
 <!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %} {% load base %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
 <script>
     //选中收件箱中的所有邮件
     function select_all_recemsg() {
@@ -19,11 +19,11 @@
 </script>
 
 <body>
-    <div class="section-top-border">
-        <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
+    <div class="section-top-border-new">
+        <!-- <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
             <li class="breadcrumb-item"><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
             <li class="breadcrumb-item active">{{function}}审核系统</li>
-        </ol>
+        </ol> -->
         <h1>{{ function }}审核系统</h1>
 
         <!-- <div style="float:right">
@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="rece_select_all" onclick="select_all_recemsg()"></th>
-                            <th>Message</th>
+                            <th>时间</th>
                             <th>发信人</th>
                             <th>信件内容</th>
                             <th>查看</th>

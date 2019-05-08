@@ -1,11 +1,11 @@
 <!DOCTYPE html> {% extends "home/base.html" %} {% load staticfiles %} {% load bootstrap4 %}{% block content %}
 {% load base %}
 
-<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+
 
 <body>
     <div class="section-top-border">
-        <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
+        <!-- <ol class="breadcrumb" style="background-color:rgba(128, 128, 128, 0.055);margin-left: -10px">
             <li class="breadcrumb-item"><a href="{% url 'admin_manage:admin_index' %}">管理员后台</a></li>
             {% if message.msg_type == 'stu_verify' %}
             <li class="breadcrumb-item"><a href="{% url 'admin_manage:stu_verify_list' %}">学生认证审核系统</a></li>
@@ -13,7 +13,7 @@
             <li class="breadcrumb-item"><a href="{% url 'admin_manage:comm_verify_list' %}">商品审核系统</a></li>
             {% endif %}
             <li class="breadcrumb-item">查看信件</li>
-        </ol>
+        </ol> -->
         <h2>查看信件</h2>
         <br />
         <h4>发信人: {{ message.sender|getUserNickname }}({{ message.sender }})</h4>

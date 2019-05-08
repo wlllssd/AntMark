@@ -4,7 +4,7 @@
     <div class="message_right">
         <br/>
         <p> {{ msg.timestamp }} </p>
-        <p> {{ msg.sender|getUserNickname }} </p>
+        <!-- <p> {{ msg.sender|getUserNickname }} </p> -->
         <div class="message_content">
             {% ifnotequal msg.content "" %}
             <p>{{ msg.content }}</p>
@@ -16,7 +16,7 @@
     <div class="message_left">
         <br/>
         <p> {{ msg.timestamp }} </p>
-        <p> {{ msg.sender|getUserNickname }} </p>
+        <!-- <p> {{ msg.sender|getUserNickname }} </p> -->
         <div class="message_content">
             {% ifnotequal msg.content "" %}
             <p>{{ msg.content }}</p>
