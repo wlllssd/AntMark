@@ -9,14 +9,13 @@
 <body>
     <div class="section-top-border" style="margin:-10px auto">
         
-        <!-- <h1><i class="fa fa-shopping-cart"></i> 聊天列表</h1> -->
         <h1><i class="fa fa-comments-o"></i> 聊天列表</h1>
         <br/>
         <div class="section">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>商家</th>
+                        <th>聊天</th>
                         <th>商品</th>
                         <th></th>
                         <th></th>
@@ -27,7 +26,7 @@
                     <tr class="table-info">
                         {% ifequal room.member1 request.user %}
                         <td>
-                            {{ room.member2|getUserNickname }} {% if room.member2 == room.commodity.owner %} {% endif %}
+                            <img src="{{room.member2.user.profile.url}}" width="20px;" style="margin-top:-5px;"> {{ room.member2|getUserNickname }} {% if room.member2 == room.commodity.owner %} (卖家) {% endif %}
                         </td>
                         <td>{{ room.commodity }}</td>
                         <td>
@@ -39,7 +38,7 @@
                         </td>
                         {% else %}
                         <td>
-                            {{ room.member1|getUserNickname }} {% if room.member1 == room.commodity.owner %} (卖家) {% endif %}
+                            <img src="{{room.member1.user.profile.url}}" width="20px;" style="margin-top:-5px;"> {{ room.member1|getUserNickname }} {% if room.member1 == room.commodity.owner %} (卖家) {% endif %}
                         </td>
                         <td>{{ room.commodity }}</td>
                         <td>

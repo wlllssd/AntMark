@@ -43,6 +43,7 @@
                     <span class="glyphicon glyphicon-gift"></span>
                     <h5 id="line-limit-length"><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h5>
                 </div>
+                <p id="line-limit-length">卖家：{{commodity.owner.user.nickname}}</p>
                 <p id="line-limit-length">货源：{{commodity.commodity_source}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
                 <div align="right">
