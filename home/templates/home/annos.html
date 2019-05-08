@@ -5,13 +5,13 @@
 <body>
 <section class="project-area section-gap" id="project" style="padding-top: 50px">
     <div class="container">
-        <div class="title text-center">
+        <div class="title text-center" style="margin-right:20px;">
             <h1 class="mb-10"><i class="fa fa-bullhorn"></i> 公告 </h1>
             <hr>
         </div>
         <div class="panel-group" id="accordion">
             {% for anno in annos %}
-            <div class="panel panel-info">
+            <div class="panel panel-info" style="margin-right:20px;">
                 <div class="panel-heading">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" href="#collapse{{forloop.counter}}">
