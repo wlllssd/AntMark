@@ -37,9 +37,10 @@
                 <a name="delete" href="javascript:" onclick="del_commodity(this, {{commodity.id}})">
                     <button type="button" class="btn btn-danger btn-sm">删除</button>
                 </a>
-                <a name="verify" href="{% url 'commodity:commodity_verify' commodity.id %}" >
+
+                <a name="verify" href="javascript:" onclick="verify_commodity(this, {{commodity.id}})">
                     <button type="button" class="btn btn-success btn-sm">提交</button>
-                </a>      
+                </a>   
             </div>
         </div>
         {% empty %}
@@ -57,13 +58,12 @@
 <script type="text/javascript">
     function del_commodity(the, commodity_id) {
         var commodity_name = $(the).parents("div").children("div").children("h4").text();
-        // var commodity_name = $(the).parents("div").children("h4").text();
         layer.open({
             type: 1,
             skin: "layui-layer-rim",
             area: ["400px", "200px"],
             title: "删除商品",
-            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除商品：' + commodity_name +
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定删除商品' + commodity_name +
                 '</p> </div>',
             btn: ['确定', '取消'],
             yes: function () {
@@ -82,6 +82,38 @@
                         }
                     },
                 })
+            },
+        });
+    }
+</script>
+<script type="text/javascript">
+    function verify_commodity(the, commodity_id) {
+        var commodity_name = $(the).parents("div").children("div").children("h4").text();
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "提交审核",
+            content: '<div class="text-center" style="margin-top:20px"><p>是否确定将该商品提交审核' + commodity_name +
+                '</p> </div>',
+            btn: ['确定', '取消'],
+            yes: function () {
+                $.ajax({
+                    url: '{% url "commodity:commodity_verify" %}',
+                    type: "POST",
+                    data: {
+                        "commodity_id": commodity_id
+                    },
+                    success: function (e) {
+                        if (e == "1") {
+                            layer.msg("提交成功，请等待管理员审核",{time:1300}, function(){location.href='{% url "commodity:not_verified_list" %}'});
+                            
+                        } else {
+                            layer.msg("提交失败，请重试", {time:1300}, function(){location.href='{% url "commodity:not_verified_list" %}'});
+                        }
+                    },
+                })
+                return false;
             },
         });
     }

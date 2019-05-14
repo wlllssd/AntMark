@@ -5,7 +5,7 @@
 
 <div class="container">
 
-    <div class="search_container container" style="margin:50px auto;">
+    <div class="search_container container" style="margin:30px 18%;">
         <form action="{% url 'commodity:search_commodity' %}" class="search_parent" method="POST">
             <div class="form-group"> 
                 <div class="input-group" >
@@ -66,6 +66,7 @@
                     <span class="glyphicon glyphicon-gift"></span>
                     <h4><a href="{% url 'commodity:commodity_detail' commodity.id %}">{{commodity.title}}</a></h4>
                 </div>
+                <p id="line-limit-length">卖家：{{commodity.owner.user.nickname}}</p>
                 <p id="line-limit-length">货源：{{commodity.commodity_source}}</p>
                 <p id="line-limit-length">价格：￥{{commodity.price}}</p>
                 <div align="right">

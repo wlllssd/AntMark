@@ -18,7 +18,7 @@
 </script>
 
 <body>
-    <div class="section-top-border">
+    <div class="section-top-border-new">
         <h1><i class="fa fa-envelope-open-o"></i> 发件箱</h1>
         <br/>
         <div style="float:right">
@@ -34,7 +34,7 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="send_select_all" onclick="select_all_sendmsg()"></th>
-                            <th>Outbox Message(发件箱)</th>
+                            <th>时间</th>
                             <th>收信人</th>
                             <th>信件内容</th>
                             <th></th>
@@ -74,7 +74,7 @@
             <br/>
         </div>
         <a href="{% url 'users:call_admin' %}" class="btn btn-default">联系管理员</a>
-        <a href="{% url 'home:index' %}" class="btn btn-default">返回主页</a>
+        <a href="#" class="btn btn-default" style="background-color: white">回到顶部</a>
     </div>
 </body>
 {% endblock content %}

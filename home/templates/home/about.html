@@ -1,45 +1,43 @@
 <!DOCTYPE html> {% extends "home/base.html" %} {% block title %} About {% endblock %} {% block content %} {% load static %}
 
 <body>
-    <!-- Start about Area -->
     <section class="section-gap info-area" id="about">
         <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="menu-content pb-40 col-lg-8">
-                    <div class="title text-center">
-                        <h1 class="mb-10">Zihuang Su</h1>
-                        <p>Love traveling, reading and programming.</p>
-                    </div>
+            <div class="col-md-5">
+                <div class="text-center" style="margin-right:120px;">
+                    <h1 class="mb-10">AntMark</h1>
+                    <h4>双鸭山大学生的闲置物品交易平台</h4>
+                    <br><br>
                 </div>
+                <div class="info-thumb">
+                    <img src="{% static 'img/logo.png' %}" class="img-fluid" width="75%">
+                </div>
+                <a href="{% url 'users:call_admin' %}" class="btn btn-success btn-lg" style="margin:50px 0 0 24%;">联系管理员</a>
             </div>
-            <div class="single-info row mt-40">
-                <div class="col-lg-6 col-md-12 mt-120 text-center no-padding info-left">
-                    <div class="info-thumb">
-                        <img src="{% static 'img/about-img.jpg' %}" class="img-fluid" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-12 no-padding info-rigth">
-                    <div class="info-content">
-                        <h2 class="pb-30">Personal information <br/></h2>
-                        <p>
-                            From Shantou City, Guangdong Province, China
-                            <br/> Student of Sun Yat-sen University.
-                            <br/> Major in computer science
-                        </p>
-
-                        <p>
-                            <br/> E-mail: suzh9@mail2.sysu.edu.cn
-                            <br/> <a href="https://www.github.com/Schnee-Cy">Github: Schnee-Cy</a> &&
-                            <a href="https://www.schnee.pro/blog">Blog: Schnee's Blog</a>
-                        </p>
-                        <br/>
-                        <p>Used to be shy, but now become more outgoing and hope to make friends.</p>
-                        <p>Like cycling, once spent two weeks to travel around Hainan's East and midline, with a total mileage of 717km.</p>
-                        <p>Like reading, especially novels. Recently reading the light novel <i>" wolf and spice "</i>.</p>
-                        <p>Like programming, hope to share what I learn with you on this website.</p>
-                        <br/>
-                        <p>←This isn 't me ^ ~ ^</p>
-                    </div>
+            <div class="col-md-6" style="margin-right:20px;">
+                <div class="info-content">
+                    <h2 >网站介绍<br/></h2>
+                    <hr>
+                    <p>
+                        在初次踏入中大自由的土壤时，面对琳琅满目的商品，你是否有过“挥金如土”之后无奈成为“吃土族”一员的辛酸？
+                    </p>
+                    <br>
+                    <p>
+                        每逢开学，当面对昂贵的教材，而手里却握着干瘪瘦弱的钱包时，你是否有过购买旧教材的冲动？
+                    </p>
+                    <br>
+                    <p>
+                        在毕业各奔前程之前，当你望着宿舍曾视如珍宝的大件物品，你是否会陷入“携之无力，弃之可惜”的苦恼？
+                    </p>
+                    <br>
+                    <p>
+                        那就加入AntMark吧，这是一个让中大莘莘学子轻松处理闲置物品的平台。我们承诺AntMark专注于为中大学生提供舒适便捷的交易体验。
+                    </p>
+                    <br>
+                    <p>
+                        AntMark的开发由一群热爱编程的小伙伴完成，目前他们也成了AntMark的管理员哦，欢迎来撩（轻轻点击“联系管理员”即可）~
+                    </p>
+                    <br>
                 </div>
             </div>
         </div>

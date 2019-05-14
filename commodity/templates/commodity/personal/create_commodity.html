@@ -98,6 +98,7 @@ function create_commodity(){
         url: "{% url 'commodity:not_verified_list' %}",
         type: "POST",
         data: {"title":title, "body":body, "price":price, "tags":JSON.stringify(tags)},
+        // async: false,
         success: function(e){
             if(e=="2"||e=="3"){
                 layer.msg("请检查填写的商品信息！");

@@ -132,10 +132,10 @@ def create_anno(request):
             'goto_url': settings.CUR_HOST + 'admin_manage',
             'goto_time': 2,
         }
-
+        title = request.POST['title']
         text = request.POST['text']
         if text:
-            Announcement.objects.create(text=text)
+            Announcement.objects.create(text=text, title = title)
             response_data['message'] = "你已创建新的公告"        
         return render(request, 'users/notice.html' , response_data)
 

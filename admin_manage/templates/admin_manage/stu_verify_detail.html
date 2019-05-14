@@ -30,18 +30,19 @@
 </script>
 
 <body>
-    <section class="project-area section-gap" style="padding-top: 20px">
+    <section class="section-top-border project-area section-gap" style="padding-top: 20px">
         <div class="container">
             <div class="title text-center">
                 <h2 class="mb-10">学生身份认证审核</h2>
             </div>
             <br/>
+
             <div>
                 <div class="profile_border" style="float: left">
                     <p>用户头像:</p>
                     <img style="height: 300px" src="/media/{{stu_info.profile}}">
                 </div>
-                <div style="float: left; padding-left:40px">
+                <div style="float: left; padding-left:10%">
                     <p>用户个人信息：</p>
                     <br/>
                     <p>Username: {{ stu_user.username }}</p>
@@ -52,7 +53,7 @@
                     <p>Wechat: {{ stu_info.wechat }}</p>
                     <p>QQ: {{ stu_info.qq }}</p>
                 </div>
-                <div class="profile_border" style="float: right">
+                <div class="profile_border" style="float:left; padding-left:10%">
                     <p>用户校园卡照片</p>
                     <img style="height: 300px" src="/media/{{stu_info.stuCardPhoto}}">
                 </div>
@@ -74,11 +75,11 @@
                     </div>
                     <div class="form-group">
                         <label for="text">信息内容：</label>
-                        <textarea class="form-control" rows="2" name="text" id="text">信息合法，学生身份审核通过。</textarea>
+                        <textarea class="form-control" rows="5" name="text" id="text" style="width:95%">信息合法，学生身份审核通过。</textarea>
                     </div>
-                    <div style="float: right">
+                    <div style="float: right;margin-right:5%">
                         <button type="submit" class="btn btn-primary ">提交审核结果</button>
-                        <a class="btn btn-outline-primary " href="javascript:history.go(-1) ">返回上一步</a>
+                        <a class="btn btn-default " href="javascript:history.go(-1) ">返回</a>
                     </div>
                 </form>
             </div>

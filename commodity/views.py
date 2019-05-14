@@ -17,23 +17,11 @@ from .forms import CommodityTagForm, CommodityForm, CommoditySourceForm
 from helper.decorator import user_verify_required
 
 
-# 显示所有商品标签，暂无作用
-def tag_list(request):
-    tags = CommodityTag.objects.all()
-    context = {'tags':tags}
-    return render(request, 'commodity/common/tag_list.html', context)
-
-# 显示所有商品货源，暂无作用
-def source_list(request):
-    sources = CommoditySource.objects.all()
-    context = {'sources':sources}
-    return render(request, 'commodity/common/source_list.html', context)
-
 # 显示所有商品
 @login_required(login_url = '/users/login')
 @csrf_exempt
 def commodity_list(request):
-    commodity_list = Commodity.objects.all()
+    commodity_list = Commodity.objects.filter(is_verified = True, for_sale = True)
     paginator = Paginator(commodity_list, 20)
     page = request.GET.get('page')
     try:
@@ -69,7 +57,7 @@ def commodity_detail(request, commodity_id):
 @csrf_exempt
 @user_verify_required
 def commodity_repertory(request):
-    commodity_list = Commodity.objects.filter(owner = request.user)
+    commodity_list = Commodity.objects.filter(owner = request.user, is_verified = True)
     paginator = Paginator(commodity_list, 16)
     page = request.GET.get('page')
     try:
@@ -91,8 +79,6 @@ def commodity_repertory(request):
 def create_commodity(request):
     if request.method == 'POST':
         commodity_form = CommodityForm(data = request.POST)
-        print('body:  ', commodity_form['body'])
-        print(commodity_form)
         if commodity_form.is_valid():
             cd = commodity_form.cleaned_data
             try:
@@ -189,8 +175,9 @@ def del_commodity(request):
 @user_verify_required
 def preview_commodity(request, commodity_id):
     commodity = get_object_or_404(Commodity, id = commodity_id)
-    # commodity_tags_ids = commodity.commodity_tag.values_list("id", flat = True)
-    context = {"commodity":commodity}
+    similar_commodities = Commodity.objects.filter(commodity_tag = commodity.commodity_tag, for_sale = True, is_verified = True).exclude(id = commodity.id)
+    similar_commodities = similar_commodities[:4]
+    context = {"commodity":commodity, "similar_commodities":similar_commodities}
     return render(request, "commodity/personal/preview_commodity.html", context)
 
 
@@ -288,22 +275,21 @@ def not_verified_list(request):
 # 提出商品审核
 @login_required(login_url = '/users/login')
 @csrf_exempt
+@require_POST
 @user_verify_required
-def commodity_verify(request, commodity_id):
-    commodity = Commodity.objects.get(id = commodity_id)
-    info = UserInfo.objects.get(user = request.user)
-    text = "用户" + info.nickname + "(" + request.user.username + ")" + \
-            "提交了商品身份认证文件，请点击尽快审核"
-    admin_user = User.objects.filter(is_superuser=True)[0]
-    Message.objects.create(text = text, id_content=commodity_id, msg_type='commodity_verify', 
-        sender = admin_user, receiver = admin_user)
-    response_data = {
-        'message': "商品已经提交审核，等待管理员通知",
-        'next_page': "商品提交审核页面",
-        'goto_url': settings.CUR_HOST + 'commodity/not-verified-list/',
-        'goto_time': 3,
-    }
-    return render(request, 'users/notice.html' , response_data)
+def commodity_verify(request):
+    commodity_id = request.POST['commodity_id']
+    try:
+        commodity = Commodity.objects.get(id = commodity_id)
+        info = UserInfo.objects.get(user = request.user)
+        text = "用户" + info.nickname + "(" + request.user.username + ")" + \
+                "提交了商品身份认证文件，请点击尽快审核"
+        admin_user = User.objects.filter(is_superuser=True)[0]
+        Message.objects.create(text = text, id_content=commodity_id, msg_type='commodity_verify', 
+            sender = admin_user, receiver = admin_user)
+        return HttpResponse("1")
+    except:
+        return HttpResponse("2")
 
 
 # 搜索和筛选商品

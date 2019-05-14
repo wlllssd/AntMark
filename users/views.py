@@ -107,7 +107,7 @@ def user_reg(request):
             
         except Exception as e:
             response_data['success'] = False
-            response_data['message'] = e
+            response_data['message'] = '密码不合法，换一个试试？'
         
         finally:
             if response_data['success']:

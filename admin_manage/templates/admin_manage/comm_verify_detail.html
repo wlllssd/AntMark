@@ -30,7 +30,7 @@
 </script>
 
 <body>
-    <section class="project-area section-gap" style="padding-top: 20px">
+    <section class="section-top-border project-area section-gap" style="padding-top: 20px">
         <div class="container">
             <div class="title text-center">
                 <h2 class="mb-10">商品审核</h2>
@@ -83,7 +83,7 @@
                 <form action="{% url 'admin_manage:comm_verify_detail' message.id comm.id %}" method="POST" class="form">{% csrf_token %}
                     <input type="checkbox" name="verified" id='verified' onclick="addSuccessMsg()" checked=true>审核通过
                     <input type="checkbox" name="unverified" id='unverified' onclick="displayFailMsgBlock()">审核不通过
-                    <div id="failmsg" style="display: none">
+                    <div id="failmsg" style="display: none;">
                         <p>快捷回复：</p>
                         <p>
                             <input type="checkbox" onclick="addFailMsg('#商品信息不完善，检查封面时候缺失，描述是否有误 ')">
@@ -96,11 +96,12 @@
                     </div>
                     <div class="form-group">
                         <label for="text">信息内容：</label>
-                        <textarea class="form-control" rows="2" name="text" id="text">信息合法，商品审核通过。</textarea>
+                        <textarea class="form-control" rows="5" name="text" id="text" style="width:
+                            95%">信息合法，商品审核通过。</textarea>
                     </div>
-                    <div style="float: right">
+                    <div style="float: right;margin-right:5%">
                         <button type="submit" class="btn btn-primary ">提交审核结果</button>
-                        <a class="btn btn-outline-primary " href="javascript:history.go(-1) ">返回上一步</a>
+                        <a class="btn btn-default " href="javascript:history.go(-1) ">返回</a>
                     </div>
                 </form>
             </div>
