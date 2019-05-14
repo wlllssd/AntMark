@@ -30,9 +30,9 @@ SECRET_KEY = 'wpcq2fia!%f@5w_7c@n(%(3s!1ks$=&*_w4n#n5mskvjaw__jj'
 #     DEBUG = TEMPLATE_DEBUG = False
 DEBUG = True
 
-CUR_HOST = 'http://127.0.0.1:8000/'
+CUR_HOST = 'http://120.78.188.26:2333/'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','120.78.188.26', 'www.antmark.store']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','120.78.188.26', 'www.antmark.store', 'antmark.store']
 
 ADMINS = (
     ('suzh', '1194133793@qq.com')
