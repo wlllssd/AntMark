@@ -80,12 +80,15 @@ def user_reg(request):
             pattern = re.compile(r'^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$')
             match = pattern.match(reg_name)
             if not match:
-                raise Exception('邮箱格式错误')
+                raise Exception('请使用邮箱作为用户名，邮箱格式错误')
 
             pattern = re.compile(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$')
             match = pattern.match(reg_pwd1)
             if not match:
-                raise Exception('密码必须包含大小写字母和数字的组合，可以使用特殊字符，长度在8-16之间')
+                raise Exception("密码必须包含大小写字母和数字的组合，可以使用除'.'之外的特殊字符，长度在8-16之间")
+
+            if '.' in reg_pwd1:
+                raise Exception('密码不合法，换一个试试？')
 
             # 判断用户名是否已经被注册
             user = User.objects.filter(username=reg_name)
@@ -107,7 +110,7 @@ def user_reg(request):
             
         except Exception as e:
             response_data['success'] = False
-            response_data['message'] = '密码不合法，换一个试试？'
+            response_data['message'] = str(e)
         
         finally:
             if response_data['success']:
