@@ -42,14 +42,23 @@ SEND_BROKEN_LINK_EMAILS = True
 MANAGERS = ADMINS
  
 
+# EMAIL_HOST = "smtp.sina.com"
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "antmark_mail@sina.com"         # 你的邮箱账号
+# EMAIL_HOST_PASSWORD = "AntMarkAdmin2019"          # 你的邮箱密码
+# EMAIL_USE_TLS = True                             
+# EMAIL_USE_SSL = False
+# EMAIL_FROM = "antmark_mail@sina.com"              # 你的邮箱账号
+# DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER
+
 EMAIL_HOST = "smtp.sina.com"
-EMAIL_PORT = 25
+EMAIL_PORT = 465
 EMAIL_HOST_USER = "antmark_mail@sina.com"         # 你的邮箱账号
 EMAIL_HOST_PASSWORD = "AntMarkAdmin2019"          # 你的邮箱密码
-EMAIL_USE_TLS = False                             # 这里是 False
+EMAIL_USE_TLS = False                             
+EMAIL_USE_SSL = True
 EMAIL_FROM = "antmark_mail@sina.com"              # 你的邮箱账号
 DEFAULT_FROM_EMAIL = SERVER_EMAIL = EMAIL_HOST_USER
-
 
 # Application definition
 INSTALLED_APPS = [
