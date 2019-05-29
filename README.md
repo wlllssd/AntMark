@@ -8,6 +8,7 @@ django_simditor==0.0.15
 django_imagekit==4.0.2
 django_markdownx==2.0.28
 django-bootstrap4==0.0.8
+django-widget-tweaks==1.4.3
 ```
 
 安装指令：`pip install -r requirements.txt`
